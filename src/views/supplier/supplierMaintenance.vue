@@ -1,0 +1,22 @@
+<template>
+    <div>
+        suppliers maintenance
+    </div>
+</template>
+
+<script>
+    // import { Navbar, Sidebar, AppMain } from 'views/layout';
+
+    export default {
+      name: 'supplierMaintenance',
+      components: {
+        
+      },
+      computed: {
+        
+      }
+    }
+</script>
+<style rel="stylesheet/scss" lang="scss" scoped>
+
+</style>
