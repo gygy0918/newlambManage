@@ -37,7 +37,8 @@ module.exports = {
         }
     },
     externals: {
-        jquery: 'jQuery',
+        'AMap': 'AMap',
+         jquery: 'jQuery'
     },
     module: {
         rules: [
