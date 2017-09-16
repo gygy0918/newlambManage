@@ -134,6 +134,18 @@ export const asyncRouterMap = [
     children: [{ path: 'index', component: Permission, name: '权限测试页', meta: { role: ['admin'] } }]
   },
   {
+    path: '/supplier',
+    component: Layout,
+    redirect: 'noredirect',
+    name: '采购管理',
+    icon: '404',
+    children: [
+      { path: 'all', component: AllSuppliers, name: '采购单信息' },
+      { path: 'maintenance', component: SupplierMaintenance, name: '新增采购单' },
+      { path: 'contract', component: SupplierContract, name: '合同资质' },
+    ]
+  },
+  {
     path: '/components',
     component: Layout,
     redirect: '/components/index',
@@ -153,18 +165,6 @@ export const asyncRouterMap = [
       // { path: 'sticky', component: Sticky, name: 'Sticky' },
       // { path: 'countto', component: CountTo, name: 'CountTo' },
       // { path: 'mixin', component: Mixin, name: '小组件' }
-    ]
-  },
-  {
-    path: '/supplier',
-    component: Layout,
-    redirect: 'noredirect',
-    name: '采购管理',
-    icon: '404',
-    children: [
-      { path: 'all', component: AllSuppliers, name: '全部供应商' },
-      { path: 'maintenance', component: SupplierMaintenance, name: '供应商维护' },
-      { path: 'contract', component: SupplierContract, name: '合同资质' },
     ]
   },
   {

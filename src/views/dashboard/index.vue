@@ -1,6 +1,9 @@
 <template>
-    <div class="dashboard-container">
-        <component v-bind:is="currentRole"> </component>
+    <div class="dashboard-container" style="background:black">
+        <h3 　style="text-align:center;color:white">欢迎进入路灯管理系统</h3>
+        <div style="text-align:center">
+        <img  src="../../assets/1.gif" >
+        </div>
     </div>
 </template>
 
@@ -13,7 +16,8 @@
       components: { EditorDashboard, DefaultDashboard },
       data() {
         return {
-          currentRole: 'EditorDashboard'
+          currentRole: 'EditorDashboard',
+          imgurl:'../../assets/401.gif'
         }
       },
       computed: {
