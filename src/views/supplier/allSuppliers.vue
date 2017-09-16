@@ -36,22 +36,22 @@
           <el-table-column
             prop="name"
             label="名称"
-            width="100">
+            width="80">
           </el-table-column>
           <el-table-column
             prop="name"
             label="功率"
-            width="100">
+            width="80">
           </el-table-column>
           <el-table-column
             prop="name"
             label="单价"
-            width="100">
+            width="80">
           </el-table-column>
           <el-table-column
             prop="name"
             label="数量"
-            width="100">
+            width="80">
           </el-table-column>
           <el-table-column
             prop="name"
@@ -60,7 +60,8 @@
           </el-table-column>         
           <el-table-column
             prop="address"
-            label="下发人员姓名">
+            label="下发人员姓名"
+            width="100">
           </el-table-column>
           <el-table-column label="操作">
             <template scope="scope">

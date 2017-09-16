@@ -140,8 +140,8 @@ export const asyncRouterMap = [
     name: '采购管理',
     icon: '404',
     children: [
-      { path: 'all', component: AllSuppliers, name: '采购单信息' },
-      { path: 'maintenance', component: SupplierMaintenance, name: '新增采购单' },
+      { path: 'allInfo', component: AllSuppliers, name: '采购单信息' },
+      { path: 'newInfo', component: SupplierMaintenance, name: '新增采购单' },
       { path: 'contract', component: SupplierContract, name: '合同资质' },
     ]
   },
@@ -152,7 +152,7 @@ export const asyncRouterMap = [
     name: '路灯状态',
     icon: 'zujian',
     children: [
-      { path: 'supplieriformation', component: SupplierInformation, name: '路灯基本信息' },
+      { path: 'lambiformation', component: SupplierInformation, name: '路灯基本信息' },
       { path: 'addsupplier/:id', component: componentsIndex, name: '路灯维护' },
       { path: 'contract', component:ContractInformation, name: '地图信息' },
       // { path: 'tinymce', component: Tinymce, name: '富文本编辑器' },
@@ -229,7 +229,7 @@ export const asyncRouterMap = [
     name: 'errlog',
     icon: 'bug',
     noDropdown: true,
-    children: [{ path: 'log', component: ErrorLog, name: '错误日志' }]
+    children: [{ path: 'log', component: ErrorLog, name: '日志信息' }]
   },
   // {
   //   path: '/excel',
