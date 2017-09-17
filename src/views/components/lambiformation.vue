@@ -49,9 +49,14 @@
             width="100">
           </el-table-column>
           <el-table-column
-            prop="name"
+            prop="switch"
             label="状态"
             width="80">
+                <template scope="scope">
+                      <el-tag
+                        :type="scope.row.switch ==true? 'success' :'danger' "
+                        close-transition>{{scope.row.switch==true?'开':'关'}}</el-tag>
+                </template>
           </el-table-column>
           <el-table-column
             prop="name"
@@ -65,8 +70,9 @@
           </el-table-column>
           <el-table-column label="操作">
             <template scope="scope">
-              <el-button type="primary" size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-              <el-button type="danger" size="small" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+              <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+              <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+              <el-button type="danger" size="mini"       @click="handleDelete(scope.$index, scope.row)">报修</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -106,6 +112,8 @@
   export default {
     data () {
       return {
+       value1: true,
+        value2: true,
         formInline: {
           user: {
             name: '',
@@ -117,19 +125,23 @@
         tableData: [{
             date: '2016-05-02',
             name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄'
+            address: '上海市普陀区金沙江路 1518 弄',
+            switch:true
           }, {
             date: '2016-05-04',
             name: '王小虎',
-            address: '上海市普陀区金沙江路 1517 弄'
+            address: '上海市普陀区金沙江路 1517 弄',
+             switch:false
           }, {
             date: '2016-05-01',
             name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄'
+            address: '上海市普陀区金沙江路 1519 弄',
+             switch:true
           }, {
             date: '2016-05-03',
             name: '王小虎',
-            address: '上海市普陀区金沙江路 1516 弄'
+            address: '上海市普陀区金沙江路 1516 弄',
+             switch:true
           }],
         options: [],
         places: [],
@@ -160,6 +172,7 @@
       });
     },
     methods: {
+
       onSubmit () {
         this.$message('模拟数据，这个方法并不管用哦~');
       },

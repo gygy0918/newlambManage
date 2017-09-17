@@ -5,18 +5,13 @@
         <!--表单-->
         <el-form :inline="true" :model="formInline" class="demo-form-inline">
           <el-form-item label="采购单号">
-            <el-input v-model="formInline.user.name" placeholder="姓名"></el-input>
+            <el-input size="small" v-model="formInline.user.name" placeholder="姓名"></el-input>
           </el-form-item>
-          <el-form-item label="采购人员姓名">
-            <el-date-picker
-              v-model="formInline.user.date"
-              align="right"
-              type="year"
-              placeholder="选择年份">
-            </el-date-picker>
+          <el-form-item label="采购人姓名">
+            <el-input size="small" v-model="formInline.user.name" placeholder="姓名"></el-input>
           </el-form-item>
-          <el-form-item label="下发采购单人员">
-            <el-cascader expand-trigger="hover" :options="options" v-model="formInline.user.address"></el-cascader>
+          <el-form-item label="下发人姓名">
+            <el-cascader size="small" expand-trigger="hover" :options="options" v-model="formInline.user.address"></el-cascader>
           </el-form-item> 
           <el-button type="primary" @click="onSubmit">查询</el-button>
           <a href="javascript:;" id="download" style="float: right;color: #169bd5;font-size: 14px;padding-top: 7px" @click="download()" download="download.csv">导出数据</a>

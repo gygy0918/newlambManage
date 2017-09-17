@@ -2,19 +2,19 @@
 <template>
   <div class="components-container">
    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-    <el-form-item label="供应商名称" prop="merchantName">
+    <el-form-item label="部门名称" prop="merchantName">
       <el-input v-model="ruleForm.merchantName"></el-input>
     </el-form-item>
 
-    <el-form-item label="供应商类别" prop="merchantType">
+    <el-form-item label="报修类别" prop="merchantType">
       <el-radio-group v-model="ruleForm.merchantType">
-        <el-radio  label="1"  name="local">国内</el-radio>
-        <el-radio  label="2" name="foreign">出境</el-radio>
+        <el-radio  label="1"  name="local">路灯</el-radio>
+        <el-radio  label="2" name="foreign">开关</el-radio>
       </el-radio-group>
     </el-form-item>
     <el-form-item label="提供产品" prop="productType">
       <el-checkbox-group  v-model="ruleForm.productType">
-        <el-checkbox label="1"  name="route">路线</el-checkbox>
+        <el-checkbox label="1"  name="route">编号</el-checkbox>
         <el-checkbox label="2"  name="scenicspot">景区</el-checkbox>
         <el-checkbox label="3" name="traffic">交通</el-checkbox>
         <el-checkbox label="4" name="accommodation">住宿</el-checkbox>
@@ -23,16 +23,16 @@
       </el-checkbox-group>
     </el-form-item>
 
-    <el-form-item label="联系姓名" prop="linkman">
+    <el-form-item label="名称" prop="linkman">
       <el-input :disabled="isChecked" v-model="ruleForm.linkman"></el-input>
     </el-form-item>
-    <el-form-item label="联系电话" >
+    <el-form-item label="报修人编号" >
       <el-input v-model="ruleForm.phone"></el-input>
     </el-form-item>
-    <el-form-item label="工作时间" >
+    <el-form-item label="报修人姓名" >
       <el-input v-model="ruleForm.workTime"></el-input>
     </el-form-item>
-    <el-form-item label="地址">
+    <el-form-item label="保修原因">
       <el-select v-model="ruleForm.city" placeholder="请选择活动区域">
         <el-option label="区域一" value="shanghai"></el-option>
         <el-option label="区域二" value="beijing"></el-option>
@@ -42,7 +42,7 @@
         <el-option label="区域二" value="beijing"></el-option>
       </el-select>
     </el-form-item>
-    <el-form-item label="详细地址">
+    <el-form-item label="备注">
       <el-input type="textarea" v-model="ruleForm.address"></el-input>
     </el-form-item>
     <el-form-item>

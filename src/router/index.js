@@ -18,7 +18,7 @@ const Introduction = () => import('../views/introduction/index');
 
 /* components */
 const componentsIndex = () => import('../views/components/addsupplier');
-const SupplierInformation  = () => import('../views/components/supplieriformation');
+const LambIformation  = () => import('../views/components/lambiformation');
 const ContractInformation = () => import('../views/components/contract');
 const Tinymce = () => import('../views/components/tinymce');
 const Markdown = () => import('../views/components/markdown');
@@ -142,7 +142,7 @@ export const asyncRouterMap = [
     children: [
       { path: 'allInfo', component: AllSuppliers, name: '采购单信息' },
       { path: 'newInfo', component: SupplierMaintenance, name: '新增采购单' },
-      { path: 'contract', component: SupplierContract, name: '合同资质' },
+      { path: 'contract', component: SupplierContract, name: '库存信息' },
     ]
   },
   {
@@ -152,7 +152,7 @@ export const asyncRouterMap = [
     name: '路灯状态',
     icon: 'zujian',
     children: [
-      { path: 'lambiformation', component: SupplierInformation, name: '路灯基本信息' },
+      { path: 'lambiformation', component:  LambIformation, name: '路灯基本信息' },
       { path: 'addsupplier/:id', component: componentsIndex, name: '路灯维护' },
       { path: 'contract', component:ContractInformation, name: '地图信息' },
       // { path: 'tinymce', component: Tinymce, name: '富文本编辑器' },
