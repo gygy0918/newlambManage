@@ -23,21 +23,26 @@
           <el-radio label="2">开关</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="提醒方式" prop="way">
+      <el-form-item label="填写时间" required>
+        <el-row>
+          <el-form-item prop="date">
+              <el-date-picker
+                    v-model="value2"
+                    align="right"
+                    type="date"
+                    placeholder="选择日期"
+                    :picker-options="pickerOptions1">
+                  </el-date-picker>
+          </el-form-item>
+        </el-row>
+      </el-form-item>
+           <el-form-item label="提醒方式" prop="way">
         <el-checkbox-group v-model="ruleForm.way">
           <el-checkbox label="短信"></el-checkbox>
           <el-checkbox label="电话"></el-checkbox>
           <el-checkbox label="邮件"></el-checkbox>
           <el-checkbox label="微信"></el-checkbox>
         </el-checkbox-group>
-      </el-form-item>
-      <el-form-item label="填写时间" required>
-        <el-row>
-          <el-form-item prop="date">
-            <el-time-picker type="fixed-time" placeholder="选择提醒时间" v-model="ruleForm.date"
-                            style="width: 100%;"></el-time-picker>
-          </el-form-item>
-        </el-row>
       </el-form-item>
 
       <el-form-item label="重复提醒" prop="delivery">
@@ -80,6 +85,31 @@
   export default {
     data() {
       return {
+      //日期组件值和方法
+      value2:'',
+       pickerOptions1: {
+          shortcuts: [{
+            text: '今天',
+            onClick(picker) {
+              picker.$emit('pick', new Date());
+            }
+          }, {
+            text: '昨天',
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24);
+              picker.$emit('pick', date);
+            }
+          }, {
+            text: '一周前',
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', date);
+            }
+          }]
+        },
+        //　提醒
         period: [
           {required: true, message: '请选择重复周期', trigger: 'change'}
         ],
@@ -112,6 +142,7 @@
           delivery: false,
           other: '',
         },
+         //验证信息
         rules: {
           name: [
             {required: true, message: '请输入待办事项名称', trigger: 'blur'},

@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    路灯系统作用bala
+    安装单信息
   </div>
 </template>
 <script>

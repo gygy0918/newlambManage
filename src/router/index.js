@@ -44,6 +44,10 @@ const AllSuppliers = () => import('../views/supplier/allSuppliers');
 const SupplierMaintenance = () => import('../views/supplier/supplierMaintenance');
 const SupplierContract = () => import('../views/supplier/contract');
 
+/*安装管理*/
+const InstallInfo = () => import('../views/installManagement/installInfo');
+const InstallLog = () => import('../views/installManagement/installLog');
+
 /* charts */
 const chartIndex = () => import('../views/charts/index');
 const KeyboardChart = () => import('../views/charts/keyboard');
@@ -57,6 +61,7 @@ const Err401 = () => import('../views/error/401');
 
 /* error log */
 const ErrorLog = () => import('../views/errlog/index');
+const LogInput = () => import('../views/errlog/logInput');
 
 /* excel */
 const ExcelDownload = () => import('../views/excel/index');
@@ -138,11 +143,22 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: 'noredirect',
     name: '采购管理',
-    icon: '404',
+    icon: 'tubiaoleixingzhengchang',
     children: [
       { path: 'allInfo', component: AllSuppliers, name: '采购单信息' },
       { path: 'newInfo', component: SupplierMaintenance, name: '新增采购单' },
       { path: 'contract', component: SupplierContract, name: '库存信息' },
+    ]
+  },
+    {
+    path: '/install',
+    component: Layout,
+    redirect: 'noredirect',
+    name: '安装管理',
+    icon: 'zonghe',
+    children: [
+      { path: 'installInfo', component: InstallInfo, name: '安装单信息' },
+      { path: 'installLog', component: InstallLog , name: '安装日志' }   
     ]
   },
   {
@@ -172,7 +188,7 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: 'noredirect',
     name: '维修管理',
-    icon: 'tubiaoleixingzhengchang',
+    icon: '404',
     children: [
       {
         path: '/order',
@@ -223,13 +239,14 @@ export const asyncRouterMap = [
   //   ]
   // },
   {
-    path: '/errlog',
+    path: '/log',
     component: Layout,
     redirect: 'noredirect',
-    name: 'errlog',
+    name: '日志管理',
     icon: 'bug',
-    noDropdown: true,
-    children: [{ path: 'log', component: ErrorLog, name: '日志信息' }]
+  //  noDropdown: true,
+    children: [{ path: 'logInfo', component: ErrorLog, name: '日志信息' },
+    { path: 'logInput', component: LogInput, name: '日志录入' }]
   },
   // {
   //   path: '/excel',

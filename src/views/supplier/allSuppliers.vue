@@ -5,10 +5,10 @@
         <!--表单-->
         <el-form :inline="true" :model="formInline" class="demo-form-inline">
           <el-form-item label="采购单号">
-            <el-input size="small" v-model="formInline.user.name" placeholder="姓名"></el-input>
+            <el-input size="small" v-model="formInline.user.name" placeholder="采购单号"></el-input>
           </el-form-item>
           <el-form-item label="采购人姓名">
-            <el-input size="small" v-model="formInline.user.name" placeholder="姓名"></el-input>
+            <el-input size="small" v-model="formInline.user.name" placeholder="采购人姓名"></el-input>
           </el-form-item>
           <el-form-item label="下发人姓名">
             <el-cascader size="small" expand-trigger="hover" :options="options" v-model="formInline.user.address"></el-cascader>
@@ -34,12 +34,12 @@
             width="80">
           </el-table-column>
           <el-table-column
-            prop="name"
+            prop="power"
             label="功率"
             width="80">
           </el-table-column>
           <el-table-column
-            prop="name"
+            prop="price"
             label="单价"
             width="80">
           </el-table-column>
@@ -77,15 +77,24 @@
         </div>
       </el-col>
     </el-row>
-    <el-dialog title="修改个人信息" v-model="dialogFormVisible" size="tiny">
+    <el-dialog title="修改采购单信息" v-model="dialogFormVisible" size="tiny">
       <el-form ref="form" :model="form" label-width="80px">
-        <el-form-item label="姓名">
+        <el-form-item label="采购单号">
           <el-input v-model="form.name"></el-input>
         </el-form-item>
-        <el-form-item label="地址">
+        <el-form-item label="名称">
           <el-input v-model="form.address"></el-input>
         </el-form-item>
-        <el-form-item label="出生日期">
+        <el-form-item label="功率">
+          <el-date-picker type="date" placeholder="选择日期" v-model="form.date" style="width: 100%;" ></el-date-picker>
+        </el-form-item>
+        <el-form-item label="单价">
+          <el-date-picker type="date" placeholder="选择日期" v-model="form.date" style="width: 100%;" ></el-date-picker>
+        </el-form-item>
+        <el-form-item label="下单人员编号">
+          <el-date-picker type="date" placeholder="选择日期" v-model="form.date" style="width: 100%;" ></el-date-picker>
+        </el-form-item>
+        <el-form-item label="下单人员姓名">
           <el-date-picker type="date" placeholder="选择日期" v-model="form.date" style="width: 100%;" ></el-date-picker>
         </el-form-item>
         <el-form-item>
@@ -111,20 +120,28 @@
         },
         tableData: [{
             date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄'
+            name: '王小虎1',
+            address: '上海市普陀区金沙江路 1518 弄',
+            power:'12',
+            price:'13'
           }, {
             date: '2016-05-04',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1517 弄'
+            name: '王小虎2',
+            address: '上海市普陀区金沙江路 1517 弄',
+            power:'12',
+            price:'13'
           }, {
             date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄'
+            name: '王小虎3',
+            address: '上海市普陀区金沙江路 1519 弄',
+            power:'12',
+            price:'13'
           }, {
             date: '2016-05-03',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1516 弄'
+            name: '王小虎4',
+            address: '上海市普陀区金沙江路 1516 弄',
+            power:'12',
+            price:'13'
           }],
         options: [],
         places: [],
@@ -167,6 +184,7 @@
       },
       handleEdit (index, row) {
         this.dialogFormVisible = true;
+        console.log('00000',row)
         this.form = Object.assign({}, row);
         this.table_index = index;
       },

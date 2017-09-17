@@ -1,6 +1,9 @@
 <template>
-  <div class="errPage-container"  >
-   <h3>采购和入库日志记录</h3>
+  <div class="errPage-container">
+     <!--error code-->
+   <err-code/>
+    <!--error code-->
+    <h3>采购和入库日志记录</h3>
 
   </div>
 </template>
