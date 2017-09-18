@@ -91,6 +91,9 @@
         <el-form-item label="单价">
           <el-input v-model="form.price"></el-input>
         </el-form-item>
+        <el-form-item label="数量">
+          <el-input v-model="form.number"></el-input>
+        </el-form-item>
         <el-form-item label="下单人员编号">
           <el-input v-model="form.xiafanumber"></el-input>
         </el-form-item>
@@ -120,34 +123,34 @@
           }
         },
         tableData: [{
-            name: '王小虎1',
-            address: '上海市普陀区金沙江路 1518 弄',
+            name: '飞利浦1',
             power:'12',
             price:'13',
+            number:'0',
             puchernumber:'123',
             xiafanumber:'456',
             xiafaname:'张三'
           }, {
-            name: '王小虎2',
-            address: '上海市普陀区金沙江路 1517 弄',
+            name: '飞利浦2',
             power:'12',
             price:'13',
+            number:'1',
             puchernumber:'123',
             xiafanumber:'456',
             xiafaname:'张三'
           }, {
-            name: '王小虎3',
-            address: '上海市普陀区金沙江路 1519 弄',
+            name: '飞利浦3',
             power:'12',
             price:'13',
+            number:'2',
             puchernumber:'123',
             xiafanumber:'456',
             xiafaname:'张三'
           }, {
-            name: '王小虎4',
-            address: '上海市普陀区金沙江路 1516 弄',
+            name: '飞利浦4',
             power:'12',
             price:'13',
+            number:'3',
             xiafanumber:'456',
             puchernumber:'123',
             xiafaname:'张三'
@@ -163,6 +166,7 @@
           name: '',
           power: '',
           price: '',
+          number:''
         },
         currentPage: 4,
         table_index: 999,

@@ -1,19 +1,19 @@
 <template>
   <section class="form-section">
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-      <el-form-item label="安装单编号" prop="puchernumber">
-        <el-input v-model="ruleForm.puchernumber"></el-input>
+      <el-form-item label="安装单编号" prop="installnumber">
+        <el-input v-model="ruleForm.installnumber"></el-input>
       </el-form-item>
-      <el-form-item label="录入人编号" prop="name">
-        <el-input v-model="ruleForm.name"></el-input>
+      <el-form-item label="录入人编号" prop="lurunumner">
+        <el-input v-model="ruleForm.lurunumner"></el-input>
       </el-form-item>
-      <el-form-item label="录入人姓名" prop="number">
-        <el-input v-model="ruleForm.number"></el-input>
+      <el-form-item label="录入人姓名" prop="luruname">
+        <el-input v-model="ruleForm.lurunumber"></el-input>
       </el-form-item>
-      <el-form-item label="安装人编号" prop="tianxienumber">
+      <el-form-item label="安装人编号" prop="installrennumber">
         <el-input v-model="ruleForm.tianxienumber"></el-input>
       </el-form-item>
-      <el-form-item label="安装人姓名" prop="tianxiename">
+      <el-form-item label="安装人姓名" prop="installrenname">
         <el-input v-model="ruleForm.tianxiename"></el-input>
       </el-form-item>
       <el-form-item label="安装时间" required>
@@ -67,11 +67,12 @@
           }]
         },
         ruleForm: {
-          name: '',
-          puchername: '',
+          installnumber: '',
+          lurunumber: '',
+          luruname:'',
           number: [],
-          tianxiename: '',
-          tianxienumber: '',
+          installrenname: '',
+          installrennumber: '',
           type: '',
           date: '',
           other: '',

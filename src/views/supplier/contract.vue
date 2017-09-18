@@ -99,8 +99,8 @@
         </el-form-item>
         <el-form-item label="类别">
             <el-select v-model="form.type" placeholder="请选择物品类别">
-              <el-option label="电灯" value="shanghai"></el-option>
-              <el-option label="开关" value="beijing"></el-option>
+              <el-option label="电灯" value="diandeng"></el-option>
+              <el-option label="开关" value="kaiguan"></el-option>
             </el-select>
         </el-form-item>
         <el-form-item>
