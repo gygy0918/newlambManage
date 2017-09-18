@@ -5,21 +5,15 @@
         <!--表单-->
         <el-form :inline="true" :model="formInline" class="demo-form-inline">
           <el-form-item label="库存单号">
-            <el-input size="small" v-model="formInline.user.name" placeholder="姓名"></el-input>
+            <el-input size="small" v-model="formInline.search.kucunnumber" placeholder="库存单号"></el-input>
           </el-form-item>
           <el-form-item label="物品名称">
-            <el-date-picker
-              v-model="formInline.user.date"
-              align="right"
-              type="year"
-              size="small"
-              placeholder="选择年份">
-            </el-date-picker>
+          <el-input size="small" v-model="formInline.search.name" placeholder="物品名称"></el-input>
           </el-form-item>
-          <el-form-item label="录入人员编号">
-            <el-cascader  size="small" expand-trigger="hover" :options="options" v-model="formInline.user.address"></el-cascader>
+          <el-form-item label="录入人编号">
+          <el-input size="small" v-model="formInline.search.kururennumber" placeholder="录入人编号"></el-input>           
           </el-form-item> 
-          <el-button type="primary" @click="onSubmit">查询</el-button>
+          <el-button type="primary" @click="onSubmit" size="small">查询</el-button>
           <a href="javascript:;" id="download" style="float: right;color: #169bd5;font-size: 14px;padding-top: 7px" @click="download()" download="download.csv">导出数据</a>
         </el-form>
         <!--表格-->
@@ -30,7 +24,7 @@
           <el-table-column type="selection">
           </el-table-column>
           <el-table-column
-            prop="date"
+            prop="kucunnumber"
             label="库存单号"
             width="150">
           </el-table-column>
@@ -40,27 +34,27 @@
             width="80">
           </el-table-column>
           <el-table-column
-            prop="name"
+            prop="power"
             label="功率"
             width="80">
           </el-table-column>
           <el-table-column
-            prop="name"
+            prop="price"
             label="单价"
             width="80">
           </el-table-column>
           <el-table-column
-            prop="name"
+            prop="number"
             label="数量"
             width="80">
           </el-table-column>
           <el-table-column
-            prop="name"
+            prop="type"
             label="类别"
             width="100">
           </el-table-column>         
           <el-table-column
-            prop="address"
+            prop="xiafaname"
             label="下发人员姓名"
             width="100">
           </el-table-column>
@@ -85,14 +79,29 @@
     </el-row>
     <el-dialog title="修改个人信息" v-model="dialogFormVisible" size="tiny">
       <el-form ref="form" :model="form" label-width="80px">
-        <el-form-item label="姓名">
+        <el-form-item label="库存单号">
+          <el-input v-model="form.kucunnumber"></el-input>
+        </el-form-item>
+        <el-form-item label="名称">
           <el-input v-model="form.name"></el-input>
         </el-form-item>
-        <el-form-item label="地址">
-          <el-input v-model="form.address"></el-input>
+        <el-form-item label="功率">
+          <el-input v-model="form.power"></el-input>
         </el-form-item>
-        <el-form-item label="出生日期">
-          <el-date-picker type="date" placeholder="选择日期" v-model="form.date" style="width: 100%;" ></el-date-picker>
+        <el-form-item label="单价">
+          <el-input v-model="form.price"></el-input>
+        </el-form-item>
+        <el-form-item label="数量">
+          <el-input v-model="form.number"></el-input>
+        </el-form-item>
+        <el-form-item label="下发人员姓名">
+          <el-input v-model="form.xiafaname"></el-input>
+        </el-form-item>
+        <el-form-item label="类别">
+            <el-select v-model="form.type" placeholder="请选择物品类别">
+              <el-option label="电灯" value="shanghai"></el-option>
+              <el-option label="开关" value="beijing"></el-option>
+            </el-select>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="handleSave" :loading="editLoading">修改</el-button>
@@ -108,29 +117,45 @@
     data () {
       return {
         formInline: {
-          user: {
+          search: {
             name: '',
-            date: '',
+            lururennumber: '',
             address: [],
-            place: ''
+            kucunnumber: ''
           }
         },
         tableData: [{
-            date: '2016-05-02',
+            kucunnumber: '123',
             name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄'
+            power: '12w',
+            price:'12元',
+            number:'13',
+            type:'电灯',
+            xiafaname:'张三1'
           }, {
-            date: '2016-05-04',
+            kucunnumber: '123',
             name: '王小虎',
-            address: '上海市普陀区金沙江路 1517 弄'
+            power: '12w',
+            price:'12元',
+            number:'13',
+            type:'电灯',
+            xiafaname:'张三2'
           }, {
-            date: '2016-05-01',
+            kucunnumber: '123',
             name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄'
+            power: '12w',
+            price:'12元',
+            number:'13',
+            type:'开关',
+            xiafaname:'张三3'
           }, {
-            date: '2016-05-03',
+            kucunnumber: '123',
             name: '王小虎',
-            address: '上海市普陀区金沙江路 1516 弄'
+            power: '12w',
+            price:'12元',
+            number:'13',
+            type:'电灯',
+            xiafaname:'张三4'
           }],
         options: [],
         places: [],
@@ -138,8 +163,12 @@
         editLoading: false,
         form: {
           name: '',
-          address: '',
-          date: '',
+          power: '',
+          price: '',
+          number: '',
+          type: '',
+          xiafaname: '',
+          kucunnamber: '',
         },
         currentPage: 4,
         table_index: 999,

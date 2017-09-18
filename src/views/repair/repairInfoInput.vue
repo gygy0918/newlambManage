@@ -1,29 +1,22 @@
 <template>
   <section class="form-section">
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-      <el-form-item label="采购单编号" prop="puchernumber">
+      <el-form-item label=" 维修单编号" prop="puchernumber">
         <el-input v-model="ruleForm.puchernumber"></el-input>
       </el-form-item>
-      <el-form-item label="物品名称" prop="name">
+      <el-form-item label="录入人编号" prop="name">
         <el-input v-model="ruleForm.name"></el-input>
       </el-form-item>
-      <el-form-item label="采购数量" prop="number">
+      <el-form-item label="录入人姓名" prop="number">
         <el-input v-model="ruleForm.number"></el-input>
       </el-form-item>
-      <el-form-item label="填写人编号" prop="tianxienumber">
+      <el-form-item label="维修人编号" prop="tianxienumber">
         <el-input v-model="ruleForm.tianxienumber"></el-input>
       </el-form-item>
-      <el-form-item label="填写人姓名" prop="tianxiename">
+      <el-form-item label="维修人姓名" prop="tianxiename">
         <el-input v-model="ruleForm.tianxiename"></el-input>
       </el-form-item>
-
-      <el-form-item label="采购类型" prop="type">
-        <el-radio-group v-model="ruleForm.type">
-          <el-radio label="1">电灯</el-radio>
-          <el-radio label="2">开关</el-radio>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="填写时间" required>
+      <el-form-item label="维修完成时间" required>
         <el-row>
           <el-form-item prop="date">
               <el-date-picker

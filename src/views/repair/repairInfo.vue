@@ -4,10 +4,10 @@
       <el-col :span="24">
         <!--表单-->
         <el-form :inline="true" :model="formInline" class="demo-form-inline">
-          <el-form-item label="采购单号">
+          <el-form-item label="维修单号">
             <el-input size="small" v-model="formInline.search.puchernumber" placeholder="采购单号"></el-input>
           </el-form-item>
-          <el-form-item label="采购人姓名">
+          <el-form-item label="监控人姓名">
             <el-input size="small" v-model="formInline.search.puchername" placeholder="采购人姓名"></el-input>
           </el-form-item>
           <el-form-item label="下发人姓名">
@@ -25,38 +25,33 @@
           </el-table-column>
           <el-table-column
             prop="puchernumber"
-            label="采购单号"
+            label="维修单号"
             width="150">
           </el-table-column>
           <el-table-column
             prop="name"
-            label="名称"
+            label="监控人姓名"
             width="80">
           </el-table-column>
           <el-table-column
             prop="power"
-            label="功率"
+            label="人编号"
             width="80">
           </el-table-column>
           <el-table-column
             prop="price"
-            label="单价"
+            label="安装人编号"
             width="80">
           </el-table-column>
           <el-table-column
             prop="number"
-            label="数量"
+            label="安装人姓名"
             width="80">
           </el-table-column>
           <el-table-column
-            prop="xiafanumber"
-            label="下发人员编号"
-            width="100">
-          </el-table-column>         
-          <el-table-column
-            prop="xiafaname"
-            label="下发人员姓名"
-            width="100">
+            prop="number"
+            label="安装完成时间"
+            width="80">
           </el-table-column>
           <el-table-column label="操作">
             <template scope="scope">

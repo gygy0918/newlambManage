@@ -47,6 +47,11 @@ const SupplierContract = () => import('../views/supplier/contract');
 /*安装管理*/
 const InstallInfo = () => import('../views/installManagement/installInfo');
 const InstallLog = () => import('../views/installManagement/installLog');
+const InstallLogInput = () => import('../views/installManagement/installLogInput');
+
+/*维修管理*/
+const RepairInfo = () => import('../views/repair/repairInfo');
+const RepairInfoInput = () => import('../views/repair/repairInfoInput');
 
 /* charts */
 const chartIndex = () => import('../views/charts/index');
@@ -158,7 +163,8 @@ export const asyncRouterMap = [
     icon: 'zonghe',
     children: [
       { path: 'installInfo', component: InstallInfo, name: '安装单信息' },
-      { path: 'installLog', component: InstallLog , name: '安装日志' }   
+      { path: 'installLog', component: InstallLog , name: '安装日志' },
+      { path: 'installLogInput', component: InstallLogInput , name: '安装日志录入' }   
     ]
   },
   {
@@ -184,22 +190,25 @@ export const asyncRouterMap = [
     ]
   },
   {
-    path: '/deal',
+    path: '/repair',
     component: Layout,
     redirect: 'noredirect',
     name: '维修管理',
     icon: '404',
     children: [
-      {
-        path: '/order',
-        component: OrderIndex,
-        redirect: '/order/list',
-        name: '维修单单管理',
-        children: [
-          { path: 'list', component: OrderList, name: '订单列表' },
-          { path: 'detail/:orderid', component: OrderDetail, name: '订单详情' },
-        ],
-      },
+     { path: 'repairInfo', component:RepairInfo, name: '维修信息' },
+     { path: 'repairInfoInput', component:RepairInfoInput, name: '维修信息录入' }
+      // {
+      //   path: '/order',
+      //   component: OrderIndex,
+      //   redirect: '/order/list',
+      //   name: '维修单单管理',
+      //   children: [
+      //     { path: 'list', component: OrderList, name: '订单列表' },
+      //     { path: 'detail/:orderid', component: OrderDetail, name: '订单详情' },
+      //   ],
+      // }
+      //,
       // {
       //   path: '/refund',
       //   component: RefundIndex,
