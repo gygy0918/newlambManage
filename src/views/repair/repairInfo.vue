@@ -5,10 +5,10 @@
         <!--表单-->
         <el-form :inline="true" :model="formInline" class="demo-form-inline">
           <el-form-item label="维修单号">
-            <el-input size="small" v-model="formInline.search.puchernumber" placeholder="采购单号"></el-input>
+            <el-input size="small" v-model="formInline.search.weixiunumber" placeholder="采购单号"></el-input>
           </el-form-item>
           <el-form-item label="监控人姓名">
-            <el-input size="small" v-model="formInline.search.puchername" placeholder="采购人姓名"></el-input>
+            <el-input size="small" v-model="formInline.search.jiankongname" placeholder="采购人姓名"></el-input>
           </el-form-item>
           <el-form-item label="下发人姓名">
             <el-input size="small" v-model="formInline.search.xiafaname" placeholder="采购人姓名"></el-input>
@@ -24,32 +24,32 @@
           <el-table-column type="selection">
           </el-table-column>
           <el-table-column
-            prop="puchernumber"
+            prop="weixiunumber"
             label="维修单号"
             width="150">
           </el-table-column>
           <el-table-column
-            prop="name"
+            prop="jiankongname"
             label="监控人姓名"
             width="80">
           </el-table-column>
           <el-table-column
-            prop="power"
-            label="人编号"
+            prop="jiankongnumber"
+            label="监控人人编号"
             width="80">
           </el-table-column>
           <el-table-column
-            prop="price"
+            prop="anzhuangnumber"
             label="安装人编号"
             width="80">
           </el-table-column>
           <el-table-column
-            prop="number"
+            prop="anzhuangname"
             label="安装人姓名"
             width="80">
           </el-table-column>
           <el-table-column
-            prop="number"
+            prop="endtime"
             label="安装完成时间"
             width="80">
           </el-table-column>
@@ -74,23 +74,23 @@
     </el-row>
     <el-dialog title="修改采购单信息" v-model="dialogFormVisible" size="tiny">
       <el-form ref="form" :model="form" label-width="80px">
-        <el-form-item label="采购单号">
-          <el-input v-model="form.puchernumber"></el-input>
+        <el-form-item label="维修单号">
+          <el-input v-model="form.weixiunumber"></el-input>
         </el-form-item>
-        <el-form-item label="名称">
-          <el-input v-model="form.name"></el-input>
+        <el-form-item label="监控人编号">
+          <el-input v-model="form.jiankongnumber"></el-input>
         </el-form-item>
-        <el-form-item label="功率">
-          <el-input v-model="form.power"></el-input>
+        <el-form-item label="监控人名称">
+          <el-input v-model="form.jiankongname"></el-input>
         </el-form-item>
-        <el-form-item label="单价">
-          <el-input v-model="form.price"></el-input>
+        <el-form-item label="安装人编号">
+          <el-input v-model="form.anzhuangnumber"></el-input>
         </el-form-item>
-        <el-form-item label="下单人员编号">
-          <el-input v-model="form.xiafanumber"></el-input>
+        <el-form-item label="安装人姓名">
+          <el-input v-model="form.anzhuangname"></el-input>
         </el-form-item>
-        <el-form-item label="下单人员姓名">
-          <el-input v-model="form.xiafaname"></el-input>
+        <el-form-item label="安装完成时间">
+          <el-input v-model="form.endtime"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="handleSave" :loading="editLoading">修改</el-button>
@@ -107,45 +107,45 @@
       return {
         formInline: {
           search: {
-            puchernumber: '',
-            puchername: '',
+            weixiunumber: '',
+            jiankongname: '',
             xiafaname: '',
             address: [],
             place: ''
           }
         },
         tableData: [{
-            name: '王小虎1',
-            address: '上海市普陀区金沙江路 1518 弄',
-            power:'12',
-            price:'13',
-            puchernumber:'123',
-            xiafanumber:'456',
-            xiafaname:'张三'
+            weixiunumber: '15182',
+            jiankongname:'王小虎3',
+            jiankongnumber:'13',
+            anzhuangnumber:'13',
+            anzhuangname:'小雨1',
+            xiafaname:'张三',
+            endtime:'2016-09-18'
           }, {
-            name: '王小虎2',
-            address: '上海市普陀区金沙江路 1517 弄',
-            power:'12',
-            price:'13',
-            puchernumber:'123',
-            xiafanumber:'456',
-            xiafaname:'张三'
+            weixiunumber: '5184',
+            jiankongname:'王小虎2',
+            jiankongnumber:'90',
+            anzhuangnumber:'1200',
+            anzhuangname:'小粉红1',
+            xiafaname:'张三',
+            endtime:'2016-09-18'
           }, {
-            name: '王小虎3',
-            address: '上海市普陀区金沙江路 1519 弄',
-            power:'12',
-            price:'13',
-            puchernumber:'123',
-            xiafanumber:'456',
-            xiafaname:'张三'
+            weixiunumber: '15109',
+            jiankongname:'王小虎9',
+            jiankongnumber:'67',
+            anzhuangnumber:'189',
+            anzhuangname:'小衣衣',
+            xiafaname:'张三',
+            endtime:'2016-09-18'
           }, {
-            name: '王小虎4',
-            address: '上海市普陀区金沙江路 1516 弄',
-            power:'12',
-            price:'13',
-            xiafanumber:'456',
-            puchernumber:'123',
-            xiafaname:'张三'
+            name: '151877',
+            jiankongname:'王小虎8',
+            jiankongnumber:'3233',
+            anzhuangnumber:'883',
+            anzhuangname:'小卡卡',
+            xiafaname:'张三',
+            endtime:'2016-09-18'
           }],
         options: [],
         places: [],

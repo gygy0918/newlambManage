@@ -1,26 +1,26 @@
 <template>
   <section class="form-section">
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-      <el-form-item label=" 维修单编号" prop="puchernumber">
+      <el-form-item label=" 维修单编号" prop="weixiunumber">
         <el-input v-model="ruleForm.puchernumber"></el-input>
       </el-form-item>
-      <el-form-item label="录入人编号" prop="name">
+      <el-form-item label="录入人编号" prop="lurunumber">
         <el-input v-model="ruleForm.name"></el-input>
       </el-form-item>
-      <el-form-item label="录入人姓名" prop="number">
+      <el-form-item label="录入人姓名" prop="luruname">
         <el-input v-model="ruleForm.number"></el-input>
       </el-form-item>
-      <el-form-item label="维修人编号" prop="tianxienumber">
+      <el-form-item label="维修人编号" prop="weixiurennumber">
         <el-input v-model="ruleForm.tianxienumber"></el-input>
       </el-form-item>
-      <el-form-item label="维修人姓名" prop="tianxiename">
+      <el-form-item label="维修人姓名" prop="weixiurenname">
         <el-input v-model="ruleForm.tianxiename"></el-input>
       </el-form-item>
       <el-form-item label="维修完成时间" required>
         <el-row>
-          <el-form-item prop="date">
+          <el-form-item prop="endtime">
               <el-date-picker
-                    v-model="ruleForm.date"
+                    v-model="ruleForm.endtime"
                     align="right"
                     type="date"
                     placeholder="选择日期"
@@ -67,29 +67,28 @@
           }]
         },
         ruleForm: {
-          name: '',
-          puchername: '',
-          number: [],
-          tianxiename: '',
-          tianxienumber: '',
-          type: '',
-          date: '',
-          other: '',
+          weixiurenname: '',
+          weixiurennumber: '',
+          weixiunumber:'',
+          luruname: '',
+          lurunumber: '',
+          endtime: '',
+          other:''
         },
          //验证信息
         rules: {
-          name: [
-            {required: true, message: '请输入物品名称', trigger: 'blur'},
+          weixiurenname: [
+            {required: true, message: '请输入维修人姓名', trigger: 'blur'},
             {min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur'}
           ],
-          type: [
-            {required: true, message: '请选择待办物品类型', trigger: 'change'}
+          weixiurennumber: [
+            {required: true, message: '请输入维修人编号', trigger: 'change'}
           ],
-          date: [
-            {type: 'date', required: true, message: '请选择提醒时间', trigger: 'change'}
+           weixiunumber: [
+            {type: 'date', required: true, message: '请输入维修单号', trigger: 'change'}
           ],
-          other: [
-            {required: true, message: '请填写其他信息', trigger: 'blur'}
+          luruname: [
+            {required: true, message: '请填录入人姓名', trigger: 'blur'}
           ]
         }
       };
