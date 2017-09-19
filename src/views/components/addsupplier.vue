@@ -2,12 +2,12 @@
 <template>
   <div class="components-container">
    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-    <el-form-item label="部门名称" prop="merchantName">
-      <el-input v-model="ruleForm.merchantName"></el-input>
+    <el-form-item label="部门名称" prop="depaName">
+      <el-input v-model="ruleForm.depaName"></el-input>
     </el-form-item>
 
-    <el-form-item label="报修类别" prop="merchantType">
-      <el-radio-group v-model="ruleForm.merchantType">
+    <el-form-item label="报修类别" prop="type">
+      <el-radio-group v-model="ruleForm.type">
         <el-radio  label="1"  name="local">路灯</el-radio>
         <el-radio  label="2" name="foreign">开关</el-radio>
       </el-radio-group>
@@ -23,27 +23,23 @@
       </el-checkbox-group>
     </el-form-item>
 
-    <el-form-item label="名称" prop="linkman">
-      <el-input :disabled="isChecked" v-model="ruleForm.linkman"></el-input>
+    <el-form-item label="名称" prop="name">
+      <el-input :disabled="isChecked" v-model="ruleForm.name"></el-input>
     </el-form-item>
     <el-form-item label="报修人编号" >
-      <el-input v-model="ruleForm.phone"></el-input>
+      <el-input v-model="ruleForm.baoxiunumber"></el-input>
     </el-form-item>
     <el-form-item label="报修人姓名" >
-      <el-input v-model="ruleForm.workTime"></el-input>
+      <el-input v-model="ruleForm.baoxiuname"></el-input>
     </el-form-item>
-    <el-form-item label="保修原因">
-      <el-select v-model="ruleForm.city" placeholder="请选择活动区域">
-        <el-option label="区域一" value="shanghai"></el-option>
-        <el-option label="区域二" value="beijing"></el-option>
-      </el-select>
-      <el-select v-model="ruleForm.area" placeholder="请选择活动区域">
-        <el-option label="区域一" value="shanghai"></el-option>
-        <el-option label="区域二" value="beijing"></el-option>
+    <el-form-item label="报修原因">
+      <el-select v-model="ruleForm.baoxiuyuanyin" placeholder="请选择报修原因">
+        <el-option label="监控信息显示" value="shanghai"></el-option>
+        <el-option label="人为观察" value="beijing"></el-option>
       </el-select>
     </el-form-item>
     <el-form-item label="备注">
-      <el-input type="textarea" v-model="ruleForm.address"></el-input>
+      <el-input type="textarea" v-model="ruleForm.other"></el-input>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="submitForm('ruleForm')">保存为草稿</el-button>
@@ -60,33 +56,33 @@
       return {
         isChecked: false,
         ruleForm: {
-          merchantName:'',
-          merchantType:'',
+          depaName:'',
+          type:'',
           productType: [],
-          linkman:'',
-          phone:'',
-          workTime:'',
-          city:'',
-          area:'',
+          name:'',
+          baoxiunumber:'',
+          baoxiuname:'',
+          baoxiuyuanyin:'',
+          other:'',
           address:'',
         },
         rules: {
-          merchantName: [
-          { required: true, message: '请输入活动供应商名称', trigger: 'blur' },
+          depaName: [
+          { required: true, message: '请输入部门名称', trigger: 'blur' },
           { min: 1, max: 10, message: '长度在1 到 10 个字符', trigger: 'blur' }
           ],
-          linkman: [
-          { required: true, message: '请输入联系人名称', trigger: 'blur' },
+          baoxiunumber: [
+          { required: true, message: '请输入联系人ID', trigger: 'blur' },
           { min: 1, max: 10, message: '长度在 1 到 10个字符', trigger: 'blur' }
           ],
-          phone: [
-          { required: true, message: '请输入电话', trigger: 'change' }
+          baoxiuname: [
+          { required: true, message: '请输入联系人姓名', trigger: 'change' }
           ],    
-          merchantType: [
-          { required: true, message: '请至少选择一个供应商', trigger: 'change' }
-          ],
           productType: [
-          {  type: 'array',required: true, message: '请输入产品！', trigger: 'change' }
+          { required: true, message: '请选择物品类别', trigger: 'change' }
+          ],
+          name: [
+          {  type: 'array',required: true, message: '请输入物品名称', trigger: 'change' }
           ],
 
         }

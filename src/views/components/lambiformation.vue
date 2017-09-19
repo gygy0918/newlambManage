@@ -5,18 +5,27 @@
         <!--表单-->
         <el-form :inline="true" :model="formInline" class="demo-form-inline">
           <el-form-item label="路灯编号">
-            <el-input v-model="formInline.user.name" placeholder="姓名"></el-input>
+            <el-input v-model="formInline.search.ludengnumber" placeholder="姓名"></el-input>
           </el-form-item>
           <el-form-item label="所属开关">
-            <el-date-picker
-              v-model="formInline.user.date"
-              align="right"
-              type="year"
-              placeholder="选择年份">
-            </el-date-picker>
+             <el-select v-model="value" placeholder="请选择">
+              <el-option
+                v-for="item in tableData"
+                :key="item.kaiguannumber"
+                :label="item.kaiguannumber"
+                :value="item.kaiguannumber">
+              </el-option>
+            </el-select>
           </el-form-item>
           <el-form-item label="路灯位置">
-            <el-cascader expand-trigger="hover" :options="options" v-model="formInline.user.address"></el-cascader>
+             <el-select v-model="value" placeholder="请选择">
+              <el-option
+                v-for="item in tableData"
+                :key="item.location"
+                :label="item.location"
+                :value="item.location">
+              </el-option>
+            </el-select>
           </el-form-item> 
           <el-button type="primary" @click="onSubmit">查询</el-button>
           <a href="javascript:;" id="download" style="float: right;color: #169bd5;font-size: 14px;padding-top: 7px" @click="download()" download="download.csv">导出数据</a>
@@ -29,22 +38,22 @@
           <el-table-column type="selection">
           </el-table-column>
           <el-table-column
-            prop="date"
+            prop="ludengnumber"
             label="路灯编号"
             width="120">
           </el-table-column>
           <el-table-column
-            prop="name"
+            prop="ludengname"
             label="路灯名称"
             width="100">
           </el-table-column>
           <el-table-column
-            prop="name"
+            prop="location"
             label="所在位置"
             width="100">
           </el-table-column>
           <el-table-column
-            prop="name"
+            prop="kaiguannumber"
             label="所属开关编号"
             width="100">
           </el-table-column>
@@ -59,12 +68,12 @@
                 </template>
           </el-table-column>
           <el-table-column
-            prop="name"
+            prop="voltage"
             label="电压"
             width="80">
           </el-table-column>         
           <el-table-column
-            prop="address"
+            prop="current"
             label="电流"
              width="80">
           </el-table-column>
@@ -88,16 +97,28 @@
         </div>
       </el-col>
     </el-row>
-    <el-dialog title="修改个人信息" v-model="dialogFormVisible" size="tiny">
+    <el-dialog title="修改路灯信息" v-model="dialogFormVisible" size="tiny">
       <el-form ref="form" :model="form" label-width="80px">
-        <el-form-item label="姓名">
-          <el-input v-model="form.name"></el-input>
+        <el-form-item label="路灯编号">
+          <el-input v-model="form.ludengnumber"></el-input>
         </el-form-item>
-        <el-form-item label="地址">
-          <el-input v-model="form.address"></el-input>
+        <el-form-item label="路灯名称">
+          <el-input v-model="form.ludengname"></el-input>
         </el-form-item>
-        <el-form-item label="出生日期">
-          <el-date-picker type="date" placeholder="选择日期" v-model="form.date" style="width: 100%;" ></el-date-picker>
+        <el-form-item label="所在位置">
+          <el-input v-model="form.location"></el-input>
+        </el-form-item>
+        <el-form-item label="所属开关编号">
+          <el-input v-model="form.kaiguannumber"></el-input>
+        </el-form-item>
+        <el-form-item label="状态">
+          <el-input v-model="form.switch"></el-input>
+        </el-form-item>
+        <el-form-item label="电压">
+          <el-input v-model="form.voltage"></el-input>
+        </el-form-item>
+        <el-form-item label="电流">
+          <el-input v-model="form.current"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="handleSave" :loading="editLoading">修改</el-button>
@@ -115,42 +136,64 @@
        value1: true,
         value2: true,
         formInline: {
-          user: {
-            name: '',
-            date: '',
-            address: [],
+          search: {
+            ludengnumber: '',
+            kaiguanname: '',
+            location: [],
             place: ''
           }
         },
         tableData: [{
+            ludengnumber:'123',
             date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-            switch:true
+            ludengname: '飞利浦－ecece13',
+            location: '北京1518 路',
+            kaiguannumber:'456',
+            switch:true,
+            voltage:'34v',
+            current:'98A'
           }, {
-            date: '2016-05-04',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1517 弄',
-             switch:false
+            ludengnumber:'345',
+            date: '2016-05-02',
+            ludengname: '飞利浦－ecece21',
+            location: '北京1516 路',
+            kaiguannumber:'012',
+             switch:false,
+            voltage:'30v',
+            current:'99A'
+
           }, {
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-             switch:true
+            ludengnumber:'987',
+            date: '2016-05-02',
+            ludengname: '飞利浦－ecece09',
+            location: '北京1519 路',
+            kaiguannumber:'335',
+             switch:true,
+            voltage:'33v',
+            current:'90A'
           }, {
-            date: '2016-05-03',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1516 弄',
-             switch:true
+            ludengnumber:'098',
+            date: '2016-05-02',
+            ludengname: '飞利浦－ecece765',
+            location: '北京1523 路',
+            kaiguannumber:'987',
+             switch:true,
+            voltage:'58v',
+            current:'78A'
           }],
         options: [],
         places: [],
         dialogFormVisible: false,
         editLoading: false,
         form: {
-          name: '',
-          address: '',
-          date: '',
+            ludengnumber:'',
+            date: '',
+            ludengname: '',
+            location: '',
+            kaiguannumber:'',
+            switch:'',
+            voltage:'',
+            current:''
         },
         currentPage: 4,
         table_index: 999,
