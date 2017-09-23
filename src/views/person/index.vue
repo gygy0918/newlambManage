@@ -1,6 +1,6 @@
 <template>
   <div class="errPage-container"  >
-   <h3>采购和入库日志记录</h3>
+   <h3>人员信息</h3>
 
   </div>
 </template>

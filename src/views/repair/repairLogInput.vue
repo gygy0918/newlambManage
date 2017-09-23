@@ -1,39 +1,26 @@
 <template>
   <section class="form-section">
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-      <el-form-item label="采购单编号" prop="purchaseNumber">
-        <el-input v-model="ruleForm.purchaseNumber"></el-input>
+      <el-form-item label=" 维修单编号" prop="maintainNumber">
+        <el-input v-model="ruleForm.maintainNumber"></el-input>
       </el-form-item>
-      <el-form-item label="物品名称" prop="name">
-        <el-input v-model="ruleForm.name"></el-input>
+      <el-form-item label="录入人编号" prop="inputNumber">
+        <el-input v-model="ruleForm.inputNumber"></el-input>
       </el-form-item>
-      <el-form-item label="采购数量" prop="count">
-        <el-input v-model="ruleForm.count"></el-input>
+      <el-form-item label="录入人姓名" prop="inputName">
+        <el-input v-model="ruleForm.inputName"></el-input>
       </el-form-item>
-      <el-form-item label="功率" prop="power">
-        <el-input v-model="ruleForm.power"></el-input>
+      <el-form-item label="维修人编号" prop="monitorNumber">
+        <el-input v-model="ruleForm.monitorNumber"></el-input>
       </el-form-item>
-      <el-form-item label="单价" prop="price">
-        <el-input v-model="ruleForm.price"></el-input>
+      <el-form-item label="维修人姓名" prop="maintainerName">
+        <el-input v-model="ruleForm.maintainerName"></el-input>
       </el-form-item>
-      <el-form-item label="下发采购单人编号" prop="purchaseManagerNumbert">
-        <el-input v-model="ruleForm.purchaseManagerNumber"></el-input>
-      </el-form-item>
-      <el-form-item label="下发采购单人姓名" prop="purchaseManagerName">
-        <el-input v-model="ruleForm.purchaseManagerName"></el-input>
-      </el-form-item>
-
-      <el-form-item label="采购类型" prop="type">
-        <el-radio-group v-model="ruleForm.type">
-          <el-radio label="1">电灯</el-radio>
-          <el-radio label="2">开关</el-radio>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="填写时间" required>
+      <el-form-item label="维修完成时间" required>
         <el-row>
-          <el-form-item prop="date">
+          <el-form-item prop="endtime">
               <el-date-picker
-                    v-model="ruleForm.date"
+                    v-model="ruleForm.endtime"
                     align="right"
                     type="date"
                     placeholder="选择日期"
@@ -42,8 +29,8 @@
           </el-form-item>
         </el-row>
       </el-form-item>
-      <el-form-item label="其他信息" prop="other">
-        <el-input type="textarea" v-model="ruleForm.other"></el-input>
+      <el-form-item label="其他信息" prop="remarks">
+        <el-input type="textarea" v-model="ruleForm.remarks"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
@@ -80,31 +67,28 @@
           }]
         },
         ruleForm: {
-          purchaseNumber:'',
-          name :'',
-          power:'',
-          price:'',
-          type :'',
-          purchaseManagerNumber:'',
-          purchaseManagerName:'',
-          count:'',
-          date: '',
-          other: ''
+          maintainerName: '',
+          maintainNumber: '',
+          monitorNumber:'',
+          inputName: '',
+          inputNumber: '',
+          endtime: '',
+          remarks:''
         },
          //验证信息
         rules: {
-          name: [
-            {required: true, message: '请输入物品名称', trigger: 'blur'},
+          maintainerName: [
+            {required: true, message: '请输入维修人姓名', trigger: 'blur'},
             {min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur'}
           ],
-          type: [
-            {required: true, message: '请选择待办物品类型', trigger: 'change'}
+        monitorNumber: [
+            {required: true, message: '请输入维修人编号', trigger: 'change'}
           ],
-          date: [
-            {type: 'date', required: true, message: '请选择提醒时间', trigger: 'change'}
+           maintainNumber: [
+            {type: 'date', required: true, message: '请输入维修单号', trigger: 'change'}
           ],
-          other: [
-            {required: true, message: '请填写其他信息', trigger: 'blur'}
+          inputName: [
+            {required: true, message: '请填录入人姓名', trigger: 'blur'}
           ]
         }
       };
@@ -115,7 +99,6 @@
           if (valid) {
             let para = Object.assign({}, this.ruleForm);
             console.log(para);
-            //发送请求
             this.$message({
               message: "提交成功，请在控制台查看json!！",
               type: 'success'

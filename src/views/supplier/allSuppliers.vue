@@ -5,13 +5,13 @@
         <!--表单-->
         <el-form :inline="true" :model="formInline" class="demo-form-inline">
           <el-form-item label="采购单号">
-            <el-input size="small" v-model="formInline.search.puchernumber" placeholder="采购单号"></el-input>
+            <el-input size="small" v-model="formInline.search.purchaseNumber" placeholder="采购单号"></el-input>
           </el-form-item>
           <el-form-item label="采购人姓名">
             <el-input size="small" v-model="formInline.search.puchername" placeholder="采购人姓名"></el-input>
           </el-form-item>
-          <el-form-item label="下发人姓名">
-            <el-input size="small" v-model="formInline.search.xiafaname" placeholder="采购人姓名"></el-input>
+          <el-form-item label="下发员编号">
+            <el-input size="small" v-model="formInline.search.xiafaname" placeholder="下发采购单人员编号"></el-input>
           </el-form-item> 
           <el-button type="primary" @click="onSubmit">查询</el-button>
           <a href="javascript:;" id="download" style="float: right;color: #169bd5;font-size: 14px;padding-top: 7px" @click="download()" download="download.csv">导出数据</a>
@@ -24,7 +24,7 @@
           <el-table-column type="selection">
           </el-table-column>
           <el-table-column
-            prop="puchernumber"
+            prop="purchaseNumber"
             label="采购单号"
             width="150">
           </el-table-column>
@@ -44,17 +44,17 @@
             width="80">
           </el-table-column>
           <el-table-column
-            prop="number"
+            prop="count"
             label="数量"
             width="80">
           </el-table-column>
           <el-table-column
-            prop="xiafanumber"
-            label="下发人员编号"
+            prop="purchaseManagerNumber"
+            label="下发采购单人员编号"
             width="100">
           </el-table-column>         
           <el-table-column
-            prop="xiafaname"
+            prop="purchaseManagerName"
             label="下发人员姓名"
             width="100">
           </el-table-column>
@@ -80,7 +80,7 @@
     <el-dialog title="修改采购单信息" v-model="dialogFormVisible" size="tiny">
       <el-form ref="form" :model="form" label-width="80px">
         <el-form-item label="采购单号">
-          <el-input v-model="form.puchernumber"></el-input>
+          <el-input v-model="form.purchaseNumber"></el-input>
         </el-form-item>
         <el-form-item label="名称">
           <el-input v-model="form.name"></el-input>
@@ -92,13 +92,13 @@
           <el-input v-model="form.price"></el-input>
         </el-form-item>
         <el-form-item label="数量">
-          <el-input v-model="form.number"></el-input>
+          <el-input v-model="form.count"></el-input>
         </el-form-item>
         <el-form-item label="下单人员编号">
-          <el-input v-model="form.xiafanumber"></el-input>
+          <el-input v-model="form.purchaseManagerNumber"></el-input>
         </el-form-item>
         <el-form-item label="下单人员姓名">
-          <el-input v-model="form.xiafaname"></el-input>
+          <el-input v-model="form.purchaseManagerName"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="handleSave" :loading="editLoading">修改</el-button>
@@ -115,9 +115,9 @@
       return {
         formInline: {
           search: {
-            puchernumber: '',
+            purchaseNumber: '',
             puchername: '',
-            xiafaname: '',
+            purchaseManagerName: '',
             address: [],
             place: ''
           }
@@ -126,47 +126,47 @@
             name: '飞利浦1',
             power:'12',
             price:'13',
-            number:'0',
-            puchernumber:'123',
-            xiafanumber:'456',
-            xiafaname:'张三'
+            count:'0',
+            purchaseNumber:'123',
+            purchaseManagerNumber:'456',
+            purchaseManagerName:'张三'
           }, {
             name: '飞利浦2',
             power:'12',
             price:'13',
-            number:'1',
-            puchernumber:'123',
-            xiafanumber:'456',
-            xiafaname:'张三'
+            count:'1',
+            purchaseNumber:'123',
+            purchaseManagerNumber:'456',
+            purchaseManagerName:'张三'
           }, {
             name: '飞利浦3',
             power:'12',
             price:'13',
-            number:'2',
-            puchernumber:'123',
-            xiafanumber:'456',
-            xiafaname:'张三'
+            count:'2',
+            purchaseNumber:'123',
+            purchaseManagerNumber:'456',
+            purchaseManagerName:'张三'
           }, {
             name: '飞利浦4',
             power:'12',
             price:'13',
-            number:'3',
-            xiafanumber:'456',
-            puchernumber:'123',
-            xiafaname:'张三'
+            count:'3',
+            purchaseNumber:'456',
+            purchaseManagerNumber:'123',
+            purchaseManagerName:'张三'
           }],
         options: [],
         places: [],
         dialogFormVisible: false,
         editLoading: false,
         form: {
-          puchernumber: '',
-          xiafaname: '',
-          xiafanumber: '',
+          purchaseNumber: '',
+          purchaseManagerNumber: '',
+          purchaseManagerName: '',
           name: '',
           power: '',
           price: '',
-          number:''
+          count:''
         },
         currentPage: 4,
         table_index: 999,

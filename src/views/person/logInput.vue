@@ -3,7 +3,7 @@
      <!--error code-->
    <err-code/>
     <!--error code-->
-    <h3>采购和入库日志记录</h3>
+    <h3>新增人员记录</h3>
 
   </div>
 </template>

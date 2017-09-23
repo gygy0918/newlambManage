@@ -1,35 +1,28 @@
 <template>
   <section class="form-section">
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-      <el-form-item label="采购单编号" prop="purchaseNumber">
-        <el-input v-model="ruleForm.purchaseNumber"></el-input>
+      <el-form-item label="安装单编号" prop="installNumber">
+        <el-input v-model="ruleForm.installNumber"></el-input>
       </el-form-item>
-      <el-form-item label="物品名称" prop="name">
-        <el-input v-model="ruleForm.name"></el-input>
+      <el-form-item label="物品编号" prop="goodsNumber">
+        <el-input v-model="ruleForm.goodsNumber"></el-input>
       </el-form-item>
-      <el-form-item label="采购数量" prop="count">
-        <el-input v-model="ruleForm.count"></el-input>
+      <el-form-item label="物品姓名" prop="goodsName">
+        <el-input v-model="ruleForm.goodsName"></el-input>
       </el-form-item>
-      <el-form-item label="功率" prop="power">
-        <el-input v-model="ruleForm.power"></el-input>
+      <el-form-item label="安装位置" prop="location">
+        <el-input v-model="ruleForm.location"></el-input>
       </el-form-item>
-      <el-form-item label="单价" prop="price">
-        <el-input v-model="ruleForm.price"></el-input>
+      <el-form-item label="所属开关编号" prop="switchNumber">
+        <el-input v-model="ruleForm.switchNumber"></el-input>
       </el-form-item>
-      <el-form-item label="下发采购单人编号" prop="purchaseManagerNumbert">
-        <el-input v-model="ruleForm.purchaseManagerNumber"></el-input>
+      <el-form-item label="决策人编号" prop="decisionMakerNumber">
+        <el-input v-model="ruleForm.decisionMakerNumber"></el-input>
       </el-form-item>
-      <el-form-item label="下发采购单人姓名" prop="purchaseManagerName">
-        <el-input v-model="ruleForm.purchaseManagerName"></el-input>
+      <el-form-item label="决策人姓名" prop="decisionMakerName">
+        <el-input v-model="ruleForm.decisionMakerName"></el-input>
       </el-form-item>
-
-      <el-form-item label="采购类型" prop="type">
-        <el-radio-group v-model="ruleForm.type">
-          <el-radio label="1">电灯</el-radio>
-          <el-radio label="2">开关</el-radio>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="填写时间" required>
+      <el-form-item label="安装时间" required>
         <el-row>
           <el-form-item prop="date">
               <el-date-picker
@@ -80,20 +73,18 @@
           }]
         },
         ruleForm: {
-          purchaseNumber:'',
-          name :'',
-          power:'',
-          price:'',
-          type :'',
-          purchaseManagerNumber:'',
-          purchaseManagerName:'',
-          count:'',
+		  goodsNumber:'',
+		  goodsName:'',
+		  location:'',
+		  switchNumber:'',
+		  decisionMakerNumber:'',
+		  decisionMakerName:'',
           date: '',
-          other: ''
+          other: '',
         },
          //验证信息
         rules: {
-          name: [
+          goodsName: [
             {required: true, message: '请输入物品名称', trigger: 'blur'},
             {min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur'}
           ],
@@ -115,7 +106,6 @@
           if (valid) {
             let para = Object.assign({}, this.ruleForm);
             console.log(para);
-            //发送请求
             this.$message({
               message: "提交成功，请在控制台查看json!！",
               type: 'success'

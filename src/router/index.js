@@ -18,8 +18,6 @@ const Introduction = () => import('../views/introduction/index');
 
 /* components */
 const componentsIndex = () => import('../views/components/addsupplier');
-const LambIformation  = () => import('../views/components/lambiformation');
-const ContractInformation = () => import('../views/components/contract');
 const Tinymce = () => import('../views/components/tinymce');
 const Markdown = () => import('../views/components/markdown');
 const JsonEditor = () => import('../views/components/jsoneditor');
@@ -48,10 +46,20 @@ const SupplierContract = () => import('../views/supplier/contract');
 const InstallInfo = () => import('../views/installManagement/installInfo');
 const InstallLog = () => import('../views/installManagement/installLog');
 const InstallLogInput = () => import('../views/installManagement/installLogInput');
+const InstallInfoInput = () => import('../views/installManagement/installInfoInput');
 
 /*维修管理*/
 const RepairInfo = () => import('../views/repair/repairInfo');
 const RepairInfoInput = () => import('../views/repair/repairInfoInput');
+const RepairLogInput = () => import('../views/repair/repairLogInput');
+
+//路灯信息
+const LambInfo  = () => import('../views/lamb/lambInfo');
+const LambMap= () => import('../views/lamb/lambMap');
+
+/* 人员管理 */
+const PersonInfo = () => import('../views/person/index');
+const PersonInput = () => import('../views/person/logInput');
 
 /* charts */
 const chartIndex = () => import('../views/charts/index');
@@ -64,9 +72,6 @@ const MixChart = () => import('../views/charts/mixchart');
 const Err404 = () => import('../views/error/404');
 const Err401 = () => import('../views/error/401');
 
-/* error log */
-const ErrorLog = () => import('../views/errlog/index');
-const LogInput = () => import('../views/errlog/logInput');
 
 /* excel */
 const ExcelDownload = () => import('../views/excel/index');
@@ -163,20 +168,21 @@ export const asyncRouterMap = [
     icon: 'zonghe',
     children: [
       { path: 'installInfo', component: InstallInfo, name: '安装单信息' },
+      { path: 'installInfoInput', component: InstallInfoInput, name: '安装信息录入' },
       { path: 'installLog', component: InstallLog , name: '安装日志' },
       { path: 'installLogInput', component: InstallLogInput , name: '安装日志录入' }   
     ]
   },
   {
-    path: '/components',
+    path: '/lamb',
     component: Layout,
     redirect: '/components/index',
     name: '路灯状态',
     icon: 'zujian',
     children: [
-      { path: 'lambiformation', component:  LambIformation, name: '路灯基本信息' },
-      { path: 'addsupplier/:id', component: componentsIndex, name: '路灯维护' },
-      { path: 'contract', component:ContractInformation, name: '地图信息' },
+      { path: 'lambiformation', component:LambInfo, name: '路灯基本信息' },
+      // { path: 'addsupplier/:id', component: componentsIndex, name: '路灯维护' },
+      { path: 'lambMap', component:LambMap, name: '地图信息' },
       // { path: 'tinymce', component: Tinymce, name: '富文本编辑器' },
       // { path: 'markdown', component: Markdown, name: 'Markdown' },
       // { path: 'jsoneditor', component: JsonEditor, name: 'JSON编辑器' },
@@ -197,7 +203,8 @@ export const asyncRouterMap = [
     icon: '404',
     children: [
      { path: 'repairInfo', component:RepairInfo, name: '维修信息' },
-     { path: 'repairInfoInput', component:RepairInfoInput, name: '维修信息录入' }
+     { path: 'repairInfoInput', component:RepairInfoInput, name: '维修信息录入' },
+     { path: 'repairLogInput', component:RepairLogInput, name: '维修日志录入' }
       // {
       //   path: '/order',
       //   component: OrderIndex,
@@ -248,14 +255,14 @@ export const asyncRouterMap = [
   //   ]
   // },
   {
-    path: '/log',
+    path: '/person',
     component: Layout,
     redirect: 'noredirect',
-    name: '日志管理',
+    name: '人员管理',
     icon: 'bug',
   //  noDropdown: true,
-    children: [{ path: 'logInfo', component: ErrorLog, name: '日志信息' },
-    { path: 'logInput', component: LogInput, name: '日志录入' }]
+    children: [{ path: 'personInfo', component: PersonInfo, name: '人员信息' },
+    { path: 'personInput', component: PersonInput, name: '新增人员' }]
   },
   // {
   //   path: '/excel',

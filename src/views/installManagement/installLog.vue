@@ -30,12 +30,12 @@
           </el-table-column>
           <el-table-column
             prop="jiankongname"
-            label="监控人姓名"
+            label="安装人姓名"
             width="80">
           </el-table-column>
           <el-table-column
             prop="jiankongnumber"
-            label="监控人编号"
+            label="安装人编号"
             width="80">
           </el-table-column>
           <el-table-column
@@ -50,7 +50,7 @@
           </el-table-column>
           <el-table-column
             prop="date"
-            label="维修单生成时间"
+            label="安装单生成时间"
             width="80">
           </el-table-column>
           <el-table-column label="操作">
@@ -77,10 +77,10 @@
         <el-form-item label="安装单号">
           <el-input v-model="form.installnumber"></el-input>
         </el-form-item>
-        <el-form-item label="监控人姓名">
+        <el-form-item label="安装人姓名">
           <el-input v-model="form.jiankongname"></el-input>
         </el-form-item>
-        <el-form-item label="监控人编号">
+        <el-form-item label="安装人编号">
           <el-input v-model="form.jiankongnumber"></el-input>
         </el-form-item>
         <el-form-item label="电灯编号">
@@ -89,7 +89,7 @@
         <el-form-item label="所在位置">
           <el-input v-model="form.location"></el-input>
         </el-form-item>
-        <el-form-item label="维修单生成时间">
+        <el-form-item label="安装单生成时间">
           <el-input v-model="form.date"></el-input>
         </el-form-item>
         <el-form-item>
