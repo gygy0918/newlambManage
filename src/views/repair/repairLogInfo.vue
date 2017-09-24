@@ -4,15 +4,12 @@
       <el-col :span="24">
         <!--表单-->
         <el-form :inline="true" :model="formInline" class="demo-form-inline">
-          <el-form-item label="员工编号">
-            <el-input size="small" v-model="formInline.search.purchaseNumber" placeholder="采购单号"></el-input>
+          <el-form-item label="维修单号">
+            <el-input size="small" v-model="formInline.search.installnumber" placeholder="维修单号"></el-input>
           </el-form-item>
-          <el-form-item label="采购人姓名">
-            <el-input size="small" v-model="formInline.search.puchername" placeholder="采购人姓名"></el-input>
+          <el-form-item label="维修人姓名">
+            <el-input size="small" v-model="formInline.search.installname" placeholder="维修人姓名"></el-input>
           </el-form-item>
-          <el-form-item label="下发员编号">
-            <el-input size="small" v-model="formInline.search.xiafaname" placeholder="下发采购单人员编号"></el-input>
-          </el-form-item> 
           <el-button type="primary" @click="onSubmit">查询</el-button>
           <a href="javascript:;" id="download" style="float: right;color: #169bd5;font-size: 14px;padding-top: 7px" @click="download()" download="download.csv">导出数据</a>
         </el-form>
@@ -24,44 +21,34 @@
           <el-table-column type="selection">
           </el-table-column>
           <el-table-column
-            prop="purchaseNumber"
-            label="员工编号"
+            prop="installnumber"
+            label="维修单号"
             width="150">
           </el-table-column>
           <el-table-column
-            prop="name"
-            label="姓名"
+            prop="jiankongname"
+            label="维修人姓名"
             width="80">
           </el-table-column>
           <el-table-column
-            prop="name"
-            label="性别"
+            prop="jiankongnumber"
+            label="维修人编号"
             width="80">
           </el-table-column>
           <el-table-column
-            prop="power"
-            label="部门"
+            prop="diandengnumber"
+            label="电灯编号"
             width="80">
           </el-table-column>
           <el-table-column
-            prop="price"
-            label="职位"
+            prop="location"
+            label="所在位置"
             width="80">
           </el-table-column>
           <el-table-column
-            prop="count"
-            label="身份证号"
+            prop="date"
+            label="维修单生成时间"
             width="80">
-          </el-table-column>
-          <el-table-column
-            prop="purchaseManagerNumber"
-            label="电话"
-            width="100">
-          </el-table-column>         
-          <el-table-column
-            prop="purchaseManagerName"
-            label="家庭住址"
-            width="100">
           </el-table-column>
           <el-table-column label="操作">
             <template scope="scope">
@@ -82,28 +69,25 @@
         </div>
       </el-col>
     </el-row>
-    <el-dialog title="修改人员信息" v-model="dialogFormVisible" size="tiny">
+    <el-dialog title="修改维修日志" v-model="dialogFormVisible" size="tiny">
       <el-form ref="form" :model="form" label-width="80px">
-        <el-form-item label="人员编号">
-          <el-input v-model="form.purchaseNumber"></el-input>
+        <el-form-item label="维修单号">
+          <el-input v-model="form.installnumber"></el-input>
         </el-form-item>
-        <el-form-item label="姓名">
-          <el-input v-model="form.name"></el-input>
+        <el-form-item label="维续人姓名">
+          <el-input v-model="form.jiankongname"></el-input>
         </el-form-item>
-        <el-form-item label="性别">
-          <el-input v-model="form.power"></el-input>
+        <el-form-item label="维修人编号">
+          <el-input v-model="form.jiankongnumber"></el-input>
         </el-form-item>
-        <el-form-item label="">
-          <el-input v-model="form.price"></el-input>
+        <el-form-item label="电灯编号">
+          <el-input v-model="form.diandengnumber"></el-input>
         </el-form-item>
-        <el-form-item label="数量">
-          <el-input v-model="form.count"></el-input>
+        <el-form-item label="所在位置">
+          <el-input v-model="form.location"></el-input>
         </el-form-item>
-        <el-form-item label="下单人员编号">
-          <el-input v-model="form.purchaseManagerNumber"></el-input>
-        </el-form-item>
-        <el-form-item label="下单人员姓名">
-          <el-input v-model="form.purchaseManagerName"></el-input>
+        <el-form-item label="安装单生成时间">
+          <el-input v-model="form.date"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="handleSave" :loading="editLoading">修改</el-button>
@@ -120,58 +104,57 @@
       return {
         formInline: {
           search: {
-            purchaseNumber: '',
+            puchernumber: '',
             puchername: '',
-            purchaseManagerName: '',
+            xiafaname: '',
             address: [],
             place: ''
           }
         },
         tableData: [{
-            name: '飞利浦1',
-            power:'12',
-            price:'13',
-            count:'0',
-            purchaseNumber:'123',
-            purchaseManagerNumber:'456',
-            purchaseManagerName:'张三'
+            installnumber:'09876',
+            jiankongname: '王小虎1',
+            jiankongnumber:'123',
+            location: '上海市普陀区金沙江路 1518 弄',
+            diandengnumber:'123',
+            date:'1992-09-18',
+            xiafaname:'张三'
           }, {
-            name: '飞利浦2',
-            power:'12',
-            price:'13',
-            count:'1',
-            purchaseNumber:'123',
-            purchaseManagerNumber:'456',
-            purchaseManagerName:'张三'
+            installnumber:'98765',
+            jiankongname: '王小虎1',
+            jiankongnumber:'123',
+            location: '上海市普陀区金沙江路 1518 弄',
+            diandengnumber:'123',
+            date:'1992-09-18',
+            xiafaname:'张三'
           }, {
-            name: '飞利浦3',
-            power:'12',
-            price:'13',
-            count:'2',
-            purchaseNumber:'123',
-            purchaseManagerNumber:'456',
-            purchaseManagerName:'张三'
+            installnumber:'98765',
+            jiankongname: '王小虎1',
+            jiankongnumber:'123',
+            location: '上海市普陀区金沙江路 1518 弄',
+            diandengnumber:'123',
+            date:'1992-09-18',
+            xiafaname:'张三'
           }, {
-            name: '飞利浦4',
-            power:'12',
-            price:'13',
-            count:'3',
-            purchaseNumber:'456',
-            purchaseManagerNumber:'123',
-            purchaseManagerName:'张三'
+            installnumber:'98765',
+            jiankongname: '王小虎1',
+            jiankongnumber:'123',
+            location: '上海市普陀区金沙江路 1518 弄',
+            diandengnumber:'123',
+            date:'1992-09-18',
+            xiafaname:'张三'
           }],
         options: [],
         places: [],
         dialogFormVisible: false,
         editLoading: false,
         form: {
-          purchaseNumber: '',
-          purchaseManagerNumber: '',
-          purchaseManagerName: '',
+          puchernumber: '',
+          xiafaname: '',
+          xiafanumber: '',
           name: '',
           power: '',
           price: '',
-          count:''
         },
         currentPage: 4,
         table_index: 999,
@@ -265,4 +248,3 @@
     margin-left: 10px;
   }
 </style>
-

@@ -40,12 +40,12 @@
           </el-table-column>
           <el-table-column
             prop="anzhuangnumber"
-            label="安装人编号"
+            label="维修人编号"
             width="80">
           </el-table-column>
           <el-table-column
             prop="anzhuangname"
-            label="安装人姓名"
+            label="维修人姓名"
             width="80">
           </el-table-column>
           <el-table-column

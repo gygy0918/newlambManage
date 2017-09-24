@@ -37,10 +37,12 @@ const OrderDetail = () => import('../views/deal/order/detail');
 // const RefundList = () => import('../views/deal/refund/list');
 // const RefundDetail = () => import('../views/deal/refund/detail');
 
-/*供应商管理*/
+/*采购管理*/
 const AllSuppliers = () => import('../views/supplier/allSuppliers');
 const SupplierMaintenance = () => import('../views/supplier/supplierMaintenance');
-const SupplierContract = () => import('../views/supplier/contract');
+/*库存管理*/
+const repertoryInfo = () => import('../views/repertory/repertoryInfo');
+const repertoryInput = () => import('../views/repertory/repertoryInput');
 
 /*安装管理*/
 const InstallInfo = () => import('../views/installManagement/installInfo');
@@ -52,9 +54,10 @@ const InstallInfoInput = () => import('../views/installManagement/installInfoInp
 const RepairInfo = () => import('../views/repair/repairInfo');
 const RepairInfoInput = () => import('../views/repair/repairInfoInput');
 const RepairLogInput = () => import('../views/repair/repairLogInput');
+const RepairLogInfo = () => import('../views/repair/repairLogInfo');
 
 //路灯信息
-const LambInfo  = () => import('../views/lamb/lambInfo');
+const LambInfo  = () => import('../views/lamb/lambiformation');
 const LambMap= () => import('../views/lamb/lambMap');
 
 /* 人员管理 */
@@ -156,8 +159,21 @@ export const asyncRouterMap = [
     icon: 'tubiaoleixingzhengchang',
     children: [
       { path: 'allInfo', component: AllSuppliers, name: '采购单信息' },
-      { path: 'newInfo', component: SupplierMaintenance, name: '新增采购单' },
-      { path: 'contract', component: SupplierContract, name: '库存信息' },
+      { path: 'newInfo', component: SupplierMaintenance, name: '新增采购单' }
+      // { path: 'contract', component: SupplierContract, name: '库存信息' },
+    ]
+  },
+    {
+    path: '/repertory',
+    component: Layout,
+    redirect: 'noredirect',
+    name: '库存管理',
+    icon: 'tubiaoleixingzhengchang',
+    children: [
+      { path: 'repertoryInfo', component: repertoryInfo, name: '库存信息' },
+      { path: 'repertoryInput', component: repertoryInput, name: '库存录入' }
+      // { path: 'newInfo', component: SupplierMaintenance, name: '新增采购单' },
+      // { path: 'contract', component: SupplierContract, name: '库存信息' },
     ]
   },
     {
@@ -168,9 +184,9 @@ export const asyncRouterMap = [
     icon: 'zonghe',
     children: [
       { path: 'installInfo', component: InstallInfo, name: '安装单信息' },
-      { path: 'installInfoInput', component: InstallInfoInput, name: '安装信息录入' },
-      { path: 'installLog', component: InstallLog , name: '安装日志' },
-      { path: 'installLogInput', component: InstallLogInput , name: '安装日志录入' }   
+      { path: 'installInfoInput', component: InstallInfoInput, name: '安装信息录入' }
+      // { path: 'installLog', component: InstallLog , name: '安装日志' },
+      // { path: 'installLogInput', component: InstallLogInput , name: '安装日志录入' }   
     ]
   },
   {
@@ -202,9 +218,10 @@ export const asyncRouterMap = [
     name: '维修管理',
     icon: '404',
     children: [
-     { path: 'repairInfo', component:RepairInfo, name: '维修信息' },
+     // { path: 'repairInfo', component:RepairInfo, name: '维修信息' },
      { path: 'repairInfoInput', component:RepairInfoInput, name: '维修信息录入' },
-     { path: 'repairLogInput', component:RepairLogInput, name: '维修日志录入' }
+     // { path: 'repairLogInfo', component:RepairLogInfo, name: '维修日志' },
+     // { path: 'repairLogInput', component:RepairLogInput, name: '维修日志录入' }
       // {
       //   path: '/order',
       //   component: OrderIndex,
@@ -261,8 +278,10 @@ export const asyncRouterMap = [
     name: '人员管理',
     icon: 'bug',
   //  noDropdown: true,
-    children: [{ path: 'personInfo', component: PersonInfo, name: '人员信息' },
-    { path: 'personInput', component: PersonInput, name: '新增人员' }]
+    children: [
+    // { path: 'personInfo', component: PersonInfo, name: '人员信息' },
+    // { path: 'personInput', component: PersonInput, name: '新增人员' }
+    ]
   },
   // {
   //   path: '/excel',

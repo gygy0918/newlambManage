@@ -1,30 +1,35 @@
 <template>
   <section class="form-section">
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-      <el-form-item label="员工编号" prop="staffNumber">
-        <el-input v-model="ruleForm.staffNumber"></el-input>
+      <el-form-item label="库存编号" prop="purchaseNumber">
+        <el-input v-model="ruleForm.purchaseNumber"></el-input>
       </el-form-item>
-      <el-form-item label="姓名" prop="staffName">
-        <el-input v-model="ruleForm.staffName"></el-input>
+      <el-form-item label="商品编号" prop="commodityNumber">
+        <el-input v-model="ruleForm.commodityNumber"></el-input>
       </el-form-item>
-      <el-form-item label="性别" prop="gender">
-        <el-input v-model="ruleForm.gender"></el-input>
+      <el-form-item label="商品名称" prop="name">
+        <el-input v-model="ruleForm.name"></el-input>
       </el-form-item>
-      <el-form-item label="部门" prop="department">
-        <el-input v-model="ruleForm.department"></el-input>
+      <el-form-item label="功率" prop="power">
+        <el-input v-model="ruleForm.power"></el-input>
       </el-form-item>
-      <el-form-item label="职位" prop="job">
-        <el-input v-model="ruleForm.job"></el-input>
+      <el-form-item label="单价" prop="price">
+        <el-input v-model="ruleForm.price"></el-input>
       </el-form-item>
-      <el-form-item label="身份证号" prop="idNumber">
-        <el-input v-model="ruleForm.idNumber"></el-input>
+      <el-form-item label="数量" prop="count">
+        <el-input v-model="ruleForm.count"></el-input>
       </el-form-item>
-      <el-form-item label="电话" prop="phoneNumber">
-        <el-input v-model="ruleForm.phoneNumber"></el-input>
+      <el-form-item label="采购类型" prop="type">
+        <el-radio-group v-model="ruleForm.type">
+          <el-radio label="1">电灯</el-radio>
+          <el-radio label="2">开关</el-radio>
+        </el-radio-group>
       </el-form-item>
-
-      <el-form-item label="家庭住址" prop="address">
-       <el-input v-model="ruleForm.address"></el-input>
+      <el-form-item label="录入人编号" prop="purchaseManagerNumbert">
+        <el-input v-model="ruleForm.purchaseManagerNumber"></el-input>
+      </el-form-item>
+      <el-form-item label="录入人姓名" prop="purchaseManagerName">
+        <el-input v-model="ruleForm.purchaseManagerName"></el-input>
       </el-form-item>
       <el-form-item label="填写时间" required>
         <el-row>
@@ -77,14 +82,15 @@
           }]
         },
         ruleForm: {
-          staffNumber:'',
-          staffName:'',
-          department:'',
-          job:'',
-          gender :'',
-          idNumber:'',
-          phoneNumber:'',
-          address:'',
+          name :'',
+          power:'',
+          price:'',
+          type :'',
+          commodityNumber:'',
+          purchaseNumber:'',
+          purchaseManagerNumber:'',
+          purchaseManagerName:'',
+          count:'',
           date: '',
           other: ''
         },

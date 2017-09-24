@@ -4,14 +4,28 @@
       <el-col :span="24">
         <!--表单-->
         <el-form :inline="true" :model="formInline" class="demo-form-inline">
-          <el-form-item label="员工编号">
-            <el-input size="small" v-model="formInline.search.purchaseNumber" placeholder="采购单号"></el-input>
+          <el-form-item label="路灯编号">
+            <el-input v-model="formInline.search.ludengnumber" placeholder="姓名"></el-input>
           </el-form-item>
-          <el-form-item label="采购人姓名">
-            <el-input size="small" v-model="formInline.search.puchername" placeholder="采购人姓名"></el-input>
+          <el-form-item label="所属开关">
+             <el-select v-model="value" placeholder="请选择">
+              <el-option
+                v-for="item in tableData"
+                :key="item.kaiguannumber"
+                :label="item.kaiguannumber"
+                :value="item.kaiguannumber">
+              </el-option>
+            </el-select>
           </el-form-item>
-          <el-form-item label="下发员编号">
-            <el-input size="small" v-model="formInline.search.xiafaname" placeholder="下发采购单人员编号"></el-input>
+          <el-form-item label="路灯位置">
+             <el-select v-model="value" placeholder="请选择">
+              <el-option
+                v-for="item in tableData"
+                :key="item.location"
+                :label="item.location"
+                :value="item.location">
+              </el-option>
+            </el-select>
           </el-form-item> 
           <el-button type="primary" @click="onSubmit">查询</el-button>
           <a href="javascript:;" id="download" style="float: right;color: #169bd5;font-size: 14px;padding-top: 7px" @click="download()" download="download.csv">导出数据</a>
@@ -24,49 +38,50 @@
           <el-table-column type="selection">
           </el-table-column>
           <el-table-column
-            prop="purchaseNumber"
-            label="员工编号"
-            width="150">
+            prop="ludengnumber"
+            label="路灯编号"
+            width="120">
           </el-table-column>
           <el-table-column
-            prop="name"
-            label="姓名"
-            width="80">
-          </el-table-column>
-          <el-table-column
-            prop="name"
-            label="性别"
-            width="80">
-          </el-table-column>
-          <el-table-column
-            prop="power"
-            label="部门"
-            width="80">
-          </el-table-column>
-          <el-table-column
-            prop="price"
-            label="职位"
-            width="80">
-          </el-table-column>
-          <el-table-column
-            prop="count"
-            label="身份证号"
-            width="80">
-          </el-table-column>
-          <el-table-column
-            prop="purchaseManagerNumber"
-            label="电话"
+            prop="ludengname"
+            label="路灯名称"
             width="100">
+          </el-table-column>
+          <el-table-column
+            prop="location"
+            label="所在位置"
+            width="100">
+          </el-table-column>
+          <el-table-column
+            prop="kaiguannumber"
+            label="所属开关编号"
+            width="100">
+          </el-table-column>
+          <el-table-column
+            prop="switch"
+            label="状态"
+            width="80">
+                <template scope="scope">
+                      <el-tag
+                        :type="scope.row.switch ==true? 'success' :'danger' "
+                        close-transition>{{scope.row.switch==true?'开':'关'}}</el-tag>
+                </template>
+          </el-table-column>
+          <el-table-column
+            prop="voltage"
+            label="电压"
+            width="80">
           </el-table-column>         
           <el-table-column
-            prop="purchaseManagerName"
-            label="家庭住址"
-            width="100">
+            prop="current"
+            label="电流"
+             width="80">
           </el-table-column>
           <el-table-column label="操作">
             <template scope="scope">
-              <el-button type="primary" size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-              <el-button type="danger" size="small" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+              <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+              <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+              <router-link to="../repair/repairInfoInput"> <el-button type="danger" size="mini"  >报修</el-button>  </router-link>
             </template>
           </el-table-column>
         </el-table>
@@ -82,28 +97,28 @@
         </div>
       </el-col>
     </el-row>
-    <el-dialog title="修改人员信息" v-model="dialogFormVisible" size="tiny">
+    <el-dialog title="修改路灯信息" v-model="dialogFormVisible" size="tiny">
       <el-form ref="form" :model="form" label-width="80px">
-        <el-form-item label="人员编号">
-          <el-input v-model="form.purchaseNumber"></el-input>
+        <el-form-item label="路灯编号">
+          <el-input v-model="form.ludengnumber"></el-input>
         </el-form-item>
-        <el-form-item label="姓名">
-          <el-input v-model="form.name"></el-input>
+        <el-form-item label="路灯名称">
+          <el-input v-model="form.ludengname"></el-input>
         </el-form-item>
-        <el-form-item label="性别">
-          <el-input v-model="form.power"></el-input>
+        <el-form-item label="所在位置">
+          <el-input v-model="form.location"></el-input>
         </el-form-item>
-        <el-form-item label="">
-          <el-input v-model="form.price"></el-input>
+        <el-form-item label="所属开关编号">
+          <el-input v-model="form.kaiguannumber"></el-input>
         </el-form-item>
-        <el-form-item label="数量">
-          <el-input v-model="form.count"></el-input>
+        <el-form-item label="状态">
+          <el-input v-model="form.switch"></el-input>
         </el-form-item>
-        <el-form-item label="下单人员编号">
-          <el-input v-model="form.purchaseManagerNumber"></el-input>
+        <el-form-item label="电压">
+          <el-input v-model="form.voltage"></el-input>
         </el-form-item>
-        <el-form-item label="下单人员姓名">
-          <el-input v-model="form.purchaseManagerName"></el-input>
+        <el-form-item label="电流">
+          <el-input v-model="form.current"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="handleSave" :loading="editLoading">修改</el-button>
@@ -118,60 +133,67 @@
   export default {
     data () {
       return {
+       value1: true,
+        value2: true,
         formInline: {
           search: {
-            purchaseNumber: '',
-            puchername: '',
-            purchaseManagerName: '',
-            address: [],
+            ludengnumber: '',
+            kaiguanname: '',
+            location: [],
             place: ''
           }
         },
         tableData: [{
-            name: '飞利浦1',
-            power:'12',
-            price:'13',
-            count:'0',
-            purchaseNumber:'123',
-            purchaseManagerNumber:'456',
-            purchaseManagerName:'张三'
+            ludengnumber:'123',
+            date: '2016-05-02',
+            ludengname: '飞利浦－ecece13',
+            location: '北京1518 路',
+            kaiguannumber:'456',
+            switch:true,
+            voltage:'34v',
+            current:'98A'
           }, {
-            name: '飞利浦2',
-            power:'12',
-            price:'13',
-            count:'1',
-            purchaseNumber:'123',
-            purchaseManagerNumber:'456',
-            purchaseManagerName:'张三'
+            ludengnumber:'345',
+            date: '2016-05-02',
+            ludengname: '飞利浦－ecece21',
+            location: '北京1516 路',
+            kaiguannumber:'012',
+             switch:false,
+            voltage:'30v',
+            current:'99A'
+
           }, {
-            name: '飞利浦3',
-            power:'12',
-            price:'13',
-            count:'2',
-            purchaseNumber:'123',
-            purchaseManagerNumber:'456',
-            purchaseManagerName:'张三'
+            ludengnumber:'987',
+            date: '2016-05-02',
+            ludengname: '飞利浦－ecece09',
+            location: '北京1519 路',
+            kaiguannumber:'335',
+             switch:true,
+            voltage:'33v',
+            current:'90A'
           }, {
-            name: '飞利浦4',
-            power:'12',
-            price:'13',
-            count:'3',
-            purchaseNumber:'456',
-            purchaseManagerNumber:'123',
-            purchaseManagerName:'张三'
+            ludengnumber:'098',
+            date: '2016-05-02',
+            ludengname: '飞利浦－ecece765',
+            location: '北京1523 路',
+            kaiguannumber:'987',
+             switch:true,
+            voltage:'58v',
+            current:'78A'
           }],
         options: [],
         places: [],
         dialogFormVisible: false,
         editLoading: false,
         form: {
-          purchaseNumber: '',
-          purchaseManagerNumber: '',
-          purchaseManagerName: '',
-          name: '',
-          power: '',
-          price: '',
-          count:''
+            ludengnumber:'',
+            date: '',
+            ludengname: '',
+            location: '',
+            kaiguannumber:'',
+            switch:'',
+            voltage:'',
+            current:''
         },
         currentPage: 4,
         table_index: 999,
@@ -193,6 +215,7 @@
       });
     },
     methods: {
+
       onSubmit () {
         this.$message('模拟数据，这个方法并不管用哦~');
       },
@@ -205,7 +228,6 @@
       },
       handleEdit (index, row) {
         this.dialogFormVisible = true;
-        console.log('00000',row)
         this.form = Object.assign({}, row);
         this.table_index = index;
       },
@@ -265,4 +287,3 @@
     margin-left: 10px;
   }
 </style>
-
