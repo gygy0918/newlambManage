@@ -61,8 +61,8 @@ const LambInfo  = () => import('../views/lamb/lambiformation');
 const LambMap= () => import('../views/lamb/lambMap');
 
 /* 人员管理 */
-const PersonInfo = () => import('../views/person/index');
-const PersonInput = () => import('../views/person/logInput');
+const PersonInfo = () => import('../views/person/personInfo');
+const PersonInput = () => import('../views/person/personInput');
 
 /* charts */
 const chartIndex = () => import('../views/charts/index');
@@ -184,9 +184,9 @@ export const asyncRouterMap = [
     icon: 'zonghe',
     children: [
       { path: 'installInfo', component: InstallInfo, name: '安装单信息' },
-      { path: 'installInfoInput', component: InstallInfoInput, name: '安装信息录入' }
-      // { path: 'installLog', component: InstallLog , name: '安装日志' },
-      // { path: 'installLogInput', component: InstallLogInput , name: '安装日志录入' }   
+      { path: 'installInfoInput', component: InstallInfoInput, name: '安装信息录入' },
+      { path: 'installLog', component: InstallLog , name: '安装日志' },
+      { path: 'installLogInput', component: InstallLogInput , name: '安装日志录入' }   
     ]
   },
   {
@@ -197,7 +197,6 @@ export const asyncRouterMap = [
     icon: 'zujian',
     children: [
       { path: 'lambiformation', component:LambInfo, name: '路灯基本信息' },
-      // { path: 'addsupplier/:id', component: componentsIndex, name: '路灯维护' },
       { path: 'lambMap', component:LambMap, name: '地图信息' },
       // { path: 'tinymce', component: Tinymce, name: '富文本编辑器' },
       // { path: 'markdown', component: Markdown, name: 'Markdown' },
@@ -218,10 +217,10 @@ export const asyncRouterMap = [
     name: '维修管理',
     icon: '404',
     children: [
-     // { path: 'repairInfo', component:RepairInfo, name: '维修信息' },
+     { path: 'repairInfo', component:RepairInfo, name: '维修信息' },
      { path: 'repairInfoInput', component:RepairInfoInput, name: '维修信息录入' },
-     // { path: 'repairLogInfo', component:RepairLogInfo, name: '维修日志' },
-     // { path: 'repairLogInput', component:RepairLogInput, name: '维修日志录入' }
+     { path: 'repairLogInfo', component:RepairLogInfo, name: '维修日志' },
+     { path: 'repairLogInput', component:RepairLogInput, name: '维修日志录入' }
       // {
       //   path: '/order',
       //   component: OrderIndex,
@@ -279,8 +278,8 @@ export const asyncRouterMap = [
     icon: 'bug',
   //  noDropdown: true,
     children: [
-    // { path: 'personInfo', component: PersonInfo, name: '人员信息' },
-    // { path: 'personInput', component: PersonInput, name: '新增人员' }
+    { path: 'personInfo', component: PersonInfo, name: '人员信息' },
+    { path: 'personInput', component: PersonInput, name: '新增人员' }
     ]
   },
   // {
