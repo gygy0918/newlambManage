@@ -1,35 +1,22 @@
 <template>
   <section class="form-section">
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-      <el-form-item label="安装单编号" prop="installnumber">
-        <el-input v-model="ruleForm.installnumber"></el-input>
+      <el-form-item label="安装单编号" prop="installNumber">
+        <el-input v-model="ruleForm.installNumber"></el-input>
       </el-form-item>
-      <el-form-item label="录入人编号" prop="lurunumner">
-        <el-input v-model="ruleForm.lurunumner"></el-input>
+     <el-form-item label="安装人编号" prop="installerNumber">
+        <el-input v-model="ruleForm.installerNumber"></el-input>
       </el-form-item>
-      <el-form-item label="录入人姓名" prop="luruname">
-        <el-input v-model="ruleForm.lurunumber"></el-input>
+      <el-form-item label="安装人姓名" prop="installerName">
+        <el-input v-model="ruleForm.installerName"></el-input>
       </el-form-item>
-      <el-form-item label="安装人编号" prop="installrennumber">
-        <el-input v-model="ruleForm.tianxienumber"></el-input>
+      <el-form-item label="录入人编号" prop="inputNumber">
+        <el-input v-model="ruleForm.inputNumber"></el-input>
       </el-form-item>
-      <el-form-item label="安装人姓名" prop="installrenname">
-        <el-input v-model="ruleForm.tianxiename"></el-input>
+      <el-form-item label="录入人姓名" prop="inputName">
+        <el-input v-model="ruleForm.inputName"></el-input>
       </el-form-item>
-      <el-form-item label="安装时间" required>
-        <el-row>
-          <el-form-item prop="date">
-              <el-date-picker
-                    v-model="ruleForm.date"
-                    align="right"
-                    type="date"
-                    placeholder="选择日期"
-                    :picker-options="pickerOptions1">
-                  </el-date-picker>
-          </el-form-item>
-        </el-row>
-      </el-form-item>
-      <el-form-item label="其他信息" prop="other">
+      <el-form-item label="备注" prop="other">
         <el-input type="textarea" v-model="ruleForm.other"></el-input>
       </el-form-item>
       <el-form-item>
@@ -43,38 +30,12 @@
   export default {
     data() {
       return {
-      //日期组件值和方法
-       pickerOptions1: {
-          shortcuts: [{
-            text: '今天',
-            onClick(picker) {
-              picker.$emit('pick', new Date());
-            }
-          }, {
-            text: '昨天',
-            onClick(picker) {
-              const date = new Date();
-              date.setTime(date.getTime() - 3600 * 1000 * 24);
-              picker.$emit('pick', date);
-            }
-          }, {
-            text: '一周前',
-            onClick(picker) {
-              const date = new Date();
-              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit('pick', date);
-            }
-          }]
-        },
         ruleForm: {
-          installnumber: '',
-          lurunumber: '',
-          luruname:'',
-          number: [],
-          installrenname: '',
-          installrennumber: '',
-          type: '',
-          date: '',
+          installNumber: '',
+          installerNumber: '',
+          installerName:'',
+          inputNumber: '',
+          inputName: '',
           other: '',
         },
          //验证信息
@@ -100,11 +61,24 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             let para = Object.assign({}, this.ruleForm);
-            console.log(para);
+            var data=para;
+            console.log('*****s',data);
+        this.$ajax({
+            method: 'post', //请求方式
+            url: 'http://10.103.243.94:8011/installLog', 
+            data:data
+            }).then( 
+            (res) => {
+            this.tableData=[];
+           this.tableData =data;
+            console.log(this.tableData);
+            }); 
             this.$message({
               message: "提交成功，请在控制台查看json!！",
               type: 'success'
             });
+
+            this.$router.push({ path: 'installLog' }) 
           } else {
             return false;
           }

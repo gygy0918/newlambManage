@@ -4,14 +4,14 @@
       <el-col :span="24">
         <!--表单-->
         <el-form :inline="true" :model="formInline" class="demo-form-inline">
-          <el-form-item label="维修单号">
-            <el-input size="small" v-model="formInline.search.installnumber" placeholder="维修单号"></el-input>
+          <el-form-item label="采购单号">
+            <el-input size="small" v-model="formInline.search.installnumber" placeholder="采购单号"></el-input>
           </el-form-item>
-          <el-form-item label="维修人姓名">
-            <el-input size="small" v-model="formInline.search.installname" placeholder="维修人姓名"></el-input>
+          <el-form-item label="采购人姓名">
+            <el-input size="small" v-model="formInline.search.installname" placeholder="采购人姓名"></el-input>
           </el-form-item>
           <el-form-item label="下发人姓名">
-            <el-input size="small" v-model="formInline.search.xiafaname" placeholder="维修人姓名"></el-input>
+            <el-input size="small" v-model="formInline.search.xiafaname" placeholder="采购人姓名"></el-input>
           </el-form-item> 
           <el-button type="primary" @click="onSubmit">查询</el-button>
           <a href="javascript:;" id="download" style="float: right;color: #169bd5;font-size: 14px;padding-top: 7px" @click="download()" download="download.csv">导出数据</a>
@@ -24,30 +24,34 @@
           <el-table-column type="selection">
           </el-table-column>
           <el-table-column
-            prop="maintainNumber"
-            label="维修单号"
+            prop="purchaseNumber"
+            label="采购单号"
+            width="150">
+          </el-table-column>
+          <el-table-column
+            prop="buyerName"
+            label="采购人姓名"
             width="120">
           </el-table-column>
           <el-table-column
-            prop="monitorNumber"
-            label="监控人员编号"
-            width="80">
+            prop="buyerNumber"
+            label="采购人编号"
+            width="120">
           </el-table-column>
           <el-table-column
-            prop="monitorName"
-            label="监控人员姓名"
-            width="80">
+            prop="recorderNumber"
+            label="录入人编号"
+            width="120">
+          </el-table-column>
+          <el-table-column
+            prop="recorderName"
+            label="录入人姓名"
+            width="150">
           </el-table-column>
           <el-table-column
             prop="createTime"
-            label="生成时间"
-            width="80">
-          </el-table-column>
-          <el-table-column
-          <el-table-column label="操作">
-            <template scope="scope">
-              <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">查看详情</el-button>
-            </template>
+            label="采购完成时间"
+            width="150">
           </el-table-column>
         </el-table>
         <div class="block">
@@ -62,23 +66,6 @@
         </div>
       </el-col>
     </el-row>
-    <el-dialog title="安装单详情" v-model="dialogFormVisible" size="small">
-        <el-table :model="form" border  style="width: 100%">
-              <el-table-column
-                prop="form.name"
-                label="物品名称"
-                width="150">
-              </el-table-column>
-              <el-table-column
-                prop="form.location"
-                label="位置">
-              </el-table-column>
-              <el-table-column
-                prop="form.location"
-                label="所属开关">
-              </el-table-column>
-        </el-table>
-    </el-dialog>
   </section>
 </template>
 <script type="text/ecmascript-6">
@@ -88,49 +75,14 @@
       return {
         formInline: {
           search: {
-            installnumber: '',
-            installname: '',
+            puchernumber: '',
+            puchername: '',
             xiafaname: '',
-            address: []
+            address: [],
+            place: ''
           }
         },
-        tableData: [{
-            name: '王小虎1',
-            location: '上海市普陀区金沙江路 1518 弄',
-            number:'12',
-            kaiguannumber:'13',
-            juecerennumber:'123',
-            xiafaname:'李四',
-            juecerenname:'张三',
-            installnumber:'333'
-          }, {
-            name: '王小虎2',
-            location: '上海市普陀区金沙江路 1517 弄',
-            number:'12',
-            kaiguannumber:'13',
-            juecerennumber:'123',
-            xiafaname:'李四',
-            juecerenname:'张三',
-            installnumber:'333'
-          }, {
-            name: '王小虎3',
-            location: '上海市普陀区金沙江路 1519 弄',
-            number:'12',
-            kaiguannumber:'13',
-            juecerennumber:'123',
-            xiafaname:'李四',
-            juecerenname:'张三',
-            installnumber:'333'
-          }, {
-            name: '王小虎4',
-            location: '上海市普陀区金沙江路 1516 弄',
-            number:'12',
-            kaiguannumber:'13',
-            juecerennumber:'123',
-            xiafaname:'李四',
-            juecerenname:'张三',
-            installnumber:'333'
-          }],
+        tableData: [],
         options: [],
         places: [],
         dialogFormVisible: false,
@@ -143,7 +95,7 @@
           power: '',
           price: '',
         },
-        currentPage: 4,
+        currentPage: 1,
         table_index: 999,
       };
     },

@@ -5,13 +5,13 @@
         <!--表单-->
         <el-form :inline="true" :model="formInline" class="demo-form-inline">
           <el-form-item label="采购单号">
-            <el-input size="small" v-model="formInline.search.purchaseNumber" placeholder="采购单号"></el-input>
+            <el-input size="small" v-model="formInline.search.installnumber" placeholder="采购单号"></el-input>
           </el-form-item>
           <el-form-item label="采购人姓名">
-            <el-input size="small" v-model="formInline.search.puchername" placeholder="采购人姓名"></el-input>
+            <el-input size="small" v-model="formInline.search.installname" placeholder="采购人姓名"></el-input>
           </el-form-item>
-          <el-form-item label="下发员编号">
-            <el-input size="small" v-model="formInline.search.xiafaname" placeholder="下发采购单人员编号"></el-input>
+          <el-form-item label="下发人姓名">
+            <el-input size="small" v-model="formInline.search.xiafaname" placeholder="采购人姓名"></el-input>
           </el-form-item> 
           <el-button type="primary" @click="onSubmit">查询</el-button>
           <a href="javascript:;" id="download" style="float: right;color: #169bd5;font-size: 14px;padding-top: 7px" @click="download()" download="download.csv">导出数据</a>
@@ -26,22 +26,7 @@
           <el-table-column
             prop="purchaseNumber"
             label="采购单号"
-            width="150">
-          </el-table-column>
-          <el-table-column
-            prop="name"
-            label="名称"
-            width="80">
-          </el-table-column>
-          <el-table-column
-            prop="power"
-            label="功率"
-            width="80">
-          </el-table-column>
-          <el-table-column
-            prop="price"
-            label="单价"
-            width="80">
+            width="120">
           </el-table-column>
           <el-table-column
             prop="count"
@@ -49,20 +34,28 @@
             width="80">
           </el-table-column>
           <el-table-column
+            prop="name"
+            label="总价"
+            width="80">
+          </el-table-column>
+          <el-table-column
             prop="purchaseManagerNumber"
-            label="下发采购单人员编号"
-            width="100">
-          </el-table-column>         
+            label="下发人员编号"
+            width="80">
+          </el-table-column>
           <el-table-column
             prop="purchaseManagerName"
             label="下发人员姓名"
-            width="100">
+            width="80">
+          </el-table-column>
+          <el-table-column
+            prop="createTime"
+            label=生成时间"
+            width="80">
           </el-table-column>
           <el-table-column label="操作">
             <template scope="scope">
-              <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-              <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-              <el-button type="danger" size="mini" @click="handleEdit(scope.$index, scope.row)">查看详情</el-button>
+              <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">查看详情</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -78,34 +71,30 @@
         </div>
       </el-col>
     </el-row>
-    <el-dialog title="修改采购单信息" v-model="dialogFormVisible" size="tiny">
-      <el-form ref="form" :model="form" label-width="80px">
-        <el-form-item label="采购单号">
-          <el-input v-model="form.purchaseNumber"></el-input>
-        </el-form-item>
-        <el-form-item label="名称">
-          <el-input v-model="form.name"></el-input>
-        </el-form-item>
-        <el-form-item label="功率">
-          <el-input v-model="form.power"></el-input>
-        </el-form-item>
-        <el-form-item label="单价">
-          <el-input v-model="form.price"></el-input>
-        </el-form-item>
-        <el-form-item label="数量">
-          <el-input v-model="form.count"></el-input>
-        </el-form-item>
-        <el-form-item label="下单人员编号">
-          <el-input v-model="form.purchaseManagerNumber"></el-input>
-        </el-form-item>
-        <el-form-item label="下单人员姓名">
-          <el-input v-model="form.purchaseManagerName"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="handleSave" :loading="editLoading">修改</el-button>
-          <el-button @click="dialogFormVisible = false">取消</el-button>
-        </el-form-item>
-      </el-form>
+    <el-dialog title="采购单详情" v-model="dialogFormVisible" size="small">
+        <el-table :model="form" border  style="width: 100%">
+              <el-table-column
+                prop="name"
+                label="物品名称"
+                width="150">
+              </el-table-column>
+              <el-table-column
+                prop="count"
+                label="数量">
+              </el-table-column>
+              <el-table-column
+                prop="price"
+                label="单价">
+              </el-table-column>
+              <el-table-column
+                prop="power"
+                label="功率">
+              </el-table-column>
+              <el-table-column
+                prop="type"
+                label="类别">
+              </el-table-column>
+        </el-table>
     </el-dialog>
   </section>
 </template>
@@ -116,78 +105,73 @@
       return {
         formInline: {
           search: {
-            purchaseNumber: '',
-            puchername: '',
-            purchaseManagerName: '',
-            address: [],
-            place: ''
+            installnumber: '',
+            installname: '',
+            xiafaname: '',
+            address: []
           }
         },
         tableData: [{
-            name: '飞利浦1',
-            power:'12',
-            price:'13',
-            count:'0',
-            purchaseNumber:'123',
-            purchaseManagerNumber:'456',
-            purchaseManagerName:'张三'
+            name: '王小虎1',
+            location: '上海市普陀区金沙江路 1518 弄',
+            number:'12',
+            kaiguannumber:'13',
+            juecerennumber:'123',
+            xiafaname:'李四',
+            juecerenname:'张三',
+            installnumber:'333'
           }, {
-            name: '飞利浦2',
-            power:'12',
-            price:'13',
-            count:'1',
-            purchaseNumber:'123',
-            purchaseManagerNumber:'456',
-            purchaseManagerName:'张三'
+            name: '王小虎2',
+            location: '上海市普陀区金沙江路 1517 弄',
+            number:'12',
+            kaiguannumber:'13',
+            juecerennumber:'123',
+            xiafaname:'李四',
+            juecerenname:'张三',
+            installnumber:'333'
           }, {
-            name: '飞利浦3',
-            power:'12',
-            price:'13',
-            count:'2',
-            purchaseNumber:'123',
-            purchaseManagerNumber:'456',
-            purchaseManagerName:'张三'
+            name: '王小虎3',
+            location: '上海市普陀区金沙江路 1519 弄',
+            number:'12',
+            kaiguannumber:'13',
+            juecerennumber:'123',
+            xiafaname:'李四',
+            juecerenname:'张三',
+            installnumber:'333'
           }, {
-            name: '飞利浦4',
-            power:'12',
-            price:'13',
-            count:'3',
-            purchaseNumber:'456',
-            purchaseManagerNumber:'123',
-            purchaseManagerName:'张三'
+            name: '王小虎4',
+            location: '上海市普陀区金沙江路 1516 弄',
+            number:'12',
+            kaiguannumber:'13',
+            juecerennumber:'123',
+            xiafaname:'李四',
+            juecerenname:'张三',
+            installnumber:'333'
           }],
         options: [],
         places: [],
         dialogFormVisible: false,
         editLoading: false,
-        form: {
-          purchaseNumber: '',
-          purchaseManagerNumber: '',
-          purchaseManagerName: '',
-          name: '',
-          power: '',
-          price: '',
-          count:''
-        },
+        form:[],
         currentPage: 4,
         table_index: 999,
       };
     },
-    created () {
-      this.$http.get('/api/getTable').then((response) => {
-        response = response.data;
-        if (response.code === ERR_OK) {
-          this.tableData = response.datas;
-        }
-      });
-      this.$http.get('/api/getOptions').then((response) => {
-        response = response.data;
-        if (response.code === ERR_OK) {
-          this.options = response.datas;
-          this.places = response.places;
-        }
-      });
-    },
+      created () {
+        this.$ajax({
+            method: 'get', //请求方式
+            url: 'http://10.103.243.94:8011/purchaseLog/page', 
+            params:{
+            size:5,
+            page:this.currentPage
+            }
+            }).then( 
+            (res) => {
+            this.tableData=[];
+           this.tableData =res.data.data.results;
+            console.log(this.tableData);
+            }); 
+      },
     methods: {
       onSubmit () {
         this.$message('模拟数据，这个方法并不管用哦~');
@@ -202,8 +186,19 @@
       handleEdit (index, row) {
         this.dialogFormVisible = true;
         console.log('00000',row)
-        this.form = Object.assign({}, row);
-        this.table_index = index;
+        let id=row.installnumber;
+       this.$ajax({
+            method: 'get', //请求方式
+            url: 'http://10.103.243.94:8011/purchaseLog/page', 
+            params:{
+              id:id
+            }
+            }).then( 
+            (res) => {
+            this.form=[];
+           this.form =res.data.data.results;
+            console.log(this.form);
+            }); 
       },
       handleSave () {
         this.$confirm('确认提交吗？', '提示', {
@@ -246,7 +241,21 @@
       },
       handleCurrentChange(val) {
         this.currentPage = val;
-        console.log(`当前页: ${val}`);
+       // console.log(`当前页: ${val}`);
+        console.log(this.currentPage);
+         this.$ajax({
+            method: 'get', //请求方式
+            url: 'http://10.103.243.94:8011/purchaseLog/page', 
+            params:{
+            size:5,
+            page:this.currentPage
+            }
+            }).then( 
+            (res) => {
+            this.tableData=[];
+           this.tableData =res.data.data.results;
+            console.log(this.tableData);
+            }); 
       }
     }
   };

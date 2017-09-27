@@ -5,14 +5,11 @@
         <!--表单-->
         <el-form :inline="true" :model="formInline" class="demo-form-inline">
           <el-form-item label="安装单号">
-            <el-input size="small" v-model="formInline.search.installnumber" placeholder="采购单号"></el-input>
+            <el-input size="small" v-model="formInline.search.installNumber" placeholder="安装单号"></el-input>
           </el-form-item>
           <el-form-item label="安装人姓名">
-            <el-input size="small" v-model="formInline.search.installname" placeholder="采购人姓名"></el-input>
+            <el-input size="small" v-model="formInline.search.installerName" placeholder="安装人姓名"></el-input>
           </el-form-item>
-          <el-form-item label="下发人姓名">
-            <el-input size="small" v-model="formInline.search.xiafaname" placeholder="采购人姓名"></el-input>
-          </el-form-item> 
           <el-button type="primary" @click="onSubmit">查询</el-button>
           <a href="javascript:;" id="download" style="float: right;color: #169bd5;font-size: 14px;padding-top: 7px" @click="download()" download="download.csv">导出数据</a>
         </el-form>
@@ -24,41 +21,34 @@
           <el-table-column type="selection">
           </el-table-column>
           <el-table-column
-            prop="installnumber"
+            prop="installNumber"
             label="安装单号"
             width="150">
           </el-table-column>
           <el-table-column
-            prop="jiankongname"
+            prop="installerName"
             label="安装人姓名"
-            width="80">
+            width="120">
           </el-table-column>
           <el-table-column
-            prop="jiankongnumber"
+            prop="installerNumber"
             label="安装人编号"
-            width="80">
+            width="120">
           </el-table-column>
           <el-table-column
-            prop="diandengnumber"
-            label="电灯编号"
-            width="80">
+            prop="inputNumber"
+            label="录入人编号"
+            width="120">
           </el-table-column>
           <el-table-column
-            prop="location"
-            label="所在位置"
-            width="80">
+            prop="inputName"
+            label="录入人姓名"
+            width="150">
           </el-table-column>
           <el-table-column
-            prop="date"
-            label="安装单生成时间"
-            width="80">
-          </el-table-column>
-          <el-table-column label="操作">
-            <template scope="scope">
-              <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-              <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-              <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">查看详情</el-button>
-            </template>
+            prop="createTime"
+            label="安装完成时间"
+            width="120">
           </el-table-column>
         </el-table>
         <div class="block">
@@ -73,32 +63,6 @@
         </div>
       </el-col>
     </el-row>
-    <el-dialog title="修改采购单信息" v-model="dialogFormVisible" size="tiny">
-      <el-form ref="form" :model="form" label-width="80px">
-        <el-form-item label="安装单号">
-          <el-input v-model="form.installnumber"></el-input>
-        </el-form-item>
-        <el-form-item label="安装人姓名">
-          <el-input v-model="form.jiankongname"></el-input>
-        </el-form-item>
-        <el-form-item label="安装人编号">
-          <el-input v-model="form.jiankongnumber"></el-input>
-        </el-form-item>
-        <el-form-item label="电灯编号">
-          <el-input v-model="form.diandengnumber"></el-input>
-        </el-form-item>
-        <el-form-item label="所在位置">
-          <el-input v-model="form.location"></el-input>
-        </el-form-item>
-        <el-form-item label="安装单生成时间">
-          <el-input v-model="form.date"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="handleSave" :loading="editLoading">修改</el-button>
-          <el-button @click="dialogFormVisible = false">取消</el-button>
-        </el-form-item>
-      </el-form>
-    </el-dialog>
   </section>
 </template>
 <script type="text/ecmascript-6">
@@ -115,39 +79,8 @@
             place: ''
           }
         },
-        tableData: [{
-            installnumber:'09876',
-            jiankongname: '王小虎1',
-            jiankongnumber:'123',
-            location: '上海市普陀区金沙江路 1518 弄',
-            diandengnumber:'123',
-            date:'1992-09-18',
-            xiafaname:'张三'
-          }, {
-            installnumber:'98765',
-            jiankongname: '王小虎1',
-            jiankongnumber:'123',
-            location: '上海市普陀区金沙江路 1518 弄',
-            diandengnumber:'123',
-            date:'1992-09-18',
-            xiafaname:'张三'
-          }, {
-            installnumber:'98765',
-            jiankongname: '王小虎1',
-            jiankongnumber:'123',
-            location: '上海市普陀区金沙江路 1518 弄',
-            diandengnumber:'123',
-            date:'1992-09-18',
-            xiafaname:'张三'
-          }, {
-            installnumber:'98765',
-            jiankongname: '王小虎1',
-            jiankongnumber:'123',
-            location: '上海市普陀区金沙江路 1518 弄',
-            diandengnumber:'123',
-            date:'1992-09-18',
-            xiafaname:'张三'
-          }],
+        tableData: [
+       ],
         options: [],
         places: [],
         dialogFormVisible: false,
@@ -160,24 +93,24 @@
           power: '',
           price: '',
         },
-        currentPage: 4,
+        currentPage: 1,
         table_index: 999,
       };
     },
     created () {
-      this.$http.get('/api/getTable').then((response) => {
-        response = response.data;
-        if (response.code === ERR_OK) {
-          this.tableData = response.datas;
-        }
-      });
-      this.$http.get('/api/getOptions').then((response) => {
-        response = response.data;
-        if (response.code === ERR_OK) {
-          this.options = response.datas;
-          this.places = response.places;
-        }
-      });
+            this.$ajax({
+            method: 'get', //请求方式
+            url: 'http://10.103.243.94:8011/installLog/page', 
+            params:{
+            size:5,
+            page:this.currentPage
+            }
+            }).then( 
+            (res) => {
+            this.tableData=[];
+           this.tableData =res.data.data.results;
+            console.log(this.tableData);
+            }); 
     },
     methods: {
       onSubmit () {
@@ -238,6 +171,19 @@
       handleCurrentChange(val) {
         this.currentPage = val;
         console.log(`当前页: ${val}`);
+        this.$ajax({
+            method: 'get', //请求方式
+            url: 'http://10.103.243.94:8011/purchaseLog/page', 
+            params:{
+            size:5,
+            page:this.currentPage
+            }
+            }).then( 
+            (res) => {
+            this.tableData=[];
+           this.tableData =res.data.data.results;
+            console.log(this.tableData);
+            }); 
       }
     }
   };

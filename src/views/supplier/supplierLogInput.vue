@@ -1,23 +1,23 @@
 <template>
   <section class="form-section">
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-      <el-form-item label="维修单编号" prop="maintainNumber">
-        <el-input v-model="ruleForm.maintainNumber"></el-input>
+      <el-form-item label="采购单编号" prop="purchaseNumber">
+        <el-input v-model="ruleForm.purchaseNumber"></el-input>
       </el-form-item>
-     <el-form-item label="维修人编号" prop="maintainerNumber">
-        <el-input v-model="ruleForm.maintainerNumber"></el-input>
+     <el-form-item label="采购人编号" prop="buyerNumber">
+        <el-input v-model="ruleForm.buyerNumber"></el-input>
       </el-form-item>
-      <el-form-item label="维修人姓名" prop="maintainerName">
-        <el-input v-model="ruleForm.maintainerName"></el-input>
+      <el-form-item label="采购人姓名" prop="buyerName">
+        <el-input v-model="ruleForm.buyerName"></el-input>
       </el-form-item>
-      <el-form-item label="录入人编号" prop="inputNumber">
-        <el-input v-model="ruleForm.inputNumber"></el-input>
+      <el-form-item label="录入人编号" prop="recorderNumber">
+        <el-input v-model="ruleForm.recorderNumber"></el-input>
       </el-form-item>
-      <el-form-item label="录入人姓名" prop="inputName">
-        <el-input v-model="ruleForm.inputName"></el-input>
+      <el-form-item label="录入人姓名" prop="recorderName">
+        <el-input v-model="ruleForm.recorderName"></el-input>
       </el-form-item>
-      <el-form-item label="备注" prop="remarks">
-        <el-input type="textarea" v-model="ruleForm.remarks"></el-input>
+      <el-form-item label="备注" prop="other">
+        <el-input type="textarea" v-model="ruleForm.other"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
@@ -31,13 +31,12 @@
     data() {
       return {
         ruleForm: {
-          maintainNumber: '',
-          maintainerNumber:'',
-          maintainerName:'',
-          inputName: '',
-          inputNumber:'',
-          maintainerName:'',
-          remarks: '',
+          purchaseNumber: '',
+          recorderNumber: '',
+          recorderName:'',
+          buyerNumber: '',
+          buyerName: '',
+          other: ''
         },
          //验证信息
         rules: {

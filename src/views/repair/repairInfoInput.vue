@@ -1,139 +1,258 @@
-
-<template>
-  <div class="components-container">
-   <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-    <el-form-item label="报修部门名称" prop="depaName">
-      <el-input v-model="ruleForm.depaName"></el-input>
-    </el-form-item>
-
-    <el-form-item label="报修类别" prop="type">
-      <el-radio-group v-model="ruleForm.type">
-        <el-radio  label="1"  name="local">路灯</el-radio>
-        <el-radio  label="2" name="foreign">开关</el-radio>
-      </el-radio-group>
-    </el-form-item>
-    <el-form-item label="物品名称" prop="name">
-      <el-input :disabled="isChecked" v-model="ruleForm.name"></el-input>
-    </el-form-item>
-    <el-form-item label="物品所在位置" >
-      <el-input v-model="ruleForm.baoxiuname"></el-input>
-    </el-form-item>
-    <el-form-item label="报修人编号" >
-      <el-input v-model="ruleForm.baoxiunumber"></el-input>
-    </el-form-item>
-    <el-form-item label="报修人姓名" >
-      <el-input v-model="ruleForm.baoxiuname"></el-input>
-    </el-form-item>
-    <el-form-item label="报修原因">
-      <el-select v-model="ruleForm.baoxiuyuanyin" placeholder="请选择报修原因">
-        <el-option label="监控信息显示" value="shanghai"></el-option>
-        <el-option label="人为观察" value="beijing"></el-option>
-      </el-select>
-    </el-form-item>
-    <el-form-item label="备注">
-      <el-input type="textarea" v-model="ruleForm.other"></el-input>
-    </el-form-item>
-    <el-form-item>
-      <el-button type="primary" @click="submitForm('ruleForm')">保存为草稿</el-button>
-      <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
-      <el-button @click="resetForm('ruleForm')">取消</el-button>
-    </el-form-item>
+<template scope="scope">
+  <section class="form-section">
+    <el-form :inline="true"  class="demo-form-inline" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" >
+      <el-form-item label="添加维修物品">
+            <el-select v-model="newForm.goodsName" @change="dialogFormVisible = true" :placeholder="activityValue">
+                <el-option
+                    v-for="item in options"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                </el-option>
+            </el-select>
+      </el-form-item>
+      <el-form-item label="物品位置" prop="lightAddress">
+        <el-input v-model="newForm.lightAddress"></el-input>
+      </el-form-item>
+<el-dialog size="tiny" title="物品信息" :visible.sync="dialogFormVisible" :model="newForm">
+  <el-form :model="newForm" ref="newForm" :rules="rules">
+     <el-form-item label="采购类型" prop="type">
+        <el-radio-group v-model="newForm.type">
+          <el-radio label="1">电灯</el-radio>
+          <el-radio label="2">开关</el-radio>
+        </el-radio-group>
+      </el-form-item>
+     <el-form-item label="所属开关" prop="switchNumber">
+            <el-select v-model="newForm.switchNumber" placeholder="请选择">
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+       </el-form-item>
   </el-form>
+  <div slot="footer" class="dialog-footer">
+    <el-button @click="dialogFormVisible = false">取 消</el-button>
+    <el-button type="primary" @click="addActivity('newForm')">确 定</el-button>
+  </div>
+</el-dialog>
+      <el-form-item label="决策人编号" prop="decisionMakerNumber">
+        <el-input v-model="ruleForm.decisionMakerNumber"></el-input>
+      </el-form-item>
+      <el-form-item label="决策人姓名" prop="decisionMakerName">
+        <el-input v-model="ruleForm.decisionMakerName"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
+        <el-button @click="resetForm('ruleForm')">重置</el-button>
+      </el-form-item>
+    </el-form>
 
-</div>
+    <h3>已添加商品列表</h3>
+    <el-table
+              :data="activities"
+              style="min-width: 600px;margin-bottom: 20px;"
+            align="cneter"
+              :row-class-name="tableRowClassName">
+              <el-table-column
+                prop="goodsName"
+                label="商品名称"
+                align="cneter"
+                width="120">
+              </el-table-column>
+              <el-table-column
+                prop="switchNumber"
+                label="所属开关"
+                align="cneter"
+                width="120">
+              </el-table-column>
+              <el-table-column
+                prop="lightAddress"
+                align="cneter"
+                label="安装位置">
+              </el-table-column>
+              <el-table-column
+                prop="type"
+                align="cneter"
+                label="类型">
+                <template scope="scope">
+                      <el-tag
+                        :type="scope.row.type ==true? 'success' :'danger' "
+                        close-transition>{{scope.row.type==true?'电灯':'开关'}}</el-tag>
+                </template>
+              </el-table-column>
+              <el-table-column 
+                label="操作" 
+                width="120">
+              <template scope="scope">
+                  <el-button
+                    size="small"
+                    type="danger"
+                    @click="handleDelete(scope.$index)">删除</el-button>
+              </template>
+              </el-table-column>
+          </el-table>
+  </section>
 </template>
 <script>
   export default {
     data() {
       return {
-        isChecked: false,
-        ruleForm: {
-          depaName:'',
-          type:'',
-          productType: [],
-          name:'',
-          baoxiunumber:'',
-          baoxiuname:'',
-          baoxiuyuanyin:'',
-          other:'',
-          address:'',
+        value: '',
+        dialogFormVisible: false,
+        newForm: {
+          goodsName:'',
+          lightAddress: '111',
+          switchNumber: '',
+          type: '1',
         },
+        formLabelWidth: '20px',
+      //日期组件值和方法
+     options: [{
+                value: '飞利浦',
+                label: '飞利浦'
+            }, {
+                value: '路灯',
+                label: '路灯'
+            }, {
+                value: '开关',
+                label: '开关'
+            }, {
+                value: '节能灯',
+                label: '节能灯'
+            }],
+            activityValue: '测试111',
+        activities: [{
+              type: '灯',
+              goodsName: '测试',
+              lightAddress:'12',
+              switchNumber:'12',
+          }],
+        ruleForm: {
+          arr:[],
+          decisionMakerNumber:'',
+          decisionMakerName:'',
+        },
+         //验证信息
         rules: {
-          depaName: [
-          { required: true, message: '请输入部门名称', trigger: 'blur' },
-          { min: 1, max: 10, message: '长度在1 到 10 个字符', trigger: 'blur' }
-          ],
-          baoxiunumber: [
-          { required: true, message: '请输入联系人ID', trigger: 'blur' },
-          { min: 1, max: 10, message: '长度在 1 到 10个字符', trigger: 'blur' }
-          ],
-          baoxiuname: [
-          { required: true, message: '请输入联系人姓名', trigger: 'change' }
-          ],    
-          productType: [
-          { required: true, message: '请选择物品类别', trigger: 'change' }
-          ],
           name: [
-          {  type: 'array',required: true, message: '请输入物品名称', trigger: 'change' }
+            {required: true, message: '请输入物品名称', trigger: 'blur'},
+            {min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur'}
           ],
-
+          type1: [
+            {required: true, message: '请选择待办物品类型', trigger: 'change'}
+          ],
+          date: [
+            {type: 'date', required: true, message: '请选择提醒时间', trigger: 'change'}
+          ],
+          other: [
+            {required: true, message: '请填写其他信息', trigger: 'blur'}
+          ]
         }
       };
     },
-    mounted(){
-      var data={
-          merchantId:this.$route.params.id
-        };    
-        this.$ajax({
-                method: 'post', //请求方式
-                url: '/api/bdtrip_manage/merchant/getMerchantInfo.htm',  //   '/api' + 接口后缀
-                params: data, //传递的参数
+    methods: {
+          tableRowClassName(row, index) {
+            if (index === 1) {
+              return 'info-row';
+            } else if (index === 3) {
+              return 'positive-row';
+            }
+            return '';
+        },
+        addActivity(formName){
+            this.$refs[formName].validate((valid) => {
+              if (valid) {
+                let para = Object.assign({}, this.newForm);
+                console.log('****',para);
+                this.activities.push(para);
+                 console.log('+========__s',this.activities);
+                //发送请求
+                this.$message({
+                  message: "提交成功，请在控制台查看json!！",
+                  type: 'success'
+                });
+                this.dialogFormVisible = false
+              } else {
+                return false;
+              }
+            });
+        },
+    selectActivity(){
+          this.$prompt('请输入数量', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+            }).then(({ value }) => {
+              if (value == null) {
+                this.$message({
+                    type: 'info',
+                    message: '请输入数量'
+                }); 
+                return
+              }
+                let newObj = {};
+                console.log('8888',this.activityValued)
+                if(this.activityValue){
+                  newObj= {
+                    type: '灯',
+                    goodsName: this.activityValue,
+                    count: value,
+                    switchNumber:'12w',
+                    lightAddress:'0990p'
+                    }
+                     this.activities.push(newObj);
+                }
+                
+            }).catch(() => {
+                this.$message({
+                  type: 'info',
+                  message: '取消输入'
+                });       
+            });
+        },
+      submitForm(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            let para = Object.assign({}, this.ruleForm);
+            para.arr=this.activities;
+            console.log('00000',this.activities)
+            console.log(para);
+            //发送请求
+            this.$ajax({
+            method: 'post', //请求方式
+            url: 'http://10.103.243.94:8011/purchaseDetail', 
+            data:para
             }).then( 
             (res) => {
-              let resData = res.data.data;
-              console.log(resData );
-              this.ruleForm.merchantName = resData.merchantName;
-              this.ruleForm.merchantId = resData.merchantId;
-              this.ruleForm.merchantType = resData.merchantType;
-              this.ruleForm.linkman =resData.linkman;
-              this.ruleForm.phone=resData.phone;
-              this.ruleForm.workTime =resData.workTime;
-              this.ruleForm.city =resData.city;
-              this.ruleForm.area =resData.area;
-              this.ruleForm.address =resData.address;
-              this.ruleForm.productType = res.data.data.productType.split(','); 
-              console.log(this.ruleForm);
-            });  
-    },
-    methods: {
-      //提交方法
-     /* var schema = require('async-validator');
-      var validator = new schema(rules);*/
-      submitForm(formName) {
-        this.$refs[formName].validate(
-          (valid) =>{
-            if (valid){
-             var data=this.ruleForm;
-             console.log(this.ruleForm);
-             data.productType=data.productType.toString();
-             this.$ajax({
-              method:'post',
-              url: '/api/bdtrip_manage/merchant/saveMerchant.htm',  
-              params:data,
-            }).then((res)=>{ 
-          this.ruleForm.productType=data.productType.split(',');
-            })
-          }else{
-            console.log('error submit!!');
+            this.tableData=[];
+           this.tableData =para;
+            console.log(this.tableData);
+            }); 
+            this.$message({
+              message: "提交成功，请在控制台查看json!！",
+              type: 'success'
+            });
+            this.$message({
+              message: "提交成功，请在控制台查看json!！",
+              type: 'success'
+            });
+          this.$router.push({ path:'repairInfo' }) 
+          } else {
             return false;
           }
-        }
-        );
-       
+        });
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();
-      },
+      }
     }
   }
 </script>
+<style>
+  .form-section {
+    padding: 10px;
+    width: 500px;
+  }
+</style>

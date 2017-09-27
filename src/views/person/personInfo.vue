@@ -178,19 +178,19 @@
       };
     },
     created () {
-      this.$http.get('/api/getTable').then((response) => {
-        response = response.data;
-        if (response.code === ERR_OK) {
-          this.tableData = response.datas;
-        }
-      });
-      this.$http.get('/api/getOptions').then((response) => {
-        response = response.data;
-        if (response.code === ERR_OK) {
-          this.options = response.datas;
-          this.places = response.places;
-        }
-      });
+            this.$ajax({
+            method: 'get', //请求方式
+            url: 'http://10.103.243.94:8011/purchaseLog/page', 
+            params:{
+            size:5,
+            page:this.currentPage
+            }
+            }).then( 
+            (res) => {
+            this.tableData=[];
+           this.tableData =res.data.data.results;
+            console.log(this.tableData);
+            }); 
     },
     methods: {
       onSubmit () {
@@ -205,9 +205,22 @@
       },
       handleEdit (index, row) {
         this.dialogFormVisible = true;
-        console.log('00000',row)
         this.form = Object.assign({}, row);
         this.table_index = index;
+        console.log(`当前页: ${val}`);
+        this.$ajax({
+            method: 'post', //请求方式
+            url: 'http://10.103.243.94:8011/purchaseLog/page', 
+            data:this.form
+            }).then( 
+            (res) => {
+            console.log(res);
+            this.$message({
+              message: "提交成功，请在控制台查看json!！",
+              type: 'success'
+            });
+            this.$router.push({ path: 'personInfo' }) 
+            }); 
       },
       handleSave () {
         this.$confirm('确认提交吗？', '提示', {
@@ -251,6 +264,19 @@
       handleCurrentChange(val) {
         this.currentPage = val;
         console.log(`当前页: ${val}`);
+        this.$ajax({
+            method: 'get', //请求方式
+            url: 'http://10.103.243.94:8011/purchaseLog/page', 
+            params:{
+            size:5,
+            page:this.currentPage
+            }
+            }).then( 
+            (res) => {
+            this.tableData=[];
+           this.tableData =res.data.data.results;
+            console.log(this.tableData);
+            }); 
       }
     }
   };

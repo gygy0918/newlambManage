@@ -3,10 +3,7 @@
     <el-row>
       <el-col :span="24">
         <!--表单-->
-        <el-form :inline="true" :model="formInline" class="demo-form-inline">
-          <el-form-item label="库存单号">
-            <el-input size="small" v-model="formInline.search.kucunnumber" placeholder="库存单号"></el-input>
-          </el-form-item>
+        <el-form :inline="true" :model="formInline" class="demo-form-inline"  style="width:80%;margin:0 auto">
           <el-form-item label="物品名称">
           <el-input size="small" v-model="formInline.search.name" placeholder="物品名称"></el-input>
           </el-form-item>
@@ -20,51 +17,34 @@
         <el-table
           :data="tableData"
           border
-          style="width: 100%">
+          style="width: 80%;margin:0 auto">
           <el-table-column type="selection">
-          </el-table-column>
-          <el-table-column
-            prop="kucunnumber"
-            label="库存单号"
-            width="150">
           </el-table-column>
           <el-table-column
             prop="name"
             label="名称"
-            width="80">
+            width="100">
           </el-table-column>
           <el-table-column
             prop="power"
             label="功率"
-            width="80">
+            width="100">
           </el-table-column>
           <el-table-column
             prop="price"
             label="单价"
-            width="80">
+            width="100">
           </el-table-column>
           <el-table-column
             prop="number"
             label="数量"
-            width="80">
+            width="100">
           </el-table-column>
           <el-table-column
             prop="type"
             label="类别"
             width="100">
           </el-table-column>         
-          <el-table-column
-            prop="xiafaname"
-            label="下发人员姓名"
-            width="100">
-          </el-table-column>
-          <el-table-column label="操作">
-            <template scope="scope">
-              <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-              <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-              <el-button type="danger" size="mini" @click="handleEdit(scope.$index, scope.row)">查看详情</el-button>
-            </template>
-          </el-table-column>
         </el-table>
         <div class="block">
           <el-pagination

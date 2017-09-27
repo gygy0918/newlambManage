@@ -40,6 +40,8 @@ const OrderDetail = () => import('../views/deal/order/detail');
 /*采购管理*/
 const AllSuppliers = () => import('../views/supplier/allSuppliers');
 const SupplierMaintenance = () => import('../views/supplier/supplierMaintenance');
+const SupplierLogInput = () => import('../views/supplier/supplierLogInput');
+const SupplierLogInfo = () => import('../views/supplier/supplierLogInfo');
 /*库存管理*/
 const repertoryInfo = () => import('../views/repertory/repertoryInfo');
 const repertoryInput = () => import('../views/repertory/repertoryInput');
@@ -157,10 +159,12 @@ export const asyncRouterMap = [
     redirect: 'noredirect',
     name: '采购管理',
     icon: 'tubiaoleixingzhengchang',
+    meta: { role: ['purchase'] },
     children: [
       { path: 'allInfo', component: AllSuppliers, name: '采购单信息' },
-      { path: 'newInfo', component: SupplierMaintenance, name: '新增采购单' }
-      // { path: 'contract', component: SupplierContract, name: '库存信息' },
+      { path: 'newInfo', component: SupplierMaintenance, name: '新增采购单' },
+      { path: 'supplierLogInput', component: SupplierLogInput, name: '采购日志录入'},
+      { path: 'supplierLogInfo', component: SupplierLogInfo, name: '采购日志'},
     ]
   },
     {
@@ -169,9 +173,11 @@ export const asyncRouterMap = [
     redirect: 'noredirect',
     name: '库存管理',
     icon: 'tubiaoleixingzhengchang',
+    meta: { role: ['kuncun'] },
     children: [
-      { path: 'repertoryInfo', component: repertoryInfo, name: '库存信息' },
-      { path: 'repertoryInput', component: repertoryInput, name: '库存录入' }
+      { path: 'repertoryInfo', component: repertoryInfo, name: '库存信息' }
+      // ,
+      // { path: 'repertoryInput', component: repertoryInput, name: '库存录入' }
       // { path: 'newInfo', component: SupplierMaintenance, name: '新增采购单' },
       // { path: 'contract', component: SupplierContract, name: '库存信息' },
     ]

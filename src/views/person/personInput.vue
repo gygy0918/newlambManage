@@ -22,22 +22,8 @@
       <el-form-item label="电话" prop="phoneNumber">
         <el-input v-model="ruleForm.phoneNumber"></el-input>
       </el-form-item>
-
       <el-form-item label="家庭住址" prop="address">
        <el-input v-model="ruleForm.address"></el-input>
-      </el-form-item>
-      <el-form-item label="填写时间" required>
-        <el-row>
-          <el-form-item prop="date">
-              <el-date-picker
-                    v-model="ruleForm.date"
-                    align="right"
-                    type="date"
-                    placeholder="选择日期"
-                    :picker-options="pickerOptions1">
-                  </el-date-picker>
-          </el-form-item>
-        </el-row>
       </el-form-item>
       <el-form-item label="其他信息" prop="other">
         <el-input type="textarea" v-model="ruleForm.other"></el-input>
@@ -53,29 +39,6 @@
   export default {
     data() {
       return {
-      //日期组件值和方法
-       pickerOptions1: {
-          shortcuts: [{
-            text: '今天',
-            onClick(picker) {
-              picker.$emit('pick', new Date());
-            }
-          }, {
-            text: '昨天',
-            onClick(picker) {
-              const date = new Date();
-              date.setTime(date.getTime() - 3600 * 1000 * 24);
-              picker.$emit('pick', date);
-            }
-          }, {
-            text: '一周前',
-            onClick(picker) {
-              const date = new Date();
-              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit('pick', date);
-            }
-          }]
-        },
         ruleForm: {
           staffNumber:'',
           staffName:'',
@@ -85,7 +48,6 @@
           idNumber:'',
           phoneNumber:'',
           address:'',
-          date: '',
           other: ''
         },
          //验证信息
@@ -111,12 +73,24 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             let para = Object.assign({}, this.ruleForm);
-            console.log(para);
-            //发送请求
+            var data=para;
+            console.log('*****s',data);
+        this.$ajax({
+            method: 'post', //请求方式
+            url: 'http://10.103.243.94:8011/purchaseLog', 
+            data:data
+            }).then( 
+            (res) => {
+            this.tableData=[];
+           this.tableData =data;
+            console.log(this.tableData);
+            }); 
             this.$message({
               message: "提交成功，请在控制台查看json!！",
               type: 'success'
             });
+
+            this.$router.push({ path: 'personInfo' }) 
           } else {
             return false;
           }

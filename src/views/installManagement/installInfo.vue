@@ -5,13 +5,13 @@
         <!--表单-->
         <el-form :inline="true" :model="formInline" class="demo-form-inline">
           <el-form-item label="安装单号">
-            <el-input size="small" v-model="formInline.search.installnumber" placeholder="采购单号"></el-input>
+            <el-input size="small" v-model="formInline.search.installnumber" placeholder="安装单号"></el-input>
           </el-form-item>
           <el-form-item label="安装人姓名">
-            <el-input size="small" v-model="formInline.search.installname" placeholder="采购人姓名"></el-input>
+            <el-input size="small" v-model="formInline.search.installname" placeholder="安装人姓名"></el-input>
           </el-form-item>
           <el-form-item label="下发人姓名">
-            <el-input size="small" v-model="formInline.search.xiafaname" placeholder="采购人姓名"></el-input>
+            <el-input size="small" v-model="formInline.search.xiafaname" placeholder="安装人姓名"></el-input>
           </el-form-item> 
           <el-button type="primary" @click="onSubmit">查询</el-button>
           <a href="javascript:;" id="download" style="float: right;color: #169bd5;font-size: 14px;padding-top: 7px" @click="download()" download="download.csv">导出数据</a>
@@ -30,43 +30,21 @@
           </el-table-column>
           <el-table-column
             prop="number"
-            label="物品编号"
-            width="80">
-          </el-table-column>
-          <el-table-column
-            prop="name"
-            label="物品名称"
-            width="80">
-          </el-table-column>
-          <el-table-column
-            prop="location"
-            label="安装位置"
-            width="80">
-          </el-table-column>
-          <el-table-column
-            prop="kaiguannumber"
-            label="所属开关编号"
-            width="80">
-          </el-table-column>
-          <el-table-column
-            prop="juecerennumber"
             label="决策人编号"
             width="80">
           </el-table-column>
           <el-table-column
-            prop="juecerenname"
+            prop="name"
             label="决策人姓名"
             width="80">
-          </el-table-column>         
-          <el-table-column
-            prop="xiafaname"
-            label="下发人员姓名"
-            width="80">
           </el-table-column>
+          <el-table-column
+            prop="location"
+            label="生成时间"
+            width="80">
+          </el-table-column>  
           <el-table-column label="操作">
             <template scope="scope">
-              <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-              <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
               <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">查看详情</el-button>
             </template>
           </el-table-column>
@@ -83,37 +61,22 @@
         </div>
       </el-col>
     </el-row>
-    <el-dialog title="修改采购单信息" v-model="dialogFormVisible" size="tiny">
-      <el-form ref="form" :model="form" label-width="80px">
-        <el-form-item label="安装单号">
-          <el-input v-model="form.installnumber"></el-input>
-        </el-form-item>
-        <el-form-item label="物品名称">
-          <el-input v-model="form.name"></el-input>
-        </el-form-item>
-        <el-form-item label="物品编号">
-          <el-input v-model="form.number"></el-input>
-        </el-form-item>
-        <el-form-item label="安装位置">
-          <el-input v-model="form.location"></el-input>
-        </el-form-item>
-        <el-form-item label="所属开关编号">
-          <el-input v-model="form.kaiguannumber"></el-input>
-        </el-form-item>
-        <el-form-item label="决策编号">
-          <el-input v-model="form.juecerennumber"></el-input>
-        </el-form-item>
-        <el-form-item label="决策姓名">
-          <el-input v-model="form.juecerenname"></el-input>
-        </el-form-item>
-        <el-form-item label="下单人员姓名">
-          <el-input v-model="form.xiafaname"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="handleSave" :loading="editLoading">修改</el-button>
-          <el-button @click="dialogFormVisible = false">取消</el-button>
-        </el-form-item>
-      </el-form>
+    <el-dialog title="安装单详情" v-model="dialogFormVisible" size="small">
+        <el-table :model="form" border  style="width: 100%">
+              <el-table-column
+                prop="form.name"
+                label="物品名称"
+                width="150">
+              </el-table-column>
+              <el-table-column
+                prop="form.location"
+                label="位置">
+              </el-table-column>
+              <el-table-column
+                prop="form.location"
+                label="所属开关">
+              </el-table-column>
+        </el-table>
     </el-dialog>
   </section>
 </template>
@@ -183,21 +146,21 @@
         table_index: 999,
       };
     },
-    created () {
-      this.$http.get('/api/getTable').then((response) => {
-        response = response.data;
-        if (response.code === ERR_OK) {
-          this.tableData = response.datas;
-        }
-      });
-      this.$http.get('/api/getOptions').then((response) => {
-        response = response.data;
-        if (response.code === ERR_OK) {
-          this.options = response.datas;
-          this.places = response.places;
-        }
-      });
-    },
+      created () {
+        this.$ajax({
+            method: 'get', //请求方式
+            url: 'http://10.103.243.94:8011/purchaseLog/page', 
+            params:{
+            size:5,
+            page:this.currentPage
+            }
+            }).then( 
+            (res) => {
+            this.tableData=[];
+           this.tableData =res.data.data.results;
+            console.log(this.tableData);
+            }); 
+      },
     methods: {
       onSubmit () {
         this.$message('模拟数据，这个方法并不管用哦~');
@@ -256,7 +219,21 @@
       },
       handleCurrentChange(val) {
         this.currentPage = val;
-        console.log(`当前页: ${val}`);
+       // console.log(`当前页: ${val}`);
+        console.log(this.currentPage);
+         this.$ajax({
+            method: 'get', //请求方式
+            url: 'http://10.103.243.94:8011/purchaseLog/page', 
+            params:{
+            size:5,
+            page:this.currentPage
+            }
+            }).then( 
+            (res) => {
+            this.tableData=[];
+           this.tableData =res.data.data.results;
+            console.log(this.tableData);
+            }); 
       }
     }
   };
