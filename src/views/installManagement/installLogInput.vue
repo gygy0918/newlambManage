@@ -65,7 +65,7 @@
             console.log('*****s',data);
         this.$ajax({
             method: 'post', //请求方式
-            url: 'http://10.103.243.94:8011/installLog', 
+            url: 'http://10.103.241.154:8080/installlog', 
             data:data
             }).then( 
             (res) => {

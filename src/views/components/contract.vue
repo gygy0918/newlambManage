@@ -17,9 +17,10 @@
           resizeEnable: true,
           zoom: 10
         })
-        AMap.plugin(['AMap.ToolBar', 'AMap.Scale'], function () {
+        AMap.plugin(['AMap.ToolBar', 'AMap.Scale', 'AMap.Geolocation'], function () {
           map.addControl(new AMap.ToolBar())
           map.addControl(new AMap.Scale())
+          map.addControl(new AMap.Geolocation())
         })
       }
     }

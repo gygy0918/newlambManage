@@ -94,63 +94,20 @@
             address: []
           }
         },
-        tableData: [{
-            name: '王小虎1',
-            location: '上海市普陀区金沙江路 1518 弄',
-            number:'12',
-            kaiguannumber:'13',
-            juecerennumber:'123',
-            xiafaname:'李四',
-            juecerenname:'张三',
-            installnumber:'333'
-          }, {
-            name: '王小虎2',
-            location: '上海市普陀区金沙江路 1517 弄',
-            number:'12',
-            kaiguannumber:'13',
-            juecerennumber:'123',
-            xiafaname:'李四',
-            juecerenname:'张三',
-            installnumber:'333'
-          }, {
-            name: '王小虎3',
-            location: '上海市普陀区金沙江路 1519 弄',
-            number:'12',
-            kaiguannumber:'13',
-            juecerennumber:'123',
-            xiafaname:'李四',
-            juecerenname:'张三',
-            installnumber:'333'
-          }, {
-            name: '王小虎4',
-            location: '上海市普陀区金沙江路 1516 弄',
-            number:'12',
-            kaiguannumber:'13',
-            juecerennumber:'123',
-            xiafaname:'李四',
-            juecerenname:'张三',
-            installnumber:'333'
-          }],
+        tableData: [],
         options: [],
         places: [],
         dialogFormVisible: false,
         editLoading: false,
-        form: {
-          puchernumber: '',
-          xiafaname: '',
-          xiafanumber: '',
-          name: '',
-          power: '',
-          price: '',
-        },
-        currentPage: 4,
+        form:[],
+        currentPage: 1,
         table_index: 999,
       };
     },
       created () {
         this.$ajax({
             method: 'get', //请求方式
-            url: 'http://10.103.243.94:8011/purchaseLog/page', 
+            url: 'http://10.103.241.110:8011/maintainOrder/page', 
             params:{
             size:5,
             page:this.currentPage
@@ -175,9 +132,20 @@
       },
       handleEdit (index, row) {
         this.dialogFormVisible = true;
-        console.log('00000',row)
-        this.form = Object.assign({}, row);
-        this.table_index = index;
+        console.log('00000',row.installnumber)
+        let id=maintainNumber;
+        this.$ajax({
+            method: 'get', //请求方式
+            url: 'http://10.103.243.94:8011/purchaseLog/page', 
+            params:{
+            id:id
+            }
+            }).then( 
+            (res) => {
+            this.form=[];
+           this.form =res.data.data.results;
+            console.log('99999',this.form);
+            }); 
       },
       handleSave () {
         this.$confirm('确认提交吗？', '提示', {

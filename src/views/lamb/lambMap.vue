@@ -1,6 +1,6 @@
 <template>
   <div >
-    <div id="container" style="width:500px; height:300px;display:none">室外</div>
+    <div id="container" style="width:500px; height:300px;margin:0 auto">室外</div>
     <br/>
     <div id="mapDiv" style="width:500px; height:300px">室内</div>
   </div>
@@ -14,32 +14,33 @@
     },
     methods: {
       init: function () {
-        map = new AMap.Map('container', {
-          center: [116.364695,39.967366],
-          resizeEnable: true,
-          zoom: 10
-        })
-        AMap.plugin(['AMap.ToolBar', 'AMap.Scale'], function () {
-          map.addControl(new AMap.ToolBar())
-          map.addControl(new AMap.Scale())
-        })
+    //初始化地图对象，加载地图
+    var map = new AMap.Map("container", {
+        resizeEnable: true,
+        zoom: 13
+    });
+     var lnglats=[
+         [116.368904,39.923423],
+         [116.382122,39.921176],
+         [116.387271,39.922501],
+         [116.398258,39.914600]
+     ];
+    var infoWindow = new AMap.InfoWindow({offset:new AMap.Pixel(0,-30)});
+    for(var i= 0,marker;i<lnglats.length;i++){
+          var marker=new AMap.Marker({
+              position:lnglats[i],
+              map:map
+          });
+        marker.content='我是第'+(i+1)+'个Marker';
+        marker.on('click',markerClick);
+        marker.emit('click',{target:marker});
+    }
+    function markerClick(e){
+        infoWindow.setContent(e.target.content);
+        infoWindow.open(map, e.target.getPosition());
+    }
+    map.setFitView();
 
-
-var indoorMap;        
-AMap.plugin(['AMap.IndoorMap'], function() {        
-var indoorMap = new AMap.IndoorMap({alwaysShow:true});  
-var map = new AMap.Map('mapDiv',
- { resizeEnable: true,  
-  showIndoorMap:false,        
-  floorControl:false,            
-  center: [121.318911,31.193987],            
-  zoom:19,           
-  resizeEnable: true,            
-  layers:[indoorMap,new AMap.TileLayer()]         });       
-   // indoorMap.showIndoorMap('B000A856LJ',4);       
-    indoorMap.on('floor_complete',function(status, object){          
-
-      console.log(status.building.floor)        })      });
       }
     }
   }

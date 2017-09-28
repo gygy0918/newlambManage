@@ -24,22 +24,22 @@
           <el-table-column type="selection">
           </el-table-column>
           <el-table-column
-            prop="installnumber"
+            prop="id"
             label="安装单号"
             width="120">
           </el-table-column>
           <el-table-column
-            prop="number"
+            prop="decisionMakerNumber"
             label="决策人编号"
             width="80">
           </el-table-column>
           <el-table-column
-            prop="name"
+            prop="decisionMakerName"
             label="决策人姓名"
             width="80">
           </el-table-column>
           <el-table-column
-            prop="location"
+            prop="createTime"
             label="生成时间"
             width="80">
           </el-table-column>  
@@ -62,18 +62,28 @@
       </el-col>
     </el-row>
     <el-dialog title="安装单详情" v-model="dialogFormVisible" size="small">
-        <el-table :model="form" border  style="width: 100%">
+        <el-table :data="form" border  style="width: 100%">
               <el-table-column
-                prop="form.name"
+                prop="goodsName"
                 label="物品名称"
-                width="150">
+                width="100">
               </el-table-column>
               <el-table-column
-                prop="form.location"
+                prop="type"
+                label="类型"
+                width="100">
+              </el-table-column>
+              <el-table-column
+                prop="goodsNumber"
+                label="物品名称"
+                width="100">
+              </el-table-column>
+              <el-table-column
+                prop="location"
                 label="位置">
               </el-table-column>
               <el-table-column
-                prop="form.location"
+                prop="switchNumber"
                 label="所属开关">
               </el-table-column>
         </el-table>
@@ -93,63 +103,20 @@
             address: []
           }
         },
-        tableData: [{
-            name: '王小虎1',
-            location: '上海市普陀区金沙江路 1518 弄',
-            number:'12',
-            kaiguannumber:'13',
-            juecerennumber:'123',
-            xiafaname:'李四',
-            juecerenname:'张三',
-            installnumber:'333'
-          }, {
-            name: '王小虎2',
-            location: '上海市普陀区金沙江路 1517 弄',
-            number:'12',
-            kaiguannumber:'13',
-            juecerennumber:'123',
-            xiafaname:'李四',
-            juecerenname:'张三',
-            installnumber:'333'
-          }, {
-            name: '王小虎3',
-            location: '上海市普陀区金沙江路 1519 弄',
-            number:'12',
-            kaiguannumber:'13',
-            juecerennumber:'123',
-            xiafaname:'李四',
-            juecerenname:'张三',
-            installnumber:'333'
-          }, {
-            name: '王小虎4',
-            location: '上海市普陀区金沙江路 1516 弄',
-            number:'12',
-            kaiguannumber:'13',
-            juecerennumber:'123',
-            xiafaname:'李四',
-            juecerenname:'张三',
-            installnumber:'333'
-          }],
+        tableData: [],
         options: [],
         places: [],
         dialogFormVisible: false,
         editLoading: false,
-        form: {
-          puchernumber: '',
-          xiafaname: '',
-          xiafanumber: '',
-          name: '',
-          power: '',
-          price: '',
-        },
-        currentPage: 4,
+        form: [],
+        currentPage: 1,
         table_index: 999,
       };
     },
       created () {
         this.$ajax({
             method: 'get', //请求方式
-            url: 'http://10.103.243.94:8011/purchaseLog/page', 
+            url: 'http://10.103.241.154:8011/installinfo/page', 
             params:{
             size:5,
             page:this.currentPage
@@ -174,9 +141,23 @@
       },
       handleEdit (index, row) {
         this.dialogFormVisible = true;
-        console.log('00000',row)
-        this.form = Object.assign({}, row);
-        this.table_index = index;
+        console.log('00000',row.id)
+        let id=row.id;
+       this.$ajax({
+            method: 'get', //请求方式
+            url: 'http://10.103.241.154:8011/installdetail/page', 
+            params:{
+            installNumber:id,
+            size:5,
+            page:this.currentPage
+            }
+            }).then( 
+            (res) => {
+             console.log('=====',res)
+            this.form=[];
+           this.form =res.data.data.results;
+            console.log('99999',this.form);
+            }); 
       },
       handleSave () {
         this.$confirm('确认提交吗？', '提示', {

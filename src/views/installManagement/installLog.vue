@@ -100,7 +100,7 @@
     created () {
             this.$ajax({
             method: 'get', //请求方式
-            url: 'http://10.103.243.94:8011/installLog/page', 
+            url: 'http://10.103.241.154:8080/installlog/page', 
             params:{
             size:5,
             page:this.currentPage
@@ -173,7 +173,7 @@
         console.log(`当前页: ${val}`);
         this.$ajax({
             method: 'get', //请求方式
-            url: 'http://10.103.243.94:8011/purchaseLog/page', 
+            url: 'http://10.103.241.154:8080/installlog/page', 
             params:{
             size:5,
             page:this.currentPage

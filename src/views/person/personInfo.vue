@@ -127,60 +127,29 @@
             place: ''
           }
         },
-        tableData: [{
-            staffNumber: '小王',
-            staffName:'12',
-            gender:'男',
-            department:'0',
-            job:'安装',
-            idNumber:'456',
-            address:'天津'
-          }, {
-            staffNumber: '小李',
-            staffName:'12',
-            gender:'男',
-            department:'0',
-            job:'安装',
-            idNumber:'456',
-            address:'天津'
-          }, {
-             staffNumber: '小猫',
-            staffName:'12',
-            gender:'男',
-            department:'0',
-            job:'安装',
-            idNumber:'456',
-            address:'天津'
-          }, {
-            staffNumber: '小张',
-            staffName:'12',
-            gender:'男',
-            department:'0',
-            job:'安装',
-            idNumber:'456',
-            address:'天津'
-          }],
+        tableData: [],
         options: [],
         places: [],
         dialogFormVisible: false,
         editLoading: false,
         form: {
-          purchaseNumber: '',
-          purchaseManagerNumber: '',
-          purchaseManagerName: '',
-          name: '',
-          power: '',
-          price: '',
-          count:''
+          staffNumber: '',
+          staffName: '',
+          gender: '',
+          department: '',
+          job: '',
+          idNumber: '',
+          address:'',
+          phoneNumber:''
         },
-        currentPage: 4,
+        currentPage: 1,
         table_index: 999,
       };
     },
     created () {
             this.$ajax({
             method: 'get', //请求方式
-            url: 'http://10.103.243.94:8011/purchaseLog/page', 
+            url: 'http://10.103.243.94:8080/staff/page', 
             params:{
             size:5,
             page:this.currentPage
@@ -198,19 +167,43 @@
       },
       handleDelete (index, row) {
         this.tableData.splice(index, 1);
+        console.log('ddddd',row.id)
+        let id=row.id;
+            this.$ajax({
+            method: 'delete', //请求方式
+            url: 'http://10.103.243.94:8080/staff/', 
+            params:{
+            id
+            }
+            }).then( 
+            (res) => {
+            console.log(res);
+            }); 
         this.$message({
           message: "操作成功！",
           type: 'success'
         });
       },
       handleEdit (index, row) {
+      console.log('88888',row.id)
         this.dialogFormVisible = true;
-        this.form = Object.assign({}, row);
+        this.form.address=row.address;
+        this.form.department=row.department;
+        this.form.gender=row.gender;
+        this.form.id=row.id;
+        this.form.idNumber=row.idNumber;
+        this.form.job=row.job;
+        this.form.phoneNumber=row.phoneNumber;
+        this.form.staffName=row.staffName;
+        this.form.staffNumber=row.staffNumber;
+
+        //this.form = Object.assign({}, row);
+        console.log('0000',row)
         this.table_index = index;
         console.log(`当前页: ${val}`);
         this.$ajax({
             method: 'post', //请求方式
-            url: 'http://10.103.243.94:8011/purchaseLog/page', 
+            url: 'http://10.103.243.94:8080/staff/page', 
             data:this.form
             }).then( 
             (res) => {
@@ -223,6 +216,21 @@
             }); 
       },
       handleSave () {
+      var data=this.form;
+        this.$ajax({
+            method: 'put', //请求方式
+            url: 'http://10.103.243.94:8080/staff', 
+            data:this.form
+            }).then( 
+            (res) => {
+            console.log(res);
+            this.$message({
+              message: "提交成功，请在控制台查看json!！",
+              type: 'success'
+            });
+            this.$router.push({ path: 'personInfo' }) 
+            }); 
+
         this.$confirm('确认提交吗？', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -266,7 +274,7 @@
         console.log(`当前页: ${val}`);
         this.$ajax({
             method: 'get', //请求方式
-            url: 'http://10.103.243.94:8011/purchaseLog/page', 
+            url: 'http://10.103.243.94:8080/staff/page', 
             params:{
             size:5,
             page:this.currentPage

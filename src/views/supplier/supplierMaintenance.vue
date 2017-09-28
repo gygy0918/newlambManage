@@ -29,8 +29,8 @@
           <el-radio label="2">开关</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="采购数量" prop="count">
-        <el-input v-model="newForm.count"></el-input>
+      <el-form-item label="采购数量" prop="countDetail">
+        <el-input v-model="newForm.countDetail"></el-input>
       </el-form-item>
   </el-form>
   <div slot="footer" class="dialog-footer">
@@ -75,7 +75,7 @@
                 label="功率">
               </el-table-column>
               <el-table-column
-                prop="count"
+                prop="countDetail"
                 align="cneter"
                 label="数量">
               </el-table-column>
@@ -111,7 +111,7 @@
           power: '',
           price: '',
           type: '1',
-          count: '',
+          countDetail: '',
           delivery: false,
           type: '',
           resource: '',
@@ -138,7 +138,7 @@
               name: '测试',
               price:'12',
               power:'12',
-              count: '2',
+              countDetail: '2',
           }],
         ruleForm: {
           arr:[],
@@ -208,7 +208,7 @@
                   newObj= {
                     type: '灯',
                     name: this.activityValue,
-                    count: value,
+                    countDetail: value,
                     power:'12w',
                     price:'0990p'
                     }
@@ -232,7 +232,7 @@
             //发送请求
             this.$ajax({
             method: 'post', //请求方式
-            url: 'http://10.103.243.94:8011/purchaseDetail', 
+            url: 'http://10.103.243.94:8080/purchaseDetail', 
             data:para
             }).then( 
             (res) => {

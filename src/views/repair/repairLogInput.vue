@@ -66,7 +66,7 @@
             console.log('*****s',data);
         this.$ajax({
             method: 'post', //请求方式
-            url: 'http://10.103.243.94:8011/purchaseLog', 
+            url: 'http://10.103.241.110:8011/maintainInput/save', 
             data:data
             }).then( 
             (res) => {
@@ -78,7 +78,7 @@
               message: "提交成功，请在控制台查看json!！",
               type: 'success'
             });
-            this.$router.push({ path: 'supplierLogInfo' }) 
+            this.$router.push({ path: 'repairLogInfo' }) 
           } else {
             return false;
           }

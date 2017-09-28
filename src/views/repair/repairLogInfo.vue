@@ -20,7 +20,7 @@
         <el-table
           :data="tableData"
           border
-          style="width: 80%">
+          style="width: 100%">
           <el-table-column type="selection">
           </el-table-column>
           <el-table-column
@@ -127,14 +127,14 @@
           power: '',
           price: '',
         },
-        currentPage: 4,
+        currentPage: 1,
         table_index: 999,
       };
     },
     created () {
             this.$ajax({
             method: 'get', //请求方式
-            url: 'http://10.103.243.94:8011/purchaseLog/page', 
+            url: 'http://10.103.241.110:8011/maintainInput/page', 
             params:{
             size:5,
             page:this.currentPage
@@ -207,7 +207,7 @@
         console.log(`当前页: ${val}`);
         this.$ajax({
             method: 'get', //请求方式
-            url: 'http://10.103.243.94:8011/purchaseLog/page', 
+            url: 'http://10.103.241.110:8011/maintainInput/page', 
             params:{
             size:5,
             page:this.currentPage

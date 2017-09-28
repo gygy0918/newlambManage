@@ -1,6 +1,12 @@
 <template scope="scope">
   <section class="form-section">
     <el-form :inline="true"  class="demo-form-inline" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" >
+     <el-form-item label="采购类型" prop="type">
+        <el-radio-group v-model="newForm.type">
+          <el-radio label="1">电灯</el-radio>
+          <el-radio label="2">开关</el-radio>
+        </el-radio-group>
+      </el-form-item>
       <el-form-item label="添加安装物品">
             <el-select v-model="newForm.goodsName" @change="dialogFormVisible = true" :placeholder="activityValue">
                 <el-option
@@ -11,19 +17,13 @@
                 </el-option>
             </el-select>
       </el-form-item>
+      <el-form-item label="物品编号" prop="goodsNumber">
+        <el-input v-model="newForm.goodsNumber"></el-input>
+      </el-form-item>
 <el-dialog size="tiny" title="新物品信息" :visible.sync="dialogFormVisible" :model="newForm">
   <el-form :model="newForm" ref="newForm" :rules="rules">
       <el-form-item label="安装位置" prop="location">
         <el-input v-model="newForm.location"></el-input>
-      </el-form-item>
-     <el-form-item label="采购类型" prop="type">
-        <el-radio-group v-model="newForm.type">
-          <el-radio label="1">电灯</el-radio>
-          <el-radio label="2">开关</el-radio>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="安装数量" prop="count">
-        <el-input v-model="newForm.count"></el-input>
       </el-form-item>
      <el-form-item label="所属开关" prop="switchNumber">
             <el-select v-model="newForm.switchNumber" placeholder="请选择">
@@ -106,11 +106,11 @@
         value: '',
         dialogFormVisible: false,
         newForm: {
+          goodsNumber:'',
           goodsName:'',
           location: '',
           switchNumber: '',
           type: '1',
-          count: '',
         },
         formLabelWidth: '20px',
       //日期组件值和方法
@@ -133,7 +133,7 @@
               goodsName: '测试',
               location:'12',
               switchNumber:'12',
-              count: '2',
+              goodsNumber: '2',
           }],
         ruleForm: {
           arr:[],
@@ -227,7 +227,7 @@
             //发送请求
             this.$ajax({
             method: 'post', //请求方式
-            url: 'http://10.103.243.94:8011/purchaseDetail', 
+            url: 'http://10.103.241.154:8080/installinfo', 
             data:para
             }).then( 
             (res) => {

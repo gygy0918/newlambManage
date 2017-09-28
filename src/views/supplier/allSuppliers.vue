@@ -29,12 +29,12 @@
             width="120">
           </el-table-column>
           <el-table-column
-            prop="count"
+            prop="totalCount"
             label="数量"
             width="80">
           </el-table-column>
           <el-table-column
-            prop="name"
+            prop="totalPrice"
             label="总价"
             width="80">
           </el-table-column>
@@ -72,14 +72,14 @@
       </el-col>
     </el-row>
     <el-dialog title="采购单详情" v-model="dialogFormVisible" size="small">
-        <el-table :model="form" border  style="width: 100%">
+        <el-table :data="form" border  style="width: 100%">
               <el-table-column
                 prop="name"
                 label="物品名称"
                 width="150">
               </el-table-column>
               <el-table-column
-                prop="count"
+                prop="countDetail"
                 label="数量">
               </el-table-column>
               <el-table-column
@@ -111,56 +111,20 @@
             address: []
           }
         },
-        tableData: [{
-            name: '王小虎1',
-            location: '上海市普陀区金沙江路 1518 弄',
-            number:'12',
-            kaiguannumber:'13',
-            juecerennumber:'123',
-            xiafaname:'李四',
-            juecerenname:'张三',
-            installnumber:'333'
-          }, {
-            name: '王小虎2',
-            location: '上海市普陀区金沙江路 1517 弄',
-            number:'12',
-            kaiguannumber:'13',
-            juecerennumber:'123',
-            xiafaname:'李四',
-            juecerenname:'张三',
-            installnumber:'333'
-          }, {
-            name: '王小虎3',
-            location: '上海市普陀区金沙江路 1519 弄',
-            number:'12',
-            kaiguannumber:'13',
-            juecerennumber:'123',
-            xiafaname:'李四',
-            juecerenname:'张三',
-            installnumber:'333'
-          }, {
-            name: '王小虎4',
-            location: '上海市普陀区金沙江路 1516 弄',
-            number:'12',
-            kaiguannumber:'13',
-            juecerennumber:'123',
-            xiafaname:'李四',
-            juecerenname:'张三',
-            installnumber:'333'
-          }],
+        tableData: [],
         options: [],
         places: [],
         dialogFormVisible: false,
         editLoading: false,
         form:[],
-        currentPage: 4,
+        currentPage: 1,
         table_index: 999,
       };
     },
       created () {
         this.$ajax({
             method: 'get', //请求方式
-            url: 'http://10.103.243.94:8011/purchaseLog/page', 
+            url: 'http://10.103.243.94:8080/purchaseInfo/page', 
             params:{
             size:5,
             page:this.currentPage
@@ -186,18 +150,22 @@
       handleEdit (index, row) {
         this.dialogFormVisible = true;
         console.log('00000',row)
-        let id=row.installnumber;
+        let id=row.purchaseNumber;
+        console.log('idid',id)
        this.$ajax({
             method: 'get', //请求方式
-            url: 'http://10.103.243.94:8011/purchaseLog/page', 
+            url: 'http://10.103.243.94:8080/purchaseDetail/page', 
             params:{
-              id:id
+            purchaseNumber:id,
+            size:5,
+            page:this.currentPage
             }
             }).then( 
             (res) => {
+             console.log('=====',res)
             this.form=[];
            this.form =res.data.data.results;
-            console.log(this.form);
+            console.log('99999',this.form);
             }); 
       },
       handleSave () {
@@ -245,7 +213,7 @@
         console.log(this.currentPage);
          this.$ajax({
             method: 'get', //请求方式
-            url: 'http://10.103.243.94:8011/purchaseLog/page', 
+            url: 'http://10.103.243.94:8080/purchaseLog/page', 
             params:{
             size:5,
             page:this.currentPage

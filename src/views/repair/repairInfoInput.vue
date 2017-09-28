@@ -1,10 +1,16 @@
 <template scope="scope">
   <section class="form-section">
     <el-form :inline="true"  class="demo-form-inline" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" >
+    <el-form-item label="物品类型" prop="type">
+        <el-radio-group v-model="newForm.type" @change="getType(newForm.type)">
+          <el-radio label="电灯">电灯</el-radio>
+          <el-radio label="开关">开关</el-radio>
+        </el-radio-group>
+      </el-form-item>
       <el-form-item label="添加维修物品">
-            <el-select v-model="newForm.goodsName" @change="dialogFormVisible = true" :placeholder="activityValue">
+            <el-select v-model="newForm.goodsName" @change="getLocation(newForm.goodsName)" :placeholder="activityValue">
                 <el-option
-                    v-for="item in options"
+                    v-for="item in wxoptions"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value">
@@ -14,23 +20,13 @@
       <el-form-item label="物品位置" prop="lightAddress">
         <el-input v-model="newForm.lightAddress"></el-input>
       </el-form-item>
+      <el-form-item label="维修物品编号" prop="id">
+        <el-input v-model="newForm.id"></el-input>
+      </el-form-item>
 <el-dialog size="tiny" title="物品信息" :visible.sync="dialogFormVisible" :model="newForm">
   <el-form :model="newForm" ref="newForm" :rules="rules">
-     <el-form-item label="采购类型" prop="type">
-        <el-radio-group v-model="newForm.type">
-          <el-radio label="1">电灯</el-radio>
-          <el-radio label="2">开关</el-radio>
-        </el-radio-group>
-      </el-form-item>
      <el-form-item label="所属开关" prop="switchNumber">
-            <el-select v-model="newForm.switchNumber" placeholder="请选择">
-              <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
-            </el-select>
+            <el-input v-model="newForm.switchNumber"></el-input>
        </el-form-item>
   </el-form>
   <div slot="footer" class="dialog-footer">
@@ -103,6 +99,7 @@
         value: '',
         dialogFormVisible: false,
         newForm: {
+          id:'',
           goodsName:'',
           lightAddress: '111',
           switchNumber: '',
@@ -110,21 +107,26 @@
         },
         formLabelWidth: '20px',
       //日期组件值和方法
-     options: [{
-                value: '飞利浦',
+      kgoptions:[ {
+                value: '4',
+                label: '节能灯'
+            }],
+     wxoptions: [{
+                value: '1',
                 label: '飞利浦'
             }, {
-                value: '路灯',
+                value: '2',
                 label: '路灯'
             }, {
-                value: '开关',
+                value: '3',
                 label: '开关'
             }, {
-                value: '节能灯',
+                value: '4',
                 label: '节能灯'
             }],
             activityValue: '测试111',
         activities: [{
+              id:'11111',
               type: '灯',
               goodsName: '测试',
               lightAddress:'12',
@@ -180,6 +182,48 @@
               }
             });
         },
+        getLocation(type){
+        this.dialogFormVisible = true;
+        let id=type;
+        console.log(type);
+        this.$ajax({
+            method: 'get', //请求方式
+            url: 'http://10.103.241.154:8011/maintainInfo/save', 
+            params:id
+            }).then( 
+            (res) => {
+            this.newForm.lightAddress=222;
+            this.newForm.switchNumber=444;
+            }); 
+            this.$message({
+              message: "提交成功，请在控制台查看json!！",
+              type: 'success'
+            });
+        },
+        getType(type){
+        console.log('****',type)
+        let url;
+        if(type==1){
+        url='http://10.103.241.154:8011/light/page'
+        }else{
+        url='http://10.103.241.154:8011/switch/page'
+        }
+        console.log('url',url);
+        //发送请求
+            this.$ajax({
+            method: 'get', //请求方式
+            url: url, 
+            }).then( 
+            (res) => {
+            this.wxoptions=[];
+            this.wxoptions=res;
+            console.log(this.wxoptions);
+            }); 
+            this.$message({
+              message: "获取成功，请在控制台查看json!！",
+              type: 'success'
+            });
+        },
     selectActivity(){
           this.$prompt('请输入数量', '提示', {
                 confirmButtonText: '确定',
@@ -222,7 +266,7 @@
             //发送请求
             this.$ajax({
             method: 'post', //请求方式
-            url: 'http://10.103.243.94:8011/purchaseDetail', 
+            url: 'http://10.103.241.110:8011/maintainOrder', 
             data:para
             }).then( 
             (res) => {

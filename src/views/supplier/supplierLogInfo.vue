@@ -102,7 +102,7 @@
       created () {
         this.$ajax({
             method: 'get', //请求方式
-            url: 'http://10.103.243.94:8011/purchaseLog/page', 
+            url: 'http://10.103.243.94:8080/purchaseLog/page', 
             params:{
             size:5,
             page:this.currentPage
