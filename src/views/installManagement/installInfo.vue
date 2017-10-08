@@ -5,7 +5,7 @@
         <!--表单-->
         <el-form :inline="true" :model="formInline" class="demo-form-inline">
           <el-form-item label="安装单号">
-            <el-input size="small" v-model="formInline.search.installnumber" placeholder="安装单号"></el-input>
+      <el-input size="small" v-model="formInline.search.installnumber" placeholder="安装单号"></el-input>
           </el-form-item>
           <el-form-item label="安装人姓名">
             <el-input size="small" v-model="formInline.search.installname" placeholder="安装人姓名"></el-input>

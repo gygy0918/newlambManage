@@ -159,7 +159,7 @@ export const asyncRouterMap = [
     redirect: 'noredirect',
     name: '采购管理',
     icon: 'tubiaoleixingzhengchang',
-    meta: { role: ['purchase'] },
+    meta: { role: ['purchaser','admin'] },
     children: [
       { path: 'allInfo', component: AllSuppliers, name: '采购单信息' },
       { path: 'newInfo', component: SupplierMaintenance, name: '新增采购单' },
@@ -173,7 +173,7 @@ export const asyncRouterMap = [
     redirect: 'noredirect',
     name: '库存管理',
     icon: 'tubiaoleixingzhengchang',
-    meta: { role: ['kuncun'] },
+    meta: { role: ['purchaser','admin'] },
     children: [
       { path: 'repertoryInfo', component: repertoryInfo, name: '库存信息' }
       // ,
@@ -188,6 +188,7 @@ export const asyncRouterMap = [
     redirect: 'noredirect',
     name: '安装管理',
     icon: 'zonghe',
+    meta: { role: ['installer','admin'] },
     children: [
       { path: 'installInfo', component: InstallInfo, name: '安装单信息' },
       { path: 'installInfoInput', component: InstallInfoInput, name: '安装信息录入' },
@@ -201,6 +202,7 @@ export const asyncRouterMap = [
     redirect: '/components/index',
     name: '路灯状态',
     icon: 'zujian',
+    meta: { role: ['repair','admin'] },
     children: [
       { path: 'lambiformation', component:LambInfo, name: '路灯基本信息' },
       { path: 'lambMap', component:LambMap, name: '地图信息' },
@@ -222,6 +224,7 @@ export const asyncRouterMap = [
     redirect: 'noredirect',
     name: '维修管理',
     icon: '404',
+    meta: { role: ['repair','admin'] },
     children: [
      { path: 'repairInfo', component:RepairInfo, name: '维修信息' },
      { path: 'repairInfoInput', component:RepairInfoInput, name: '维修信息录入' },
@@ -282,6 +285,7 @@ export const asyncRouterMap = [
     redirect: 'noredirect',
     name: '人员管理',
     icon: 'bug',
+    meta: { role: ['develop','admin'] },
   //  noDropdown: true,
     children: [
     { path: 'personInfo', component: PersonInfo, name: '人员信息' },

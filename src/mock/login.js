@@ -18,10 +18,27 @@ const userMap = {
     uid: '002'
 
   },
-  developer: {
-    role: ['develop'],
-    token: 'develop',
+  repair: {
+    role: ['repair'],
+    token: 'repair',
+    introduction: '我是编辑',
+    avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+    name: '普通编辑小张',
+    uid: '002'
+
+  },
+  installer: {
+    role: ['installer'],
+    token: 'installer',
     introduction: '我是开发',
+    avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+    name: '工程师小王',
+    uid: '003'
+  },
+    purchaser: {
+    role: ['purchaser'],
+    token: 'purchaser',
+    introduction: '我是采购员',
     avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
     name: '工程师小王',
     uid: '003'
