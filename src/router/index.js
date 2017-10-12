@@ -162,8 +162,9 @@ export const asyncRouterMap = [
     meta: { role: ['purchaser','admin'] },
     children: [
       { path: 'allInfo', component: AllSuppliers, name: '采购单信息' },
-      { path: 'newInfo', component: SupplierMaintenance, name: '新增采购单' },
-      { path: 'supplierLogInput', component: SupplierLogInput, name: '采购日志录入'},
+      { path: 'newInfo', component: SupplierMaintenance, name: '新增采购单' }
+      ,
+     // { path: 'supplierLogInput/:id', component: SupplierLogInput, name: '采购日志录入'},
       { path: 'supplierLogInfo', component: SupplierLogInfo, name: '采购日志'},
     ]
   },
@@ -192,8 +193,8 @@ export const asyncRouterMap = [
     children: [
       { path: 'installInfo', component: InstallInfo, name: '安装单信息' },
       { path: 'installInfoInput', component: InstallInfoInput, name: '安装信息录入' },
-      { path: 'installLog', component: InstallLog , name: '安装日志' },
-      { path: 'installLogInput', component: InstallLogInput , name: '安装日志录入' }   
+      { path: 'installLog', component: InstallLog , name: '安装日志' }
+      //,{ path: 'installLogInput', component: InstallLogInput , name: '安装日志录入' }
     ]
   },
   {
@@ -228,8 +229,8 @@ export const asyncRouterMap = [
     children: [
      { path: 'repairInfo', component:RepairInfo, name: '维修信息' },
      { path: 'repairInfoInput', component:RepairInfoInput, name: '维修信息录入' },
-     { path: 'repairLogInfo', component:RepairLogInfo, name: '维修日志' },
-     { path: 'repairLogInput', component:RepairLogInput, name: '维修日志录入' }
+     { path: 'repairLogInfo', component:RepairLogInfo, name: '维修日志' }
+     //, { path: 'repairLogInput', component:RepairLogInput, name: '维修日志录入' }
       // {
       //   path: '/order',
       //   component: OrderIndex,

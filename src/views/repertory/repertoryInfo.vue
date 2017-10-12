@@ -3,13 +3,19 @@
     <el-row>
       <el-col :span="24">
         <!--表单-->
-        <el-form :inline="true" :model="formInline" class="demo-form-inline"  style="width:80%;margin:0 auto">
+        <el-form :inline="true" :model="search" class="demo-form-inline"  style="width:80%;margin:0 auto">
           <el-form-item label="物品名称">
-          <el-input size="small" v-model="formInline.search.name" placeholder="物品名称"></el-input>
+          <el-input size="small" v-model="search.name" placeholder="物品名称"></el-input>
           </el-form-item>
-          <el-form-item label="录入人编号">
-          <el-input size="small" v-model="formInline.search.kururennumber" placeholder="录入人编号"></el-input>           
-          </el-form-item> 
+          <el-form-item label="功率">
+          <el-input size="small" v-model="search.power" placeholder="功率"></el-input>
+          </el-form-item>
+          <el-form-item label="价格">
+            <el-input size="small" v-model="search.price" placeholder="单价"></el-input>
+          </el-form-item>
+          <el-form-item label="类别">
+            <el-input size="small" v-model="search.type" placeholder="类别"></el-input>
+          </el-form-item>
           <el-button type="primary" @click="onSubmit" size="small">查询</el-button>
           <a href="javascript:;" id="download" style="float: right;color: #169bd5;font-size: 14px;padding-top: 7px" @click="download()" download="download.csv">导出数据</a>
         </el-form>
@@ -36,7 +42,7 @@
             width="100">
           </el-table-column>
           <el-table-column
-            prop="number"
+            prop="count"
             label="数量"
             width="100">
           </el-table-column>
@@ -97,47 +103,13 @@
   export default {
     data () {
       return {
-        formInline: {
           search: {
             name: '',
-            lururennumber: '',
-            address: [],
-            kucunnumber: ''
-          }
+            power: '',
+            price: [],
+            type: ''
         },
-        tableData: [{
-            kucunnumber: '123',
-            name: '王小虎',
-            power: '12w',
-            price:'12元',
-            number:'13',
-            type:'电灯',
-            xiafaname:'张三1'
-          }, {
-            kucunnumber: '123',
-            name: '王小虎',
-            power: '12w',
-            price:'12元',
-            number:'13',
-            type:'电灯',
-            xiafaname:'张三2'
-          }, {
-            kucunnumber: '123',
-            name: '王小虎',
-            power: '12w',
-            price:'12元',
-            number:'13',
-            type:'开关',
-            xiafaname:'张三3'
-          }, {
-            kucunnumber: '123',
-            name: '王小虎',
-            power: '12w',
-            price:'12元',
-            number:'13',
-            type:'电灯',
-            xiafaname:'张三4'
-          }],
+        tableData: [],
         options: [],
         places: [],
         dialogFormVisible: false,
@@ -151,29 +123,47 @@
           xiafaname: '',
           kucunnamber: '',
         },
-        currentPage: 4,
+        currentPage: 1,
         table_index: 999,
       };
     },
-    created () {
-      this.$http.get('/api/getTable').then((response) => {
-        response = response.data;
-        if (response.code === ERR_OK) {
-          this.tableData = response.datas;
-        }
-      });
-      this.$http.get('/api/getOptions').then((response) => {
-        response = response.data;
-        if (response.code === ERR_OK) {
-          this.options = response.datas;
-          this.places = response.places;
-        }
-      });
-    },
-    methods: {
-      onSubmit () {
-        this.$message('模拟数据，这个方法并不管用哦~');
+      created () {
+          this.$ajax({
+              method: 'get', //请求方式
+              url: 'http://10.103.243.94:8080/commodity/page',
+              params:{
+                  size:5,
+                  page:this.currentPage
+              }
+          }).then(
+              (res) => {
+                  this.tableData=[];
+                  this.tableData =res.data.data.results;
+                  console.log(this.tableData);
+              });
       },
+    methods: {
+        onSubmit () {
+            //this.$message('模拟数据，这个方法并不管用哦~');
+            this.$ajax({
+                method: 'post', //请求方式
+                url: 'http://10.103.243.94:8080/commodity/page',
+                params:{
+                    size:5,
+                    page:this.currentPage,
+                    name:this.search.name,
+                    power:this.search.power,
+                    price:this.search.price,
+                    type:this.search.type
+                }
+            }).then(
+                (res) => {
+                    console.log('=====',res)
+                    this.tableData=[];
+                    this.tableData =res.data.data.results;
+                    console.log(this.tableData);
+                });
+        },
       handleDelete (index, row) {
         this.tableData.splice(index, 1);
         this.$message({
@@ -225,10 +215,24 @@
       handleSizeChange(val) {
         console.log(`每页 ${val} 条`);
       },
-      handleCurrentChange(val) {
-        this.currentPage = val;
-        console.log(`当前页: ${val}`);
-      }
+        handleCurrentChange(val) {
+            this.currentPage = val;
+            // console.log(`当前页: ${val}`);
+            console.log(this.currentPage);
+            this.$ajax({
+                method: 'get', //请求方式
+                url: 'http://10.103.243.94:8080/commodity/pagee',
+                params:{
+                    size:5,
+                    page:this.currentPage
+                }
+            }).then(
+                (res) => {
+                    this.tableData=[];
+                    this.tableData =res.data.data.results;
+                    console.log(this.tableData);
+                });
+        }
     }
   };
 </script>

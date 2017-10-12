@@ -3,12 +3,12 @@
     <el-row>
       <el-col :span="24">
         <!--表单-->
-        <el-form :inline="true" :model="formInline" class="demo-form-inline">
+        <el-form :inline="true" :model="search" class="demo-form-inline">
           <el-form-item label="安装单号">
-            <el-input size="small" v-model="formInline.search.installNumber" placeholder="安装单号"></el-input>
+            <el-input size="small" v-model="search.installerNumber" placeholder="安装单号"></el-input>
           </el-form-item>
           <el-form-item label="安装人姓名">
-            <el-input size="small" v-model="formInline.search.installerName" placeholder="安装人姓名"></el-input>
+            <el-input size="small" v-model="search.installerName" placeholder="安装人姓名"></el-input>
           </el-form-item>
           <el-button type="primary" @click="onSubmit">查询</el-button>
           <a href="javascript:;" id="download" style="float: right;color: #169bd5;font-size: 14px;padding-top: 7px" @click="download()" download="download.csv">导出数据</a>
@@ -70,14 +70,9 @@
   export default {
     data () {
       return {
-        formInline: {
           search: {
-            puchernumber: '',
-            puchername: '',
-            xiafaname: '',
-            address: [],
-            place: ''
-          }
+              installerNumber: '',
+              installerName: ''
         },
         tableData: [
        ],
@@ -114,9 +109,23 @@
     },
     methods: {
       onSubmit () {
-        this.$message('模拟数据，这个方法并不管用哦~');
+          this.$ajax({
+              method: 'get', //请求方式
+              url: 'http://10.103.241.154:8080/installlog/page',
+              params: {
+                  size: 5,
+                  page: this.currentPage,
+                  installNumber: this.search.installerNumber,
+                  installerName: this.search.installerName
+              }
+          }).then(
+              (res) => {
+                  this.tableData = [];
+                  this.tableData = res.data.data.results;
+                  console.log(this.tableData);
+              });
       },
-      handleDelete (index, row) {
+          handleDelete (index, row) {
         this.tableData.splice(index, 1);
         this.$message({
           message: "操作成功！",

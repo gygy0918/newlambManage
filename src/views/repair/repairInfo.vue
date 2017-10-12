@@ -3,15 +3,16 @@
     <el-row>
       <el-col :span="24">
         <!--表单-->
-        <el-form :inline="true" :model="formInline" class="demo-form-inline">
+        <el-form :inline="true" :model="search" class="demo-form-inline">
           <el-form-item label="维修单号">
-            <el-input size="small" v-model="formInline.search.installnumber" placeholder="维修单号"></el-input>
+            <el-input size="small" v-model="search.maintainNumber" placeholder="维修单号"></el-input>
           </el-form-item>
-          <el-form-item label="维修人姓名">
-            <el-input size="small" v-model="formInline.search.installname" placeholder="维修人姓名"></el-input>
+         <!-- <el-form-item label="维修人姓名">
+            <el-input size="small" v-model="search.installname" placeholder="维修人姓名"></el-input>
           </el-form-item>
-          <el-form-item label="下发人姓名">
-            <el-input size="small" v-model="formInline.search.xiafaname" placeholder="维修人姓名"></el-input>
+          -->
+          <el-form-item label="监控人姓名">
+            <el-input size="small" v-model="search.monitorName" placeholder="监控人姓名"></el-input>
           </el-form-item> 
           <el-button type="primary" @click="onSubmit">查询</el-button>
           <a href="javascript:;" id="download" style="float: right;color: #169bd5;font-size: 14px;padding-top: 7px" @click="download()" download="download.csv">导出数据</a>
@@ -43,10 +44,10 @@
             label="生成时间"
             width="80">
           </el-table-column>
-          <el-table-column
           <el-table-column label="操作">
             <template scope="scope">
-              <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">查看详情</el-button>
+              <el-button type="primary" size="mini" @click="handleDetail(scope.$index, scope.row)">查看详情</el-button>
+              <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)"> 生成日志</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -62,22 +63,74 @@
         </div>
       </el-col>
     </el-row>
-    <el-dialog title="安装单详情" v-model="dialogFormVisible" size="small">
-        <el-table :model="form" border  style="width: 100%">
+    <el-dialog title="维修单详情" v-model="dialogTableVisible" size="small">
+        <el-table :data="form" border  style="width: 100%">
               <el-table-column
-                prop="form.name"
+                prop="lightName"
                 label="物品名称"
                 width="150">
               </el-table-column>
               <el-table-column
-                prop="form.location"
+                prop="location"
                 label="位置">
               </el-table-column>
               <el-table-column
-                prop="form.location"
+                prop="switchNumber"
                 label="所属开关">
               </el-table-column>
         </el-table>
+    </el-dialog>
+    <el-dialog title="维修单详情" v-model="dialogFormVisible" size="small">
+      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+        <el-form-item label="维修单编号" prop="maintainNumber">
+          <el-input v-model="ruleForm.maintainNumber"></el-input>
+        </el-form-item>
+        <el-form-item label="维修人编号" prop="maintainerNumber">
+          <el-input v-model="ruleForm.maintainerNumber"></el-input>
+        </el-form-item>
+        <el-form-item label="维修人姓名" prop="maintainerName">
+          <el-input v-model="ruleForm.maintainerName"></el-input>
+        </el-form-item>
+        <el-form-item label="录入人编号" prop="inputNumber">
+          <el-input v-model="ruleForm.inputNumber"></el-input>
+        </el-form-item>
+        <el-form-item label="录入人姓名" prop="inputName">
+          <el-input v-model="ruleForm.inputName"></el-input>
+        </el-form-item>
+        <el-form-item label="备注" prop="remarks">
+          <el-input type="textarea" v-model="ruleForm.remarks"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
+          <el-button @click="resetForm('ruleForm')">重置</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
+    <el-dialog title="维修单详情" v-model="dialogTableVisible" size="small">
+      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+        <el-form-item label="维修单编号" prop="maintainNumber">
+          <el-input v-model="ruleForm.maintainNumber"></el-input>
+        </el-form-item>
+        <el-form-item label="维修人编号" prop="maintainerNumber">
+          <el-input v-model="ruleForm.maintainerNumber"></el-input>
+        </el-form-item>
+        <el-form-item label="维修人姓名" prop="maintainerName">
+          <el-input v-model="ruleForm.maintainerName"></el-input>
+        </el-form-item>
+        <el-form-item label="录入人编号" prop="inputNumber">
+          <el-input v-model="ruleForm.inputNumber"></el-input>
+        </el-form-item>
+        <el-form-item label="录入人姓名" prop="inputName">
+          <el-input v-model="ruleForm.inputName"></el-input>
+        </el-form-item>
+        <el-form-item label="备注" prop="remarks">
+          <el-input type="textarea" v-model="ruleForm.remarks"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
+          <el-button @click="resetForm('ruleForm')">重置</el-button>
+        </el-form-item>
+      </el-form>
     </el-dialog>
   </section>
 </template>
@@ -86,14 +139,19 @@
   export default {
     data () {
       return {
-        formInline: {
           search: {
-            installnumber: '',
-            installname: '',
-            xiafaname: '',
-            address: []
-          }
+              maintainNumber: '',
+              monitorName: ''
         },
+          ruleForm: {
+              maintainNumber: '',
+              maintainerNumber:'',
+              maintainerName:'',
+              inputName: '',
+              inputNumber:'',
+              maintainerName:'',
+              remarks: '',
+          },
         tableData: [],
         options: [],
         places: [],
@@ -107,7 +165,7 @@
       created () {
         this.$ajax({
             method: 'get', //请求方式
-            url: 'http://10.103.241.110:8011/maintainOrder/page', 
+            url: 'http://10.103.241.110:8080/maintainOrder/page',
             params:{
             size:5,
             page:this.currentPage
@@ -121,7 +179,22 @@
       },
     methods: {
       onSubmit () {
-        this.$message('模拟数据，这个方法并不管用哦~');
+       // this.$message('模拟数据，这个方法并不管用哦~');
+          this.$ajax({
+              method: 'get', //请求方式
+              url: 'http://10.103.241.110:8080/maintainOrder/page',
+              params:{
+                  size:5,
+                  page:this.currentPage,
+                  maintainNumber:this.search.maintainNumber,
+                  monitorName:this.search.monitorName
+              }
+          }).then(
+              (res) => {
+                  this.tableData=[];
+                  this.tableData =res.data.data.results;
+                  console.log(this.tableData);
+              });
       },
       handleDelete (index, row) {
         this.tableData.splice(index, 1);
@@ -130,23 +203,28 @@
           type: 'success'
         });
       },
-      handleEdit (index, row) {
-        this.dialogFormVisible = true;
-        console.log('00000',row.installnumber)
-        let id=maintainNumber;
+      handleDetail (index, row) {
+        this.dialogTableVisible = true;
+        console.log('00000',row.maintainNumber)
+        let id=row.maintainNumber;
         this.$ajax({
             method: 'get', //请求方式
-            url: 'http://10.103.243.94:8011/purchaseLog/page', 
+            url: 'http://10.103.241.110:8080/maintainInfo/detail',
             params:{
-            id:id
+                id:id
             }
             }).then( 
             (res) => {
             this.form=[];
-           this.form =res.data.data.results;
+           this.form =res.data.data;
             console.log('99999',this.form);
             }); 
       },
+        handleEdit (index, row) {
+            this.dialogFormVisible= true;
+            console.log('00000',row.maintainNumber)
+            this.ruleForm.maintainNumber=row.maintainNumber
+        },
       handleSave () {
         this.$confirm('确认提交吗？', '提示', {
           confirmButtonText: '确定',
@@ -171,6 +249,35 @@
 
         });
       },
+        submitForm(formName) {
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    let para = Object.assign({}, this.ruleForm);
+                    var data=para;
+                    console.log('*****s',data);
+                    this.$ajax({
+                        method: 'post', //请求方式
+                        url: 'http://10.103.241.110:8080/maintainInput/save',
+                        data:data
+                    }).then(
+                        (res) => {
+                            this.tableData=[];
+                            this.tableData =data;
+                            console.log(this.tableData);
+                        });
+                    this.$message({
+                        message: "提交成功，请在控制台查看json!！",
+                        type: 'success'
+                    });
+                    this.$router.push({ path: 'repairLogInfo' })
+                } else {
+                    return false;
+                }
+            });
+        },
+        resetForm(formName) {
+            this.$refs[formName].resetFields();
+        },
       download: function() {
         var obj = document.getElementById('download');
         var str = "姓名,出生日期,地址\n";

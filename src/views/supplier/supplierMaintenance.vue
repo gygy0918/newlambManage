@@ -5,9 +5,9 @@
             <el-select v-model="activityValue" @change="selectActivity" :placeholder="activityValue">
                 <el-option
                     v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.name">
                 </el-option>
             </el-select>
       </el-form-item>
@@ -106,6 +106,7 @@
   export default {
     data() {
       return {
+          currentPage: 1,
         dialogFormVisible: false,
         newForm: {
           power: '',
@@ -119,20 +120,8 @@
         },
         formLabelWidth: '20px',
       //日期组件值和方法
-     options: [{
-                value: '飞利浦',
-                label: '飞利浦'
-            }, {
-                value: '路灯',
-                label: '路灯'
-            }, {
-                value: '开关',
-                label: '开关'
-            }, {
-                value: '节能灯',
-                label: '节能灯'
-            }],
-            activityValue: '测试111',
+     options: [],
+            activityValue: '',
         activities: [{
               type: '灯',
               name: '测试',
@@ -163,6 +152,21 @@
         }
       };
     },
+      created () {
+          this.$ajax({
+              method: 'get', //请求方式
+              url: 'http://10.103.243.94:8080/commodity/page',
+              params:{
+                  size:5,
+                  page:this.currentPage
+              }
+          }).then(
+              (res) => {
+                  this.options=[];
+                  this.options =res.data.data.results;
+                  console.log(this.options);
+              });
+      },
     methods: {
           tableRowClassName(row, index) {
             if (index === 1) {
@@ -209,8 +213,8 @@
                     type: '灯',
                     name: this.activityValue,
                     countDetail: value,
-                    power:'12w',
-                    price:'0990p'
+                    power:'12',
+                    price:'0990'
                     }
                      this.activities.push(newObj);
                 }

@@ -10,10 +10,10 @@
       <el-form-item label="添加维修物品">
             <el-select v-model="newForm.goodsName" @change="getLocation(newForm.goodsName)" :placeholder="activityValue">
                 <el-option
-                    v-for="item in wxoptions"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
+                    v-for="item in options"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.name">
                 </el-option>
             </el-select>
       </el-form-item>
@@ -23,6 +23,10 @@
       <el-form-item label="维修物品编号" prop="id">
         <el-input v-model="newForm.id"></el-input>
       </el-form-item>
+        <el-form-item label="所属开关" prop="switchNumber">
+            <el-input v-model="newForm.switchNumber"></el-input>
+        </el-form-item>
+        <!--
 <el-dialog size="tiny" title="物品信息" :visible.sync="dialogFormVisible" :model="newForm">
   <el-form :model="newForm" ref="newForm" :rules="rules">
      <el-form-item label="所属开关" prop="switchNumber">
@@ -33,7 +37,7 @@
     <el-button @click="dialogFormVisible = false">取 消</el-button>
     <el-button type="primary" @click="addActivity('newForm')">确 定</el-button>
   </div>
-</el-dialog>
+</el-dialog>-->
       <el-form-item label="决策人编号" prop="decisionMakerNumber">
         <el-input v-model="ruleForm.decisionMakerNumber"></el-input>
       </el-form-item>
@@ -97,33 +101,23 @@
     data() {
       return {
         value: '',
+          currentPage: 1,
         dialogFormVisible: false,
         newForm: {
           id:'',
           goodsName:'',
-          lightAddress: '111',
+          lightAddress: '',
           switchNumber: '',
           type: '1',
         },
         formLabelWidth: '20px',
       //日期组件值和方法
-      kgoptions:[ {
-                value: '4',
-                label: '节能灯'
-            }],
-     wxoptions: [{
-                value: '1',
-                label: '飞利浦'
-            }, {
-                value: '2',
-                label: '路灯'
-            }, {
-                value: '3',
-                label: '开关'
-            }, {
-                value: '4',
-                label: '节能灯'
-            }],
+//      kgoptions:[ {
+//                value: '4',
+//                label: '节能灯'
+//            }],
+     options: [],
+          switchs:[],
             activityValue: '测试111',
         activities: [{
               id:'11111',
@@ -183,46 +177,70 @@
             });
         },
         getLocation(type){
-        this.dialogFormVisible = true;
-        let id=type;
-        console.log(type);
-        this.$ajax({
-            method: 'get', //请求方式
-            url: 'http://10.103.241.154:8011/maintainInfo/save', 
-            params:id
-            }).then( 
-            (res) => {
-            this.newForm.lightAddress=222;
-            this.newForm.switchNumber=444;
-            }); 
+            let newForm=this.newForm;
+            console.log('0000',type)
+            console.log('11111',this.options);
+            this.options.map(function(item) {
+                if(item.name==type){
+                    let goodsNumber=item.id;
+                    let switchNumber=item.switchNumber;
+                    let lightAddress=item.location;
+                    console.log('9999',goodsNumber)
+                    newForm.goodsNumber=goodsNumber;
+                    newForm.switchNumber=switchNumber;
+                    newForm.lightAddress=lightAddress;
+
+
+                }
+            })
+            this.dialogFormVisible = true;
+            this.$ajax({
+                method: 'get', //请求方式
+                url: 'http://10.103.241.154:8080/switch'
+            }).then(
+                (res) => {
+                    this.switchs=res.data.data;
+                    console.log('888',this.switchs);
+                });
             this.$message({
-              message: "提交成功，请在控制台查看json!！",
-              type: 'success'
+                message: "提交成功，请在控制台查看json!！",
+                type: 'success'
             });
         },
-        getType(type){
-        console.log('****',type)
-        let url;
-        if(type==1){
-        url='http://10.103.241.154:8011/light/page'
-        }else{
-        url='http://10.103.241.154:8011/switch/page'
-        }
-        console.log('url',url);
-        //发送请求
-            this.$ajax({
-            method: 'get', //请求方式
-            url: url, 
-            }).then( 
-            (res) => {
-            this.wxoptions=[];
-            this.wxoptions=res;
-            console.log(this.wxoptions);
-            }); 
-            this.$message({
-              message: "获取成功，请在控制台查看json!！",
-              type: 'success'
-            });
+        getType(value){
+            let newForm=this.newForm;
+        console.log('****',value)
+            if(value!='电灯'){
+                this.$ajax({
+                    method: 'get', //请求方式
+                    url: 'http://10.103.243.94:8080/commodity/page',
+                    params:{
+                        size:5,
+                        page:this.currentPage,
+                        type:value
+                    }
+                }).then(
+                    (res) => {
+                        this.options=[];
+                        this.options =res.data.data.results;
+                    });
+            }else{
+                this.$ajax({
+                    method: 'get', //请求方式
+                    url: 'http://10.103.243.94:8080/commodity/page',
+                    params:{
+                        size:5,
+                        page:this.currentPage,
+                        type:'电灯'
+                    }
+                }).then(
+                    (res) => {
+                        this.options=[];
+                        this.options =res.data.data.results;
+
+                        console.log(this.options);
+                    });
+            }
         },
     selectActivity(){
           this.$prompt('请输入数量', '提示', {
@@ -266,7 +284,7 @@
             //发送请求
             this.$ajax({
             method: 'post', //请求方式
-            url: 'http://10.103.241.110:8011/maintainOrder', 
+            url: 'http://10.103.241.110:8080/maintainOrder',
             data:para
             }).then( 
             (res) => {

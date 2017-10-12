@@ -56,6 +56,9 @@
         }
       };
     },
+//      mounted:function() {
+//          let rid=this.$route.params.id
+//      },
     methods: {
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {

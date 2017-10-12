@@ -3,15 +3,16 @@
     <el-row>
       <el-col :span="24">
         <!--表单-->
-        <el-form :inline="true" :model="formInline" class="demo-form-inline">
+        <el-form :inline="true" :model="search" class="demo-form-inline">
           <el-form-item label="采购单号">
-            <el-input size="small" v-model="formInline.search.installnumber" placeholder="采购单号"></el-input>
+            <el-input size="small" v-model="search.purchaseNumber" placeholder="采购单号"></el-input>
           </el-form-item>
-          <el-form-item label="采购人姓名">
-            <el-input size="small" v-model="formInline.search.installname" placeholder="采购人姓名"></el-input>
+     <!--     <el-form-item label="采购人姓名">
+            <el-input size="small" v-model="search.installname" placeholder="采购人姓名"></el-input>
           </el-form-item>
+          -->
           <el-form-item label="下发人姓名">
-            <el-input size="small" v-model="formInline.search.xiafaname" placeholder="采购人姓名"></el-input>
+            <el-input size="small" v-model="search.purchaseManagerName" placeholder="采购人姓名"></el-input>
           </el-form-item> 
           <el-button type="primary" @click="onSubmit">查询</el-button>
           <a href="javascript:;" id="download" style="float: right;color: #169bd5;font-size: 14px;padding-top: 7px" @click="download()" download="download.csv">导出数据</a>
@@ -50,12 +51,14 @@
           </el-table-column>
           <el-table-column
             prop="createTime"
-            label=生成时间"
+            label="生成时间"
             width="80">
           </el-table-column>
           <el-table-column label="操作">
             <template scope="scope">
               <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">查看详情</el-button>
+                <el-button type="primary" size="mini" @click="handleLog(scope.$index, scope.row)">日志生成</el-button>
+              <el-button type="primary" size="mini" @click="handleLog(scope.$index, scope.row)">日志生成</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -71,7 +74,7 @@
         </div>
       </el-col>
     </el-row>
-    <el-dialog title="采购单详情" v-model="dialogFormVisible" size="small">
+    <el-dialog title="采购单详情" v-model="dialogTableVisible" size="small">
         <el-table :data="form" border  style="width: 100%">
               <el-table-column
                 prop="name"
@@ -96,6 +99,32 @@
               </el-table-column>
         </el-table>
     </el-dialog>
+      <el-dialog title="录入日志信息" v-model="dialogFormVisible" size="small">
+          <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+              <el-form-item label="采购单编号" prop="purchaseNumber">
+                  <el-input v-model="ruleForm.purchaseNumber"></el-input>
+              </el-form-item>
+              <el-form-item label="采购人编号" prop="buyerNumber">
+                  <el-input v-model="ruleForm.buyerNumber"></el-input>
+              </el-form-item>
+              <el-form-item label="采购人姓名" prop="buyerName">
+                  <el-input v-model="ruleForm.buyerName"></el-input>
+              </el-form-item>
+              <el-form-item label="录入人编号" prop="recorderNumber">
+                  <el-input v-model="ruleForm.recorderNumber"></el-input>
+              </el-form-item>
+              <el-form-item label="录入人姓名" prop="recorderName">
+                  <el-input v-model="ruleForm.recorderName"></el-input>
+              </el-form-item>
+              <el-form-item label="备注" prop="other">
+                  <el-input type="textarea" v-model="ruleForm.other"></el-input>
+              </el-form-item>
+              <el-form-item>
+                  <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
+                  <el-button @click="resetForm('ruleForm')">重置</el-button>
+              </el-form-item>
+          </el-form>
+      </el-dialog>
   </section>
 </template>
 <script type="text/ecmascript-6">
@@ -103,14 +132,20 @@
   export default {
     data () {
       return {
-        formInline: {
           search: {
             installnumber: '',
             installname: '',
             xiafaname: '',
             address: []
-          }
-        },
+          },
+          ruleForm: {
+              purchaseNumber: '',
+              recorderNumber: '',
+              recorderName:'',
+              buyerNumber: '',
+              buyerName: '',
+              other: ''
+          },
         tableData: [],
         options: [],
         places: [],
@@ -138,7 +173,23 @@
       },
     methods: {
       onSubmit () {
-        this.$message('模拟数据，这个方法并不管用哦~');
+        //this.$message('模拟数据，这个方法并不管用哦~');
+          this.$ajax({
+              method: 'post', //请求方式
+              url: 'http://10.103.243.94:8080/purchaseInfo/page',
+              params:{
+                  size:5,
+                  page:this.currentPage,
+                  purchaseManagerName:this.search.purchaseManagerName,
+                  purchaseNumber:this.search.purchaseNumber
+              }
+          }).then(
+              (res) => {
+                  console.log('=====',res)
+                  this.tableData=[];
+                  this.tableData =res.data.data.results;
+                  console.log(this.tableData);
+              });
       },
       handleDelete (index, row) {
         this.tableData.splice(index, 1);
@@ -148,13 +199,13 @@
         });
       },
       handleEdit (index, row) {
-        this.dialogFormVisible = true;
+        this.dialogTableVisible = true;
         console.log('00000',row)
         let id=row.purchaseNumber;
         console.log('idid',id)
        this.$ajax({
             method: 'get', //请求方式
-            url: 'http://10.103.243.94:8080/purchaseDetail/page', 
+            url: 'http://10.103.243.94:8080/purchaseDetail/page',
             params:{
             purchaseNumber:id,
             size:5,
@@ -168,6 +219,10 @@
             console.log('99999',this.form);
             }); 
       },
+        logInput(index,row){
+          let id=this.row.id;
+
+        },
       handleSave () {
         this.$confirm('确认提交吗？', '提示', {
           confirmButtonText: '确定',
@@ -192,6 +247,40 @@
 
         });
       },
+        handleLog(index, row){
+            this.dialogFormVisible = true
+            console.log(row.purchaseNumber,'99999')
+            this.ruleForm.purchaseNumber=row.purchaseNumber
+        },
+        submitForm(formName) {
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    let para = Object.assign({}, this.ruleForm);
+                    var data=para;
+                    console.log('*****s',data);
+                    this.$ajax({
+                        method: 'post', //请求方式
+                        url: 'http://10.103.243.94:8080/purchaseLog',
+                        data:data
+                    }).then(
+                        (res) => {
+                            this.tableData=[];
+                            this.tableData =data;
+                            console.log(this.tableData);
+                        });
+                    this.$message({
+                        message: "提交成功，请在控制台查看json!！",
+                        type: 'success'
+                    });
+                    this.$router.push({ path: 'supplierLogInfo' })
+                } else {
+                    return false;
+                }
+            });
+        },
+        resetForm(formName) {
+            this.$refs[formName].resetFields();
+        },
       download: function() {
         var obj = document.getElementById('download');
         var str = "姓名,出生日期,地址\n";

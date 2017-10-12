@@ -2,18 +2,18 @@
   <section class="form-section">
     <el-form :inline="true"  class="demo-form-inline" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" >
      <el-form-item label="采购类型" prop="type">
-        <el-radio-group v-model="newForm.type">
-          <el-radio label="1">电灯</el-radio>
-          <el-radio label="2">开关</el-radio>
+        <el-radio-group v-model="newForm.type"  @change="getType(newForm.type)">
+          <el-radio label="电灯">电灯</el-radio>
+          <el-radio label="开关">开关</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="添加安装物品">
-            <el-select v-model="newForm.goodsName" @change="dialogFormVisible = true" :placeholder="activityValue">
+            <el-select v-model="newForm.goodsName" @change="getLocation(newForm.goodsName)" :placeholder="activityValue">
                 <el-option
                     v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.name">
                 </el-option>
             </el-select>
       </el-form-item>
@@ -28,10 +28,10 @@
      <el-form-item label="所属开关" prop="switchNumber">
             <el-select v-model="newForm.switchNumber" placeholder="请选择">
               <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
+                v-for="item in switchs"
+                :key="item.switchNumber"
+                :label="item.switchName"
+                :value="item.switchName">
               </el-option>
             </el-select>
        </el-form-item>
@@ -113,20 +113,10 @@
           type: '1',
         },
         formLabelWidth: '20px',
+          currentPage: 1,
       //日期组件值和方法
-     options: [{
-                value: '飞利浦',
-                label: '飞利浦'
-            }, {
-                value: '路灯',
-                label: '路灯'
-            }, {
-                value: '开关',
-                label: '开关'
-            }, {
-                value: '节能灯',
-                label: '节能灯'
-            }],
+          options: [],
+          switchs:[],
             activityValue: '测试111',
         activities: [{
               type: '灯',
@@ -158,7 +148,84 @@
         }
       };
     },
+    created () {
+          this.$ajax({
+              method: 'get', //请求方式
+              url: 'http://10.103.243.94:8080/commodity/page',
+              params:{
+                  size:5,
+                  page:this.currentPage,
+                  type:'电灯'
+              }
+          }).then(
+              (res) => {
+                  this.options=[];
+                  this.options =res.data.data.results;
+                  console.log(this.options);
+              });
+      },
     methods: {
+            getType(value){
+                console.log(value)
+                //一进入页面，直接请求电灯，如选择开关在修改一下url为开关页面
+                if(value!='电灯'){
+                    this.$ajax({
+                        method: 'get', //请求方式
+                        url: 'http://10.103.243.94:8080/commodity/page',
+                        params:{
+                            size:5,
+                            page:this.currentPage,
+                            type:value
+                        }
+                    }).then(
+                        (res) => {
+                            this.options=[];
+                            this.options =res.data.data.results;
+                            console.log(this.options);
+                        });
+                }else{
+                    this.$ajax({
+                        method: 'get', //请求方式
+                        url: 'http://10.103.243.94:8080/commodity/page',
+                        params:{
+                            size:5,
+                            page:this.currentPage,
+                            type:'电灯'
+                        }
+                    }).then(
+                        (res) => {
+                            this.options=[];
+                            this.options =res.data.data.results;
+                            console.log(this.options);
+                        });
+                }
+
+            },
+        getLocation(type){
+           let newForm=this.newForm;
+            console.log('0000',type)
+            console.log('11111',this.options);
+            this.options.map(function(item) {
+                if(item.name==type){
+                    let goodsNumber=item.id;
+                    //console.log('9999',goodsNumber)
+                    newForm.goodsNumber=goodsNumber;
+                }
+            })
+            this.dialogFormVisible = true;
+            this.$ajax({
+                method: 'get', //请求方式
+                url: 'http://10.103.241.154:8080/switch'
+            }).then(
+                (res) => {
+                    this.switchs=res.data.data;
+                    console.log('888',this.switchs);
+                });
+            this.$message({
+                message: "提交成功，请在控制台查看json!！",
+                type: 'success'
+            });
+        },
           tableRowClassName(row, index) {
             if (index === 1) {
               return 'info-row';

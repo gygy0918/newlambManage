@@ -3,16 +3,17 @@
     <el-row>
       <el-col :span="24">
         <!--表单-->
-        <el-form :inline="true" :model="formInline" class="demo-form-inline">
+        <el-form :inline="true" :model="search" class="demo-form-inline">
           <el-form-item label="采购单号">
-            <el-input size="small" v-model="formInline.search.installnumber" placeholder="采购单号"></el-input>
+            <el-input size="small" v-model="search.purchaseNumber" placeholder="采购单号"></el-input>
           </el-form-item>
           <el-form-item label="采购人姓名">
-            <el-input size="small" v-model="formInline.search.installname" placeholder="采购人姓名"></el-input>
+            <el-input size="small" v-model="search.buyerName" placeholder="采购人姓名"></el-input>
           </el-form-item>
-          <el-form-item label="下发人姓名">
-            <el-input size="small" v-model="formInline.search.xiafaname" placeholder="采购人姓名"></el-input>
-          </el-form-item> 
+        <!--  <el-form-item label="下发人姓名">
+            <el-input size="small" v-model="search.xiafaname" placeholder="采购人姓名"></el-input>
+          </el-form-item>
+          -->
           <el-button type="primary" @click="onSubmit">查询</el-button>
           <a href="javascript:;" id="download" style="float: right;color: #169bd5;font-size: 14px;padding-top: 7px" @click="download()" download="download.csv">导出数据</a>
         </el-form>
@@ -73,14 +74,9 @@
   export default {
     data () {
       return {
-        formInline: {
           search: {
-            puchernumber: '',
-            puchername: '',
-            xiafaname: '',
-            address: [],
-            place: ''
-          }
+           purchaseNumber: '',
+           buyerName: ''
         },
         tableData: [],
         options: [],
@@ -116,7 +112,22 @@
       },
     methods: {
       onSubmit () {
-        this.$message('模拟数据，这个方法并不管用哦~');
+        //this.$message('模拟数据，这个方法并不管用哦~');
+          this.$ajax({
+              method: 'get', //请求方式
+              url: 'http://10.103.243.94:8080/purchaseLog/page',
+              params:{
+                  size:5,
+                  page:this.currentPage,
+                  purchaseNumber:this.search.purchaseNumber,
+                  buyerName:this.search.buyerName
+              }
+          }).then(
+              (res) => {
+                  this.tableData=[];
+                  this.tableData =res.data.data.results;
+                  console.log(this.tableData);
+              });
       },
       handleDelete (index, row) {
         this.tableData.splice(index, 1);

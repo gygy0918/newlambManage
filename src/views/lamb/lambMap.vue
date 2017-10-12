@@ -8,7 +8,7 @@
   </div>
 </template>
 <script src="http://webapi.amap.com/maps?v=1.3&key=70d7bf19a3d97be874adc1b3b76a07a8""></script>
-   <script src="http://webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
+<script src="http://webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
 <script> 
   import AMap from 'AMap'
   var map

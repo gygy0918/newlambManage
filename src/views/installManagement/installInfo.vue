@@ -3,15 +3,16 @@
     <el-row>
       <el-col :span="24">
         <!--表单-->
-        <el-form :inline="true" :model="formInline" class="demo-form-inline">
+        <el-form :inline="true" :model="search" class="demo-form-inline">
           <el-form-item label="安装单号">
-      <el-input size="small" v-model="formInline.search.installnumber" placeholder="安装单号"></el-input>
+      <el-input size="small" v-model="search.id" placeholder="安装单号"></el-input>
           </el-form-item>
-          <el-form-item label="安装人姓名">
+        <!--  <el-form-item label="安装人姓名">
             <el-input size="small" v-model="formInline.search.installname" placeholder="安装人姓名"></el-input>
           </el-form-item>
-          <el-form-item label="下发人姓名">
-            <el-input size="small" v-model="formInline.search.xiafaname" placeholder="安装人姓名"></el-input>
+          -->
+          <el-form-item label="决策人姓名">
+            <el-input size="small" v-model="search.decisionMakerName" placeholder="决策人姓名"></el-input>
           </el-form-item> 
           <el-button type="primary" @click="onSubmit">查询</el-button>
           <a href="javascript:;" id="download" style="float: right;color: #169bd5;font-size: 14px;padding-top: 7px" @click="download()" download="download.csv">导出数据</a>
@@ -45,7 +46,8 @@
           </el-table-column>  
           <el-table-column label="操作">
             <template scope="scope">
-              <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">查看详情</el-button>
+              <el-button type="primary" size="mini" @click="handleDetail(scope.$index, scope.row)">查看详情</el-button>
+              <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">生成日志</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -61,7 +63,7 @@
         </div>
       </el-col>
     </el-row>
-    <el-dialog title="安装单详情" v-model="dialogFormVisible" size="small">
+    <el-dialog title="安装单详情" v-model="dialogTableVisible" size="small">
         <el-table :data="form" border  style="width: 100%">
               <el-table-column
                 prop="goodsName"
@@ -88,6 +90,32 @@
               </el-table-column>
         </el-table>
     </el-dialog>
+      <el-dialog title="编辑" v-model="dialogFormVisible" size="small">
+          <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+              <el-form-item label="安装单编号" prop="installNumber">
+                  <el-input v-model="ruleForm.installNumber"></el-input>
+              </el-form-item>
+              <el-form-item label="安装人编号" prop="installerNumber">
+                  <el-input v-model="ruleForm.installerNumber"></el-input>
+              </el-form-item>
+              <el-form-item label="安装人姓名" prop="installerName">
+                  <el-input v-model="ruleForm.installerName"></el-input>
+              </el-form-item>
+              <el-form-item label="录入人编号" prop="inputNumber">
+                  <el-input v-model="ruleForm.inputNumber"></el-input>
+              </el-form-item>
+              <el-form-item label="录入人姓名" prop="inputName">
+                  <el-input v-model="ruleForm.inputName"></el-input>
+              </el-form-item>
+              <el-form-item label="备注" prop="other">
+                  <el-input type="textarea" v-model="ruleForm.other"></el-input>
+              </el-form-item>
+              <el-form-item>
+                  <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
+                  <el-button @click="resetForm('ruleForm')">重置</el-button>
+              </el-form-item>
+          </el-form>
+      </el-dialog>
   </section>
 </template>
 <script type="text/ecmascript-6">
@@ -95,14 +123,18 @@
   export default {
     data () {
       return {
-        formInline: {
           search: {
-            installnumber: '',
-            installname: '',
-            xiafaname: '',
-            address: []
-          }
+              id: '',
+              decisionMakerName: ''
         },
+          ruleForm: {
+              installNumber: '',
+              installerNumber: '',
+              installerName:'',
+              inputNumber: '',
+              inputName: '',
+              other: '',
+          },
         tableData: [],
         options: [],
         places: [],
@@ -116,7 +148,7 @@
       created () {
         this.$ajax({
             method: 'get', //请求方式
-            url: 'http://10.103.241.154:8011/installinfo/page', 
+            url: 'http://10.103.241.154:8080/installinfo/page',
             params:{
             size:5,
             page:this.currentPage
@@ -130,7 +162,21 @@
       },
     methods: {
       onSubmit () {
-        this.$message('模拟数据，这个方法并不管用哦~');
+          this.$ajax({
+              method: 'get', //请求方式
+              url: 'http://10.103.241.154:8080/installinfo/page',
+              params:{
+                  size:5,
+                  page:this.currentPage,
+                  id:this.search.id,
+                  decisionMakerName:this.search.decisionMakerName
+              }
+          }).then(
+              (res) => {
+                  this.tableData=[];
+                  this.tableData =res.data.data.results;
+                  console.log(this.tableData);
+              });
       },
       handleDelete (index, row) {
         this.tableData.splice(index, 1);
@@ -139,13 +185,13 @@
           type: 'success'
         });
       },
-      handleEdit (index, row) {
-        this.dialogFormVisible = true;
+      handleDetail (index, row) {
+        this.dialogTableVisible = true;
         console.log('00000',row.id)
         let id=row.id;
        this.$ajax({
             method: 'get', //请求方式
-            url: 'http://10.103.241.154:8011/installdetail/page', 
+            url: 'http://10.103.241.154:8080/installdetail/page',
             params:{
             installNumber:id,
             size:5,
@@ -159,6 +205,10 @@
             console.log('99999',this.form);
             }); 
       },
+        handleEdit (index, row) {
+            this.dialogFormVisible = true;
+            this.ruleForm.installNumber=row.id
+        },
       handleSave () {
         this.$confirm('确认提交吗？', '提示', {
           confirmButtonText: '确定',
@@ -183,6 +233,35 @@
 
         });
       },
+        submitForm(formName) {
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    let para = Object.assign({}, this.ruleForm);
+                    var data=para;
+                    console.log('*****s',data);
+                    this.$ajax({
+                        method: 'post', //请求方式
+                        url: 'http://10.103.243.94:8080/purchaseLog',
+                        data:data
+                    }).then(
+                        (res) => {
+                            this.tableData=[];
+                            this.tableData =data;
+                            console.log(this.tableData);
+                        });
+                    this.$message({
+                        message: "提交成功，请在控制台查看json!！",
+                        type: 'success'
+                    });
+                    this.$router.push({ path: 'installLog' })
+                } else {
+                    return false;
+                }
+            });
+        },
+        resetForm(formName) {
+            this.$refs[formName].resetFields();
+        },
       download: function() {
         var obj = document.getElementById('download');
         var str = "姓名,出生日期,地址\n";

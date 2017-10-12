@@ -66,7 +66,7 @@
             console.log('*****s',data);
         this.$ajax({
             method: 'post', //请求方式
-            url: 'http://10.103.241.110:8011/maintainInput/save', 
+            url: 'http://10.103.241.110:8080/maintainInput/save', 
             data:data
             }).then( 
             (res) => {
