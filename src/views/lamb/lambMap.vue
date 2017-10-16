@@ -33,6 +33,7 @@
   },
     mounted: function () {
       this.init()
+
     },
     methods: {
       init: function () {
@@ -43,9 +44,14 @@
                   scrollWheel: false
               });
 
-            //点击鼠标添加新的坐标点，并获得添加的位置信息
+          //点击鼠标添加新的坐标点，并获得添加的位置信息
             map.on('click', function(e) {
              bind();
+             var lnglatXY=[];
+             lnglatXY.push(e.lnglat.getLng());
+             lnglatXY.push(e.lnglat.getLat());
+             // this.regeocoder(lnglatXY)
+
             console.log('您在[ '+e.lnglat.getLng()+','+e.lnglat.getLat()+' ]的位置点击了地图！');
             });
               //bt1的click的绑定事件
@@ -61,28 +67,27 @@
           });
 
   //拖拽
-    AMapUI.loadUI(['misc/PositionPicker'], function(PositionPicker) {
-        var positionPicker = new PositionPicker({
-            mode: 'dragMap',
-            map: map
-        });
-           positionPicker.on('success', function(positionResult) {
-            console.log(positionResult.position);
-            console.log(positionResult.address);
-            console.log(positionResult.nearestJunction);
-            console.log(positionResult.nearestRoad);
-           console.log(positionResult.nearestPOI);
-        });
-        positionPicker.start();
-          map.panBy(0, 1);
-      });
+//    AMapUI.loadUI(['misc/PositionPicker'], function(PositionPicker) {
+//        var positionPicker = new PositionPicker({
+//            mode: 'dragMap',
+//            map: map
+//        });
+//           positionPicker.on('success', function(positionResult) {
+//            console.log(positionResult.position);
+//            console.log(positionResult.address);
+//            console.log(positionResult.nearestJunction);
+//            console.log(positionResult.nearestRoad);
+//           console.log(positionResult.nearestPOI);
+//        });
+//        positionPicker.start();
+//          map.panBy(0, 1);
+//      });
 
-      };
+      };//初始化完毕
 
 
               //后台返回地理位置信息
                var lnglats=[
-               
                    [116.382122,39.921176],
                    [116.387271,39.922501],
                    [116.398258,39.914600]
@@ -103,20 +108,20 @@
                               marker.emit('click',{target:marker});
                           } 
                         function markerClick(e){
+        console.log('oooo',e.lnglat)
                             infoWindow.setContent(e.target.content);
                             infoWindow.open(map, e.target.getPosition());
                         }
               map.setFitView();
       },
-
-          addMarker(){
-            console.log(888888)
-                     var marker=new AMap.Marker({                    
-                    position:[116.368904,39.923423]
-                    });  
-                    marker.setMap(map);  //在地图上添加点 
-                          console.log('ppppp')
-              },
+//          addMarker(){
+//            console.log(888888)
+//                     var marker=new AMap.Marker({
+//                    position:[116.368904,39.923423]
+//                    });
+//                    marker.setMap(map);  //在地图上添加点
+//                          console.log('ppppp')
+//              },
 
     }
 

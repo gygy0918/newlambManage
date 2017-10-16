@@ -47,7 +47,7 @@
           <el-table-column label="操作">
             <template scope="scope">
               <el-button type="primary" size="mini" @click="handleDetail(scope.$index, scope.row)">查看详情</el-button>
-              <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">生成日志</el-button>
+              <el-button type="primary" size="mini" @click="handleLog(scope.$index, scope.row)">生成日志</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -77,7 +77,7 @@
               </el-table-column>
               <el-table-column
                 prop="goodsNumber"
-                label="物品名称"
+                label="物品编号"
                 width="100">
               </el-table-column>
               <el-table-column
@@ -88,8 +88,36 @@
                 prop="switchNumber"
                 label="所属开关">
               </el-table-column>
+            <el-table-column label="操作">
+                <template scope="scope">
+                    <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">修改</el-button>
+                </template>
+            </el-table-column>
         </el-table>
     </el-dialog>
+      <el-dialog title="修改信息"  v-model="dialogFormVisibleone" size="small">
+          <el-form :model="formE" :rules="rules" ref="formE" label-width="100px" class="demo-ruleForm">
+              <el-form-item label="物品名称" >
+                  <el-input v-model="formE.goodsName" :disabled="true"></el-input>
+              </el-form-item>
+              <el-form-item label="类型" >
+                  <el-input v-model="formE.type" :disabled="true"></el-input>
+              </el-form-item>
+              <el-form-item label="物品编号" >
+                  <el-input v-model="formE.goodsNumber" :disabled="true"></el-input>
+              </el-form-item>
+              <el-form-item label="位置" >
+                  <el-input v-model="formE.location" ></el-input>
+              </el-form-item>
+              <el-form-item label="所属开关" >
+                  <el-input v-model="formE.switchNumber"></el-input>
+              </el-form-item>
+              <el-form-item>
+                  <el-button type="primary" @click="submitFormEdit('formE')">立即创建</el-button>
+                  <el-button @click="resetForm('formE')">重置</el-button>
+              </el-form-item>
+          </el-form>
+      </el-dialog>
       <el-dialog title="编辑" v-model="dialogFormVisible" size="small">
           <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
               <el-form-item label="安装单编号" prop="installNumber">
@@ -139,10 +167,35 @@
         options: [],
         places: [],
         dialogFormVisible: false,
-        editLoading: false,
+          dialogTableVisible: false,
+          editLoading: false,
+          dialogFormVisibleone:false,
         form: [],
+          formE:{
+              goodsName:'',
+              goodsNumber:'',
+              id:'',
+              installNumber :'',
+              location :'',
+              switchNumber:'',
+              type:''},
         currentPage: 1,
         table_index: 999,
+          rules: {
+              name: [
+                  {required: true, message: '请输入物品名称', trigger: 'blur'},
+                  {min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur'}
+              ],
+              type1: [
+                  {required: true, message: '请选择待办物品类型', trigger: 'change'}
+              ],
+              date: [
+                  {type: 'date', required: true, message: '请选择提醒时间', trigger: 'change'}
+              ],
+              other: [
+                  {required: true, message: '请填写其他信息', trigger: 'blur'}
+              ]
+          }
       };
     },
       created () {
@@ -205,9 +258,14 @@
             console.log('99999',this.form);
             }); 
       },
-        handleEdit (index, row) {
+        handleLog (index, row) {
             this.dialogFormVisible = true;
             this.ruleForm.installNumber=row.id
+        },
+        handleEdit (index, row) {
+console.log('编辑编辑',row)
+            this.formE=row;
+this.dialogFormVisibleone=true;
         },
       handleSave () {
         this.$confirm('确认提交吗？', '提示', {
@@ -261,6 +319,27 @@
         },
         resetForm(formName) {
             this.$refs[formName].resetFields();
+        },
+        submitFormEdit(formName) {
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    let para = Object.assign({}, this.formE);
+                    var data=para;
+                    console.log('*****s',data);
+                    this.$ajax({
+                        method: 'put', //请求方式
+                        url: 'http://10.103.241.154:8080/installdetail',
+                        data: data
+                    }).then(
+                        (res) => {
+                            console.log('=====', res)
+
+                        });
+                    this.dialogFormVisibleone=false;
+                } else {
+                    return false;
+                }
+            });
         },
       download: function() {
         var obj = document.getElementById('download');

@@ -56,9 +56,8 @@
           </el-table-column>
           <el-table-column label="操作">
             <template scope="scope">
-              <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">查看详情</el-button>
+              <el-button type="primary" size="mini" @click="handleDetail(scope.$index, scope.row)">查看详情</el-button>
                 <el-button type="primary" size="mini" @click="handleLog(scope.$index, scope.row)">日志生成</el-button>
-              <el-button type="primary" size="mini" @click="handleLog(scope.$index, scope.row)">日志生成</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -97,8 +96,36 @@
                 prop="type"
                 label="类别">
               </el-table-column>
+            <el-table-column label="操作">
+                <template scope="scope">
+                    <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">修改</el-button>
+                </template>
+            </el-table-column>
         </el-table>
     </el-dialog>
+      <el-dialog title="修改信息"  v-model="dialogFormVisibleone" size="small">
+          <el-form :model="formE" :rules="rules" ref="formE" label-width="100px" class="demo-ruleForm">
+              <el-form-item label="物品名称" >
+                  <el-input v-model="formE.name"></el-input>
+              </el-form-item>
+              <el-form-item label="数量" >
+                  <el-input v-model="formE.countDetail"></el-input>
+              </el-form-item>
+              <el-form-item label="单价" >
+                  <el-input v-model="formE.price"></el-input>
+              </el-form-item>
+              <el-form-item label="功率" >
+                  <el-input v-model="formE.power"></el-input>
+              </el-form-item>
+              <el-form-item label="类别" >
+                  <el-input v-model="formE.type"></el-input>
+              </el-form-item>
+              <el-form-item>
+                  <el-button type="primary" @click="submitFormEdit('formE')">立即创建</el-button>
+                  <el-button @click="resetForm('formE')">重置</el-button>
+              </el-form-item>
+          </el-form>
+      </el-dialog>
       <el-dialog title="录入日志信息" v-model="dialogFormVisible" size="small">
           <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
               <el-form-item label="采购单编号" prop="purchaseNumber">
@@ -149,11 +176,36 @@
         tableData: [],
         options: [],
         places: [],
+       dialogTableVisible:false,
         dialogFormVisible: false,
         editLoading: false,
-        form:[],
+        dialogFormVisibleone:false,
+        formE:{
+            name:'',
+            countDetail:'',
+            price:'',
+            power:'',
+            type:''
+
+        },
+          form:[],
         currentPage: 1,
         table_index: 999,
+          rules: {
+              name: [
+                  {required: true, message: '请输入物品名称', trigger: 'blur'},
+                  {min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur'}
+              ],
+              type1: [
+                  {required: true, message: '请选择待办物品类型', trigger: 'change'}
+              ],
+              date: [
+                  {type: 'date', required: true, message: '请选择提醒时间', trigger: 'change'}
+              ],
+              other: [
+                  {required: true, message: '请填写其他信息', trigger: 'blur'}
+              ]
+          }
       };
     },
       created () {
@@ -172,53 +224,62 @@
             }); 
       },
     methods: {
-      onSubmit () {
-        //this.$message('模拟数据，这个方法并不管用哦~');
-          this.$ajax({
-              method: 'post', //请求方式
-              url: 'http://10.103.243.94:8080/purchaseInfo/page',
-              params:{
-                  size:5,
-                  page:this.currentPage,
-                  purchaseManagerName:this.search.purchaseManagerName,
-                  purchaseNumber:this.search.purchaseNumber
-              }
-          }).then(
-              (res) => {
-                  console.log('=====',res)
-                  this.tableData=[];
-                  this.tableData =res.data.data.results;
-                  console.log(this.tableData);
-              });
-      },
-      handleDelete (index, row) {
-        this.tableData.splice(index, 1);
-        this.$message({
-          message: "操作成功！",
-          type: 'success'
-        });
-      },
-      handleEdit (index, row) {
-        this.dialogTableVisible = true;
-        console.log('00000',row)
-        let id=row.purchaseNumber;
-        console.log('idid',id)
-       this.$ajax({
-            method: 'get', //请求方式
-            url: 'http://10.103.243.94:8080/purchaseDetail/page',
-            params:{
-            purchaseNumber:id,
-            size:5,
-            page:this.currentPage
-            }
-            }).then( 
-            (res) => {
-             console.log('=====',res)
-            this.form=[];
-           this.form =res.data.data.results;
-            console.log('99999',this.form);
-            }); 
-      },
+        onSubmit() {
+            //this.$message('模拟数据，这个方法并不管用哦~');
+            this.$ajax({
+                method: 'post', //请求方式
+                url: 'http://10.103.243.94:8080/purchaseInfo/page',
+                params: {
+                    size: 5,
+                    page: this.currentPage,
+                    purchaseManagerName: this.search.purchaseManagerName,
+                    purchaseNumber: this.search.purchaseNumber
+                }
+            }).then(
+                (res) => {
+                    console.log('=====', res)
+                    this.tableData = [];
+                    this.tableData = res.data.data.results;
+                    console.log(this.tableData);
+                });
+        },
+        handleDelete(index, row) {
+            this.tableData.splice(index, 1);
+            this.$message({
+                message: "操作成功！",
+                type: 'success'
+            });
+        },
+        handleDetail(index, row) {
+            this.dialogTableVisible = true;
+            console.log('00000xaingq', row)
+            let id = row.purchaseNumber;
+            console.log('idid', id)
+            this.$ajax({
+                method: 'get', //请求方式
+                url: 'http://10.103.243.94:8080/purchaseDetail/page',
+                params: {
+                    purchaseNumber: id,
+                    size: 5,
+                    page: this.currentPage
+                }
+            }).then(
+                (res) => {
+                    console.log('=====', res)
+                    this.form = [];
+                    this.form = res.data.data.results;
+                    console.log('99999', this.form);
+                });
+        },
+        handleEdit(index, row){
+            console.log('888编辑',row)
+            this.dialogFormVisibleone=true;
+//            let id = row.id;
+//            console.log('row888编辑', row)
+
+           this.formE=row;
+
+    },
         logInput(index,row){
           let id=this.row.id;
 
@@ -273,6 +334,27 @@
                         type: 'success'
                     });
                     this.$router.push({ path: 'supplierLogInfo' })
+                } else {
+                    return false;
+                }
+            });
+        },
+        submitFormEdit(formName) {
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    let para = Object.assign({}, this.formE);
+                    var data=para;
+                    console.log('*****s',data);
+                    this.$ajax({
+                        method: 'put', //请求方式
+                        url: 'http://10.103.243.94:8080/purchaseInfo',
+                        data: data
+                    }).then(
+                        (res) => {
+                           console.log('保存成功')
+
+                        });
+                    this.dialogFormVisibleone=false;
                 } else {
                     return false;
                 }

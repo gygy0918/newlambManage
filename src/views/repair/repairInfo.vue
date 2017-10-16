@@ -80,7 +80,7 @@
               </el-table-column>
         </el-table>
     </el-dialog>
-    <el-dialog title="维修单详情" v-model="dialogFormVisible" size="small">
+    <el-dialog title="录入维修日志" v-model="dialogFormVisible" size="small">
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
         <el-form-item label="维修单编号" prop="maintainNumber">
           <el-input v-model="ruleForm.maintainNumber"></el-input>
@@ -106,7 +106,7 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-    <el-dialog title="维修单详情" v-model="dialogTableVisible" size="small">
+    <el-dialog title="维修单详情" v-model="dialogFormVisibleone" size="small">
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
         <el-form-item label="维修单编号" prop="maintainNumber">
           <el-input v-model="ruleForm.maintainNumber"></el-input>
@@ -155,11 +155,29 @@
         tableData: [],
         options: [],
         places: [],
+          dialogTableVisible: false,
+          editLoading: false,
+          dialogFormVisibleone:false,
         dialogFormVisible: false,
         editLoading: false,
         form:[],
         currentPage: 1,
         table_index: 999,
+          rules: {
+              name: [
+                  {required: true, message: '请输入物品名称', trigger: 'blur'},
+                  {min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur'}
+              ],
+              type1: [
+                  {required: true, message: '请选择待办物品类型', trigger: 'change'}
+              ],
+              date: [
+                  {type: 'date', required: true, message: '请选择提醒时间', trigger: 'change'}
+              ],
+              other: [
+                  {required: true, message: '请填写其他信息', trigger: 'blur'}
+              ]
+          }
       };
     },
       created () {
@@ -221,7 +239,7 @@
             }); 
       },
         handleEdit (index, row) {
-            this.dialogFormVisible= true;
+            this.dialogFormVisibleone= true;
             console.log('00000',row.maintainNumber)
             this.ruleForm.maintainNumber=row.maintainNumber
         },

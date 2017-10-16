@@ -3,7 +3,7 @@
     <el-row>
       <el-col :span="24">
         <!--表单-->
-        <el-form :inline="true" :model="search" class="demo-form-inline"  style="width:80%;margin:0 auto">
+        <el-form :inline="true" :model="search" class="demo-form-inline"  style="width:100%;margin:0 auto">
           <el-form-item label="物品名称">
           <el-input size="small" v-model="search.name" placeholder="物品名称"></el-input>
           </el-form-item>
