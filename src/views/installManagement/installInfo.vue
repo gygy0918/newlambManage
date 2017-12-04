@@ -7,13 +7,34 @@
           <el-form-item label="安装单号">
       <el-input size="small" v-model="search.id" placeholder="安装单号"></el-input>
           </el-form-item>
-        <!--  <el-form-item label="安装人姓名">
-            <el-input size="small" v-model="formInline.search.installname" placeholder="安装人姓名"></el-input>
-          </el-form-item>
-          -->
           <el-form-item label="决策人姓名">
             <el-input size="small" v-model="search.decisionMakerName" placeholder="决策人姓名"></el-input>
-          </el-form-item> 
+          </el-form-item>
+          <el-form-item label="物品名称">
+                <el-input size="small" v-model="search.goodsName" placeholder="决策人姓名"></el-input>
+          </el-form-item>
+            <el-form-item label="位置">
+                <el-input size="small" v-model="search.location" placeholder="仓库名称"></el-input>
+            </el-form-item>
+            <el-collapse v-model="activeNames" @change="handleChange" style="border: none;display: inline-block">
+                <el-collapse-item title="更多查询条件" name="1">
+                    <el-form-item label="决策人编号">
+                        <el-input size="small" v-model="search.decisionMakerNumber" placeholder="数量"></el-input>
+                    </el-form-item>
+                    <el-form-item label="生成时间">
+                        <el-input size="small" v-model="search.createTime" placeholder="生成时间"></el-input>
+                    </el-form-item>
+                    <el-form-item label="物品编号">
+                        <el-input size="small" v-model="search.goodsNumber" placeholder="物品编号"></el-input>
+                    </el-form-item>
+                    <el-form-item label="类型">
+                        <el-input size="small" v-model="search.type" placeholder="仓库名称"></el-input>
+                    </el-form-item>
+                    <el-form-item label="所属开关">
+                        <el-input size="small" v-model="search.switchNumber" placeholder="仓库名称"></el-input>
+                    </el-form-item>
+                </el-collapse-item>
+            </el-collapse>
           <el-button type="primary" @click="onSubmit">查询</el-button>
           <a href="javascript:;" id="download" style="float: right;color: #169bd5;font-size: 14px;padding-top: 7px" @click="download()" download="download.csv">导出数据</a>
         </el-form>
@@ -153,7 +174,16 @@
       return {
           search: {
               id: '',
-              decisionMakerName: ''
+              decisionMakerName: '',
+              decisionMakerNumber:'',
+              createTime:'',
+              goodsName:'',
+              goodsNumber:'',
+              id:'',
+              installNumber :'',
+              location :'',
+              switchNumber:'',
+              type:''
         },
           ruleForm: {
               installNumber: '',

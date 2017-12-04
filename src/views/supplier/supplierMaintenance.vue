@@ -26,7 +26,7 @@
      <el-form-item label="采购类型" prop="type">
         <el-radio-group v-model="newForm.type">
           <el-radio label="1">电灯</el-radio>
-          <el-radio label="2">开关</el-radio>
+          <el-radio label="0">开关</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="采购数量" prop="countDetail">
@@ -155,7 +155,7 @@
       created () {
           this.$ajax({
               method: 'get', //请求方式
-              url: 'http://10.103.243.94:8080/commodity/page',
+              url: 'http://10.103.243.94:8080/warehouse/page',
               params:{
                   size:5,
                   page:this.currentPage

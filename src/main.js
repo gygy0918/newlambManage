@@ -21,6 +21,19 @@ import Sticky from 'components/Sticky'; // 粘性header组件
 import vueWaves from './directive/waves';// 水波纹指令
 import errLog from 'store/errLog';// error log组件
 import './mock/index.js';  // 该项目所有请求使用mockjs模拟
+// import '../static/rabbitmq/sockjs-0.3';
+// import '../static/rabbitmq/stomp'
+//import { ApolloClient, createBatchingNetworkInterface } from 'apollo-client';
+// Create the apollo client
+// const apolloClient = new ApolloClient({
+//     networkInterface: createBatchingNetworkInterface({
+//         uri: 'http://localhost:3020/graphql',
+//     }),
+//     connectToDevTools: true,
+// })
+// Install the vue plugin
+//Vue.use(VueApollo)
+
 
 //register axios as $ajax
 Vue.prototype.$ajax = Axios;
@@ -116,9 +129,12 @@ if (process.env === 'production') {
 //         origin.call(console, errorlog);
 //     }
 // })(console.error);
-
+// const apolloProvider = new VueApollo({
+//     defaultClient: apolloClient,
+// })
 new Vue({
   router,
+    //apolloProvider,
   store,
   render: h => h(App)
 }).$mount('#app');

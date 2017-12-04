@@ -7,13 +7,25 @@
           <el-form-item label="维修单号">
             <el-input size="small" v-model="search.maintainNumber" placeholder="维修单号"></el-input>
           </el-form-item>
-         <!-- <el-form-item label="维修人姓名">
-            <el-input size="small" v-model="search.installname" placeholder="维修人姓名"></el-input>
-          </el-form-item>
-          -->
           <el-form-item label="监控人姓名">
             <el-input size="small" v-model="search.monitorName" placeholder="监控人姓名"></el-input>
-          </el-form-item> 
+          </el-form-item>
+          <el-form-item label="物品名称">
+            <el-input size="small" v-model="search.lightName" placeholder="物品名称"></el-input>
+          </el-form-item>
+          <el-form-item label="位置">
+            <el-input size="small" v-model="search.location" placeholder="位置"></el-input>
+          </el-form-item>
+          <el-collapse v-model="activeNames" @change="handleChange" style="border: none;display: inline-block">
+            <el-collapse-item title="更多查询条件" name="1">
+              <el-form-item label="生成时间">
+                <el-input size="small" v-model="search.createTime" placeholder="生成时间"></el-input>
+              </el-form-item>
+              <el-form-item label="所属开关">
+                <el-input size="small" v-model="search.switchNumber" placeholder="所属开关"></el-input>
+              </el-form-item>
+            </el-collapse-item>
+          </el-collapse>
           <el-button type="primary" @click="onSubmit">查询</el-button>
           <a href="javascript:;" id="download" style="float: right;color: #169bd5;font-size: 14px;padding-top: 7px" @click="download()" download="download.csv">导出数据</a>
         </el-form>

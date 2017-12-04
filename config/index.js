@@ -25,7 +25,7 @@ module.exports = {
     },
     dev: {
         env: require('./dev.env'),
-        port: 9527,
+        port: 9000,
         autoOpenBrowser: true,
         assetsSubDirectory: 'static',
         assetsPublicPath: '/',
@@ -35,7 +35,7 @@ module.exports = {
                 // target:'http://m.bdtrip.com.cn/bd_cms_mobile',
              /*   target:'http://123.56.148.217:7070',*///bdtrip_manage/merchant/getMerchantList.htm?pageSize=10&pageNo=1',
                 target:'http://192.168.40.196:8080',
-                changeOrigin:true,
+                changeOrigin:true,//解决跨域问题
                 pathRewrite:{
                     '/api':''
                 }

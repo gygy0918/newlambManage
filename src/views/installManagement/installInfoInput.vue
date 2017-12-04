@@ -151,7 +151,7 @@
     created () {
           this.$ajax({
               method: 'get', //请求方式
-              url: 'http://10.103.243.94:8080/commodity/page',
+              url: 'http://10.103.243.94:8080/warsehouse/page',
               params:{
                   size:5,
                   page:this.currentPage,
@@ -171,7 +171,7 @@
                 if(value!='电灯'){
                     this.$ajax({
                         method: 'get', //请求方式
-                        url: 'http://10.103.243.94:8080/commodity/page',
+                        url: 'http://10.103.243.94:8080/warsehouse/page',
                         params:{
                             size:5,
                             page:this.currentPage,
@@ -186,7 +186,7 @@
                 }else{
                     this.$ajax({
                         method: 'get', //请求方式
-                        url: 'http://10.103.243.94:8080/commodity/page',
+                        url: 'http://10.103.243.94:8080/warehouse/page',
                         params:{
                             size:5,
                             page:this.currentPage,

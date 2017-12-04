@@ -3,8 +3,8 @@
     <el-form :inline="true"  class="demo-form-inline" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" >
     <el-form-item label="物品类型" prop="type">
         <el-radio-group v-model="newForm.type" @change="getType(newForm.type)">
-          <el-radio label="电灯">电灯</el-radio>
-          <el-radio label="开关">开关</el-radio>
+          <el-radio label="1">电灯</el-radio>
+          <el-radio label="0">开关</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="添加维修物品">
@@ -213,7 +213,7 @@
             if(value!='电灯'){
                 this.$ajax({
                     method: 'get', //请求方式
-                    url: 'http://10.103.243.94:8080/commodity/page',
+                    url: 'http://10.103.243.94:8080/warehouse/page',
                     params:{
                         size:5,
                         page:this.currentPage,
@@ -227,7 +227,7 @@
             }else{
                 this.$ajax({
                     method: 'get', //请求方式
-                    url: 'http://10.103.243.94:8080/commodity/page',
+                    url: 'http://10.103.243.94:8080/warehouse/page',
                     params:{
                         size:5,
                         page:this.currentPage,

@@ -3,13 +3,35 @@
     <el-row>
       <el-col :span="24">
         <!--表单-->
-        <el-form :inline="true" :model="formInline" class="demo-form-inline">
+        <el-form :inline="true" :model="search" class="demo-form-inline">
           <el-form-item label="人员编号">
-            <el-input size="small" v-model="formInline.search.staffNumber " placeholder="人员编号"></el-input>
+            <el-input size="small" v-model="search.staffNumber " placeholder="人员编号"></el-input>
           </el-form-item>
           <el-form-item label="姓名">
-            <el-input size="small" v-model="formInline.search.staffName" placeholder="姓名"></el-input>
+            <el-input size="small" v-model="search.staffName" placeholder="姓名"></el-input>
           </el-form-item>
+          <el-form-item label="性别">
+            <el-input size="small" v-model="search.gender" placeholder="性别"></el-input>
+          </el-form-item>
+          <el-form-item label="部门">
+            <el-input size="small" v-model="search.department" placeholder="部门"></el-input>
+          </el-form-item>
+          <el-collapse v-model="activeNames" @change="handleChange" style="border: none;display: inline-block">
+            <el-collapse-item title="更多查询条件" name="1">
+              <el-form-item label="职位">
+                <el-input size="small" v-model="search.job" placeholder="职位"></el-input>
+              </el-form-item>
+              <el-form-item label="电话">
+                <el-input size="small" v-model="search.phoneNumber" placeholder="电话"></el-input>
+              </el-form-item>
+              <el-form-item label="身份证号码">
+                <el-input size="small" v-model="search.idNumber" placeholder="身份证号码"></el-input>
+              </el-form-item>
+              <el-form-item label="住址">
+                <el-input size="small" v-model="search.address" placeholder="家庭住址"></el-input>
+              </el-form-item>
+            </el-collapse-item>
+          </el-collapse>
           <el-button type="primary" @click="onSubmit">查询</el-button>
           <a href="javascript:;" id="download" style="float: right;color: #169bd5;font-size: 14px;padding-top: 7px" @click="download()" download="download.csv">导出数据</a>
         </el-form>
@@ -118,14 +140,12 @@
   export default {
     data () {
       return {
-        formInline: {
           search: {
             purchaseNumber: '',
             puchername: '',
             purchaseManagerName: '',
             address: [],
             place: ''
-          }
         },
         tableData: [],
         options: [],

@@ -177,8 +177,8 @@ export const asyncRouterMap = [
     meta: { role: ['purchaser','admin'] },
     children: [
       { path: 'repertoryInfo', component: repertoryInfo, name: '库存信息' }
-      // ,
-      // { path: 'repertoryInput', component: repertoryInput, name: '库存录入' }
+      ,
+      { path: 'repertoryInput', component: repertoryInput, name: '库存日志' }
       // { path: 'newInfo', component: SupplierMaintenance, name: '新增采购单' },
       // { path: 'contract', component: SupplierContract, name: '库存信息' },
     ]

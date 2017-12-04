@@ -7,16 +7,32 @@
           <el-form-item label="采购单号">
             <el-input size="small" v-model="search.purchaseNumber" placeholder="采购单号"></el-input>
           </el-form-item>
-     <!--     <el-form-item label="采购人姓名">
-            <el-input size="small" v-model="search.installname" placeholder="采购人姓名"></el-input>
+          <el-form-item label="数量">
+            <el-input size="small" v-model="search.totalCount" placeholder="采购人姓名"></el-input>
           </el-form-item>
-          -->
-          <el-form-item label="下发人姓名">
-            <el-input size="small" v-model="search.purchaseManagerName" placeholder="采购人姓名"></el-input>
-          </el-form-item> 
+            <el-form-item label="总价">
+                <el-input size="small" v-model="search.totalPrice" placeholder="采购人姓名"></el-input>
+            </el-form-item>
+            <el-form-item label="下发人姓名">
+                <el-input size="small" v-model="search.purchaseManagerName" placeholder="采购人姓名"></el-input>
+            </el-form-item>
+            <el-collapse v-model="activeNames" @change="handleChange" style="border: none;display: inline-block">
+                <el-collapse-item title="更多查询条件" name="1">
+                    <el-form-item label="下发人编号">
+                        <el-input size="small" v-model="search.purchaseManagerNumber" placeholder="采购人姓名"></el-input>
+                    </el-form-item>
+                    <el-form-item label="生成时间">
+                        <el-input size="small" v-model="search.createTime" placeholder="采购人姓名"></el-input>
+                    </el-form-item>
+                    <el-form-item label="类别">
+                        <el-input size="small" v-model="search.typeName" placeholder="采购人姓名"></el-input>
+                    </el-form-item>
+                </el-collapse-item>
+            </el-collapse>
           <el-button type="primary" @click="onSubmit">查询</el-button>
           <a href="javascript:;" id="download" style="float: right;color: #169bd5;font-size: 14px;padding-top: 7px" @click="download()" download="download.csv">导出数据</a>
         </el-form>
+
         <!--表格-->
         <el-table
           :data="tableData"
@@ -27,7 +43,7 @@
           <el-table-column
             prop="purchaseNumber"
             label="采购单号"
-            width="120">
+            width="150">
           </el-table-column>
           <el-table-column
             prop="totalCount"
@@ -42,7 +58,7 @@
           <el-table-column
             prop="purchaseManagerNumber"
             label="下发人员编号"
-            width="80">
+            width="150">
           </el-table-column>
           <el-table-column
             prop="purchaseManagerName"
@@ -52,7 +68,7 @@
           <el-table-column
             prop="createTime"
             label="生成时间"
-            width="80">
+            width="150">
           </el-table-column>
           <el-table-column label="操作">
             <template scope="scope">
@@ -93,7 +109,7 @@
                 label="功率">
               </el-table-column>
               <el-table-column
-                prop="type"
+                prop="typeName"
                 label="类别">
               </el-table-column>
             <el-table-column label="操作">
@@ -118,7 +134,7 @@
                   <el-input v-model="formE.power"></el-input>
               </el-form-item>
               <el-form-item label="类别" >
-                  <el-input v-model="formE.type"></el-input>
+                  <el-input v-model="formE.typeName"></el-input>
               </el-form-item>
               <el-form-item>
                   <el-button type="primary" @click="submitFormEdit('formE')">立即创建</el-button>
@@ -159,6 +175,7 @@
   export default {
     data () {
       return {
+          activeName: '1',
           search: {
             installnumber: '',
             installname: '',
