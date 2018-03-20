@@ -2,6 +2,7 @@
   <section style="margin:50px">
     <el-row>
       <el-col :span="24">
+        <h1>{{hello}}</h1>
         <!--表单-->
         <el-form :inline="true" :model="search" class="demo-form-inline">
           <el-form-item label="人员编号">
@@ -136,10 +137,14 @@
   </section>
 </template>
 <script type="text/ecmascript-6">
+  import gql from 'graphql-tag';
+  import Vue from 'vue';
   const ERR_OK = "000";
+
   export default {
     data () {
       return {
+          hello: '',
           search: {
             purchaseNumber: '',
             puchername: '',
@@ -166,22 +171,51 @@
         table_index: 999,
       };
     },
+      apollo: {
+          // Simple query that will update the 'hello' vue property
+          hello: gql`{hello}`,
+      },
     created () {
-            this.$ajax({
-            method: 'get', //请求方式
-            url: 'http://10.103.243.94:8080/staff/page', 
-            params:{
-            size:5,
-            page:this.currentPage
-            }
-            }).then( 
+//     console.log('graphql',this.$apollo.provider.defaultClient);
+//        console.log('graphqlq',this.$apollo.queries.hello)
+//            this.$ajax({
+//            method: 'get', //请求方式
+//            url: 'http://10.103.243.94:8080/staff/page',
+//            params:{
+//            size:5,
+//            page:this.currentPage
+//            }
+//            }).then(
+//            (res) => {
+//            this.tableData=[];
+//           this.tableData =res.data.data.results;
+//            console.log(this.tableData);
+//            });
+        this.$ajax({
+            method: 'post', //请求方式
+            url: 'http://10.103.243.94/8080/login',
+            data:{username:'ddmin',password:'123456'}
+        }).then(
             (res) => {
-            this.tableData=[];
-           this.tableData =res.data.data.results;
-            console.log(this.tableData);
-            }); 
+                console.log(test,res);
+                this.$message({
+                    message: "提交成功，请在控制台查看json!！",
+                    type: 'success'
+                });
+                this.$router.push({ path: 'personInfo' })
+            });
     },
     methods: {
+//        updateProduct() {
+//            this.$apollo.mutate({
+//                mutation: UpdateProductQuery,
+//                variables: {
+//                    id: this.Product.id,
+//                    title: this.Product.title,
+//                    description: this.Product.description,
+//                },
+//            })
+//        },
       onSubmit () {
         this.$message('模拟数据，这个方法并不管用哦~');
       },
@@ -223,11 +257,11 @@
         console.log(`当前页: ${val}`);
         this.$ajax({
             method: 'post', //请求方式
-            url: 'http://10.103.243.94:8080/staff/page', 
-            data:this.form
+            url: 'http://10.103.243.94/8080/login',
+            data:{username:'ddmin',password:'123456'}
             }).then( 
             (res) => {
-            console.log(res);
+            console.log(test,res);
             this.$message({
               message: "提交成功，请在控制台查看json!！",
               type: 'success'

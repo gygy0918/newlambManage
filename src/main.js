@@ -21,6 +21,10 @@ import Sticky from 'components/Sticky'; // 粘性header组件
 import vueWaves from './directive/waves';// 水波纹指令
 import errLog from 'store/errLog';// error log组件
 import './mock/index.js';  // 该项目所有请求使用mockjs模拟
+import { ApolloClient } from 'apollo-client';
+import { HttpLink } from 'apollo-link-http';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import VueApollo from 'vue-apollo'
 // import '../static/rabbitmq/sockjs-0.3';
 // import '../static/rabbitmq/stomp'
 //import { ApolloClient, createBatchingNetworkInterface } from 'apollo-client';
@@ -34,6 +38,20 @@ import './mock/index.js';  // 该项目所有请求使用mockjs模拟
 // Install the vue plugin
 //Vue.use(VueApollo)
 
+const httpLink = new HttpLink({
+    // You should use an absolute URL here
+    uri: 'http://localhost:3000/graphql',
+})
+
+// Create the apollo client
+const apolloClient = new ApolloClient({
+    link: httpLink,
+    cache: new InMemoryCache(),
+    connectToDevTools: true,
+})
+const apolloProvider = new VueApollo({
+    defaultClient: apolloClient,
+})
 
 //register axios as $ajax
 Vue.prototype.$ajax = Axios;
@@ -42,19 +60,19 @@ Vue.component('multiselect', Multiselect);
 Vue.component('Sticky', Sticky);
 Vue.use(ElementUI);
 Vue.use(vueWaves);
-
+Vue.use(VueApollo)   // Install the vue plugin
 // register global utility filters.
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 });
 
 // permissiom judge
-function hasPermission(roles, permissionRoles) {
-  console.log('*****',roles);
-  if (roles.indexOf('admin') >= 0) return true; // admin权限 直接通过
-  if (!permissionRoles) return true;
-  return roles.some(role => permissionRoles.indexOf(role) >= 0)
-}
+// function hasPermission(roles, permissionRoles) {
+//   console.log('*****',roles);
+//   if (roles.indexOf('admin') >= 0) return true; // admin权限 直接通过
+//   if (!permissionRoles) return true;
+//   return roles.some(role => permissionRoles.indexOf(role) >= 0)
+// }
 
 // register global progress.
 const whiteList = ['/login', '/authredirect', '/reset', '/sendpwd'];// 不重定向白名单
@@ -64,7 +82,6 @@ router.beforeEach((to, from, next) => {
     if (to.path === '/login') {
       next({ path: '/' });
       NProgress.done();
-      
     } else {
       if (store.getters.roles.length === 0) { // 判断当前用户是否已拉取完user_info信息
         store.dispatch('GetInfo').then(res => { // 拉取user_info
@@ -129,12 +146,10 @@ if (process.env === 'production') {
 //         origin.call(console, errorlog);
 //     }
 // })(console.error);
-// const apolloProvider = new VueApollo({
-//     defaultClient: apolloClient,
-// })
+
 new Vue({
   router,
-    //apolloProvider,
   store,
+  apolloProvider,
   render: h => h(App)
 }).$mount('#app');

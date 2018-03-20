@@ -4,9 +4,9 @@
                  label-width="0px"
                  class="card-box login-form">
             <h3 class="title">系统登录</h3>
-            <el-form-item prop="email">
+            <el-form-item prop="username">
                 <span class="svg-container"><wscn-icon-svg icon-class="jiedianyoujian"/></span>
-                <el-input name="email" type="text" v-model="loginForm.email" autoComplete="on"
+                <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on"
                           placeholder="邮箱"></el-input>
             </el-form-item>
             <el-form-item prop="password">
@@ -36,6 +36,7 @@
     import { isWscnEmail } from 'utils/validate';
     // import { getQueryObject } from 'utils';
     import socialSign from './socialsignin';
+    import Cookies from 'js-cookie';
 
     export default {
       components: { socialSign },
@@ -57,13 +58,13 @@
         };
         return {
           loginForm: {
-            email: 'admin@wallstreetcn.com',
+            username: 'admin',
             password: ''
           },
           loginRules: {
-            email: [
-                { required: true, trigger: 'blur', validator: validateEmail }
-            ],
+//            email: [
+//                { required: true, trigger: 'blur', validator: validateEmail }
+//            ],
             password: [
                 { required: true, trigger: 'blur', validator: validatePass }
             ]
@@ -82,6 +83,8 @@
           this.$refs.loginForm.validate(valid => {
             if (valid) {
               this.loading = true;
+              let {username,password}=this.loginForm;
+              let data={username,password}
               this.$store.dispatch('LoginByEmail', this.loginForm).then(() => {
                 this.loading = false;
                 this.$router.push({ path: '/' });
@@ -89,6 +92,21 @@
                 this.$message.error(err);
                 this.loading = false;
               });
+//                console.log('(((((',data)
+//
+//                this.$ajax({
+//                    method: 'post', //请求方式
+//                    url: 'http://10.103.243.94:8080/login',
+//                    data:data
+//                }).then(
+//                    (res) => {
+//                        Cookies.set('Admin-Token', res.data.token);
+//                        this.loading = false;
+//                         this.$router.push({ path: '/' });
+////                        this.options=[];
+////                        this.options =res.data.data.results;
+//                        console.log(res);
+//                    });
             } else {
               console.log('error submit!!');
               return false;

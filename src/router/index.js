@@ -65,6 +65,7 @@ const LambMap= () => import('../views/lamb/lambMap');
 /* 人员管理 */
 const PersonInfo = () => import('../views/person/personInfo');
 const PersonInput = () => import('../views/person/personInput');
+const Test = () => import('../views/person/test');
 
 /* charts */
 const chartIndex = () => import('../views/charts/index');
@@ -290,7 +291,8 @@ export const asyncRouterMap = [
   //  noDropdown: true,
     children: [
     { path: 'personInfo', component: PersonInfo, name: '人员信息' },
-    { path: 'personInput', component: PersonInput, name: '新增人员' }
+    { path: 'personInput', component: PersonInput, name: '新增人员' },
+    { path: 'test', component: Test, name: '测试' }
     ]
   },
   // {

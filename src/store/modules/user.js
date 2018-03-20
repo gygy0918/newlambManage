@@ -32,8 +32,8 @@ const user = {
     SET_UID: (state, uid) => {
       state.uid = uid;
     },
-    SET_EMAIL: (state, email) => {
-      state.email = email;
+    SET_USERNAME: (state, username) => {
+      state.username = username;
     },
     SET_INTRODUCTION: (state, introduction) => {
       state.introduction = introduction;
@@ -64,19 +64,38 @@ const user = {
   actions: {
     // 邮箱登录
     LoginByEmail({ commit }, userInfo) {
-      const email = userInfo.email.trim();
-      return new Promise((resolve, reject) => {
-        loginByEmail(email, userInfo.password).then(response => {
-          console.log('eeeee',response)
-          const data = response.data;
-          Cookies.set('Admin-Token', response.data.token);
-          commit('SET_TOKEN', data.token);
-          commit('SET_EMAIL', email);
-          resolve();
-        }).catch(error => {
-          reject(error);
-        });
-      });
+      const {username,password}= userInfo;
+      let data={username,password}
+      console.log('****',data)
+       this.$ajax({
+                   method: 'post', //请求方式
+                   url: 'http://10.103.243.94:8080/login',
+                   data:data
+               }).then(
+                   (res) => {
+                       Cookies.set('Admin-Token', res.data.token);
+                           commit('SET_TOKEN', data.token);
+                           commit('SET_USERNAME', username);
+                       this.loading = false;
+                       this.$router.push({ path: '/' });
+//                        this.options=[];
+//                        this.options =res.data.data.results;
+                       console.log(res);
+                   });
+      // return new Promise((resolve, reject) => {
+      //   loginByEmail(username, userInfo.password).then(response => {
+      //       console.log('userInfo');
+      //     console.log('eeeee',response)
+      //     const data = response.data;
+      //     Cookies.set('Admin-Token', response.data.token);
+      //     commit('SET_TOKEN', data.token);
+      //     commit('SET_EMAIL', email);
+      //     resolve();
+      //   }).catch(error => {
+      //     reject(error);
+      //   });
+      //
+      // });
     },
 
 
